@@ -11,9 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Gray2
+import com.example.prodjectformc.ui.theme.Gray5
 import com.example.prodjectformc.ui.theme.Gray3
-import com.example.prodjectformc.ui.theme.inter
 
 @Composable
 fun ButtonBlueGrayMP(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolean, text: String){
@@ -35,7 +34,6 @@ fun ButtonBlueGrayMP(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolea
             text = text,
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 15.dp),
             color = Color(0xFFFFFFFF),
-            fontFamily = inter,
             fontWeight = FontWeight.Bold
         )
     }
@@ -48,8 +46,8 @@ fun ButtonBlueGrayWC(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolea
         containerColor = Color(Blue.value)
     )
     val colorBtnGray = ButtonDefaults.outlinedButtonColors(
-        contentColor = Color(Gray2.value),
-        containerColor = Color(Gray2.value)
+        contentColor = Color(Gray5.value),
+        containerColor = Color(Gray5.value)
     )
     Button(
         onClick = click,
@@ -61,7 +59,6 @@ fun ButtonBlueGrayWC(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolea
             text = text,
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 15.dp),
             color = Color(0xFFFFFFFF),
-            fontFamily = inter,
             fontWeight = FontWeight.Bold
         )
     }

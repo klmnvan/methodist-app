@@ -1,4 +1,4 @@
-package com.example.prodjectformc.api.notwork
+package com.example.prodjectformc.api.network
 
 import android.net.http.HttpException
 import android.os.Build

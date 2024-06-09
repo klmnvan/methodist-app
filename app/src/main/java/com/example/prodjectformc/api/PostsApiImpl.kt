@@ -1,6 +1,6 @@
 package com.example.prodjectformc.api
 
-import com.example.prodjectformc.api.notwork.HttpRoutes
+import com.example.prodjectformc.api.network.HttpRoutes
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post

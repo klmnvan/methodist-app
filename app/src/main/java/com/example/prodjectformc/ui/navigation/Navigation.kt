@@ -1,4 +1,4 @@
-package com.example.prodjectformc.navigation
+package com.example.prodjectformc.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -6,10 +6,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.prodjectformc.objects.RoutesNavigation
 import com.example.prodjectformc.screens.LogIn
-import com.example.prodjectformc.screens.SplashScreen
+import com.example.prodjectformc.ui.screen.signin.SignIn
+import com.example.prodjectformc.ui.screen.splash.SplashScreen
 
 @Composable
-fun Navigation() {
+fun Navigation(
+//Сюда можно передавать VM с hilt
+) {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -22,7 +25,7 @@ fun Navigation() {
             //OnBoard(navController)
         }
         composable(RoutesNavigation.LOGIN){
-            LogIn(navController)
+            SignIn(navController)
         }
         composable(RoutesNavigation.SIGNUP){
             //SignUp(navController)

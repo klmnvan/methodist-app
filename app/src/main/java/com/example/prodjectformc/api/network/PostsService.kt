@@ -1,4 +1,4 @@
-package com.example.prodjectformc.api.notwork
+package com.example.prodjectformc.api.network
 
 import com.example.prodjectformc.api.Result
 import io.ktor.client.HttpClient

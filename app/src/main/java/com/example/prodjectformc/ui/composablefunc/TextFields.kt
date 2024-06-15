@@ -1,4 +1,4 @@
-package com.example.prodjectformc.composablefunc
+package com.example.prodjectformc.ui.composablefunc
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

@@ -1,4 +1,4 @@
-package com.example.prodjectformc.objects
+package com.example.prodjectformc.data.objects
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

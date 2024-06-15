@@ -1,4 +1,4 @@
-package com.example.prodjectformc.objects
+package com.example.prodjectformc.data.objects
 
 import android.content.Context
 import android.content.SharedPreferences

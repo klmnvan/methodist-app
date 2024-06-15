@@ -29,14 +29,20 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
             Log.d("Error ${e.response.status.value}", e.message)
             return Response(null, "Ошибка ${e.response.status.value}")
         } catch (e: ClientRequestException) {
+            if(e.response.body<String>().contains("Invalid password")){
+                return Response(null,  "Неверный пароль")
+            }
+            if(e.response.body<String>().contains("Invalid email")){
+                return Response(null,  "Неверная почта")
+            }
             Log.d("Error ${e.response.status.value}", e.message)
-            return Response(null, "Ошибка ${e.response.status.value}")
+            Response(null, "Ошибка ${e.response.status.value}")
         } catch (e: ServerResponseException) {
             Log.d("Error ${e.response.status.value}", e.message)
-            return Response(null, "Ошибка ${e.response.status.value}")
+            Response(null, "Ошибка сервера")
         } catch (e: Exception) {
             println("Error: ${e.message}")
-            return Response(null, e.message)
+            Response(null, e.message)
         }
     }
 
@@ -50,16 +56,19 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
             Response(response.body<String?>().toString(), null)
         } catch (e: RedirectResponseException) {
             Log.d("Error ${e.response.status.value}", e.message)
-            return Response(null, "Ошибка ${e.response.status.value}")
+            Response(null, "Ошибка ${e.response.status.value}")
         } catch (e: ClientRequestException) {
+            if(e.response.body<String>().contains("is already taken")){
+                return Response(null, "Почта уже зарегистрирована")
+            }
             Log.d("Error ${e.response.status.value}", e.message)
-            return Response(null, "Ошибка ${e.response.status.value}")
+            Response(null, "Ошибка ${e.response.status.value}")
         } catch (e: ServerResponseException) {
             Log.d("Error ${e.response.status.value}", e.message)
-            return Response(null, "Ошибка ${e.response.status.value}")
+            return Response(null, "Ошибка сервера")
         } catch (e: Exception) {
             println("Error: ${e.message}")
-            return Response(null, e.message)
+            Response(null, e.message)
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.prodjectformc.ui.screen.signin
+package com.example.prodjectformc.ui.screen.signup
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.prodjectformc.data.model.signin.SignInState
+import com.example.prodjectformc.data.model.signup.SignUpState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,20 +18,21 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    var state by mutableStateOf(SignInState())
+    var state by mutableStateOf(SignUpState())
 
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
-    fun signIn(navController: NavController) {
+    fun signUp(navController: NavController) {
         viewModelScope.launch {
-            val response = service.signIn(state.email, state.password)
+            val response = service.signUp(state.email, state.name, state.password,
+                state.passwordConfirm, state.patronymic, state.surname)
             if(response.token != null){
-                navController.navigate(RoutesNavigation.HOME)
+                navController.navigate(RoutesNavigation.LOGIN)
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

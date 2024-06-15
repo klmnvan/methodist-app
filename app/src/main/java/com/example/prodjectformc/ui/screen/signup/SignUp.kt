@@ -1,4 +1,4 @@
-package com.example.prodjectformc.ui.screen.signin
+package com.example.prodjectformc.ui.screen.signup
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -51,9 +51,10 @@ import com.example.prodjectformc.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = hiltViewModel()) {
+fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = hiltViewModel()) {
     val state = viewModel.state
     viewModel.context = LocalContext.current
+    //viewModel.context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,26 +62,20 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.logotype),
-            contentDescription = "",
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 130.dp),
-            contentScale = ContentScale.FillWidth
-        )
-        Text(text = "Авторизация", Modifier.padding(top = 25.dp), style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Войдите, чтобы пользоваться функциями приложения", Modifier.padding(horizontal = 40.dp), style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
-        //Ввод почты
+        Text(text = "Регистрация", Modifier.padding(top = 25.dp), style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Зарегистрируйтесь, чтобы пользоваться функциями приложения",
+            Modifier.padding(horizontal = 40.dp), style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center)
+
+        Spacer(modifier = Modifier.height(30.dp))
         OutlinedTextField(
-            value = state.email,
-            onValueChange = { viewModel.state = viewModel.state.copy(email = it) },
+            value = state.surname,
+            onValueChange = { viewModel.state = viewModel.state.copy(surname = it) },
             textStyle = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 30.dp),
-            placeholder = { Text(text = "Логин", style = MaterialTheme.typography.labelMedium) },
+                .padding(horizontal = 20.dp),
+            placeholder = { Text(text = "Фамилия", style = MaterialTheme.typography.labelMedium) },
             singleLine = true,
             maxLines = 1,
             shape = RoundedCornerShape(10.dp),
@@ -102,15 +97,108 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
                 )
             },
         )
-        //Ввод пароля
+
+        Spacer(modifier = Modifier.height(14.dp))
+        OutlinedTextField(
+            value = state.name,
+            onValueChange = { viewModel.state = viewModel.state.copy(name = it) },
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            placeholder = { Text(text = "Имя", style = MaterialTheme.typography.labelMedium) },
+            singleLine = true,
+            maxLines = 1,
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+                containerColor = Color(Gray2.value)
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            viewModel.state = viewModel.state.copy(password = "")
+                        },
+                    tint = Color(Gray1.value)
+                )
+            },
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+        OutlinedTextField(
+            value = state.patronymic,
+            onValueChange = { viewModel.state = viewModel.state.copy(patronymic = it) },
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            placeholder = { Text(text = "Отчество", style = MaterialTheme.typography.labelMedium) },
+            singleLine = true,
+            maxLines = 1,
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+                containerColor = Color(Gray2.value)
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            viewModel.state = viewModel.state.copy(password = "")
+                        },
+                    tint = Color(Gray1.value)
+                )
+            },
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+        OutlinedTextField(
+            value = state.email,
+            onValueChange = { viewModel.state = viewModel.state.copy(email = it) },
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            placeholder = { Text(text = "Логин", style = MaterialTheme.typography.labelMedium) },
+            singleLine = true,
+            maxLines = 1,
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+                containerColor = Color(Gray2.value)
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            viewModel.state = viewModel.state.copy(password = "")
+                        },
+                    tint = Color(Gray1.value)
+                )
+            },
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
         OutlinedTextField(
             value = state.password,
             onValueChange = { viewModel.state = viewModel.state.copy(password = it) },
             textStyle = MaterialTheme.typography.titleMedium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-                .padding(top = 14.dp),
+                .padding(horizontal = 20.dp),
             placeholder = { Text(text = "Пароль", style = MaterialTheme.typography.labelMedium) },
             singleLine = true,
             maxLines = 1,
@@ -133,27 +221,62 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
                 )
             },
         )
+
+        Spacer(modifier = Modifier.height(14.dp))
+        OutlinedTextField(
+            value = state.passwordConfirm,
+            onValueChange = { viewModel.state = viewModel.state.copy(passwordConfirm = it) },
+            textStyle = MaterialTheme.typography.titleMedium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            placeholder = { Text(text = "Пароль", style = MaterialTheme.typography.labelMedium) },
+            singleLine = true,
+            maxLines = 1,
+            shape = RoundedCornerShape(10.dp),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent,
+                containerColor = Color(Gray2.value)
+            ),
+            trailingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable {
+                            viewModel.state = viewModel.state.copy(password = "")
+                        },
+                    tint = Color(Gray1.value)
+                )
+            },
+        )
+
         Spacer(modifier = Modifier.height(30.dp))
         MaxWidthButton(
             text = "Далее",
             onClick = {
-                viewModel.signIn(navHostController!!)
+                viewModel.signUp(navHostController!!)
             },
-            enabled = state.email.isNotEmpty() && state.password.isNotEmpty())
+            enabled =
+            state.email.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty()
+                    && state.name.isNotEmpty() && state.surname.isNotEmpty() && state.patronymic.isNotEmpty()
+        )
         Spacer(modifier = Modifier.height(15.dp))
         Text(
             text = buildAnnotatedString {
                 withStyle(SpanStyle(color = Color(Black.value))) {
-                    append("Ещё нет аккаута? ")
+                    append("Уже есть аккаунт? ")
                 }
                 withStyle(SpanStyle(color = Color(Blue.value), fontWeight = FontWeight.Bold)) {
-                    append("Зарегистрируйтесь!")
+                    append("Авторизуйтесь!")
                 }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    navHostController!!.navigate(RoutesNavigation.SIGNUP)
+                    navHostController!!.navigate(RoutesNavigation.LOGIN)
                 },
             textAlign = TextAlign.Center,
             fontSize = 14.sp,
@@ -194,6 +317,6 @@ fun MaxWidthButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
 @Composable
 private fun Preview(){
     ProdjectForMCTheme {
-        SignIn(null)
+        SignUp(null)
     }
 }

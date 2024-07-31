@@ -25,9 +25,9 @@ fun SplashScreen(navHostController: NavHostController?, viewModel: SplashViewMod
     Box(
         Modifier
             .fillMaxSize()
-            .padding(horizontal = 130.dp), contentAlignment = Alignment.Center) {
+            .padding(horizontal = 30.dp), contentAlignment = Alignment.Center) {
         Image(
-            imageVector = ImageVector.vectorResource(R.drawable.logotype),
+            imageVector = ImageVector.vectorResource(R.drawable.logo),
             contentDescription = "",
             Modifier.fillMaxWidth(),
             contentScale = ContentScale.FillWidth

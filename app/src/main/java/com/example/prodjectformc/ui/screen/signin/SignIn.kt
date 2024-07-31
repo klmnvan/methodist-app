@@ -59,19 +59,10 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(
-            imageVector = ImageVector.vectorResource(R.drawable.logotype),
-            contentDescription = "",
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 130.dp),
-            contentScale = ContentScale.FillWidth
-        )
-        Text(text = "Авторизация", Modifier.padding(top = 25.dp), style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Войдите, чтобы пользоваться функциями приложения", Modifier.padding(horizontal = 40.dp), style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center)
+        Text(text = "Авторизация", Modifier.padding(top = 25.dp).padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Войдите, чтобы пользоваться функциями приложения", Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyMedium)
         //Ввод почты
         OutlinedTextField(
             value = state.email,

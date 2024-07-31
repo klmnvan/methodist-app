@@ -59,13 +59,11 @@ fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = h
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Регистрация", Modifier.padding(top = 25.dp), style = MaterialTheme.typography.bodyLarge)
+        Text(text = "Регистрация", Modifier.padding(top = 25.dp).padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyLarge)
         Text(text = "Зарегистрируйтесь, чтобы пользоваться функциями приложения",
-            Modifier.padding(horizontal = 40.dp), style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center)
+            Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyMedium)
 
         Spacer(modifier = Modifier.height(30.dp))
         OutlinedTextField(

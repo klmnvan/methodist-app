@@ -54,7 +54,6 @@ import com.example.prodjectformc.ui.theme.White
 fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = hiltViewModel()) {
     val state = viewModel.state
     viewModel.context = LocalContext.current
-    //viewModel.context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()

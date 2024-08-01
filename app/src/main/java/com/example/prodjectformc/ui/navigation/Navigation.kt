@@ -16,7 +16,7 @@ fun Navigation(
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = RoutesNavigation.SPLASH){
+        startDestination = RoutesNavigation.HOME){
 
         composable(RoutesNavigation.SPLASH){
             SplashScreen(navController)

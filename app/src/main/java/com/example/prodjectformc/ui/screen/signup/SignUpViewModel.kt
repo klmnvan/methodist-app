@@ -29,8 +29,8 @@ class SignUpViewModel @Inject constructor(
 
     fun signUp(navController: NavController) {
         viewModelScope.launch {
-            val response = service.signUp(state.email, state.name, state.password,
-                state.passwordConfirm, state.patronymic, state.surname)
+            val response = service.signUp(state.email, state.surname, state.name,
+                state.patronymic, state.password, state.passwordConfirm)
             if(response.token != null){
                 navController.navigate(RoutesNavigation.LOGIN)
             }

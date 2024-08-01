@@ -61,7 +61,10 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Авторизация", Modifier.padding(top = 25.dp).padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyLarge)
+        Spacer(modifier = Modifier.height(25.dp))
+        Text(text = "Авторизация",
+            Modifier
+                .padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyLarge)
         Text(text = "Войдите, чтобы пользоваться функциями приложения", Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyMedium)
         //Ввод почты
         OutlinedTextField(

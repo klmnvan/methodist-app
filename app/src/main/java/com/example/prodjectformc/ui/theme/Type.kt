@@ -42,7 +42,12 @@ val Typography = Typography(
         fontSize = 32.sp,
         color = Color(Black.value),
     ),
-
+    displayLarge = TextStyle(
+        fontFamily = Poppins,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 18.sp,
+        color = Color(Black.value),
+    ),
     bodyMedium = TextStyle(
         fontFamily = Raleway,
         fontWeight = FontWeight.Normal,

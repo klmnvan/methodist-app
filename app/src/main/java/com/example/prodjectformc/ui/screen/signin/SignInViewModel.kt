@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.prodjectformc.data.model.signin.SignInState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
@@ -30,7 +31,7 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             val response = service.signIn(state.email, state.password)
             if(response.token != null){
-                navController.navigate(RoutesNavigation.HOME)
+                navController.navigate(RoutesNavigation.GRAPHHOME)
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

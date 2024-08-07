@@ -6,4 +6,6 @@ object RoutesNavigation {
     const val SIGNUP = "signUp"
     const val HOLDER = "Holder"
     const val HOME = "Home"
+    const val GRAPHROOT = "root_graph"
+    const val GRAPHHOME = "home_graph"
 }

@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.prodjectformc.ui.screen.Holder
 import com.example.prodjectformc.ui.screen.bottombar.HomeBottomBar
 import com.example.prodjectformc.ui.screen.home.Home
 import com.example.prodjectformc.ui.screen.signin.SignIn
@@ -17,7 +18,7 @@ fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         route = RoutesNavigation.GRAPHROOT,
         navController = navController,
-        startDestination = RoutesNavigation.SPLASH){
+        startDestination = RoutesNavigation.GRAPHHOME){
 
         composable(RoutesNavigation.SPLASH){
             SplashScreen(navController)
@@ -37,6 +38,5 @@ fun RootNavigationGraph(navController: NavHostController) {
         composable(RoutesNavigation.GRAPHHOME){
             HomeBottomBar(homeNavController)
         }
-
     }
 }

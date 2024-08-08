@@ -74,17 +74,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     val nav_version = "2.7.7"
-    implementation ("androidx.navigation:navigation-compose:$nav_version")
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     val ktor_version = "2.3.10"
     implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation ("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
     implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
-    implementation ("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     // hilt
     implementation("com.google.dagger:hilt-android:2.48")

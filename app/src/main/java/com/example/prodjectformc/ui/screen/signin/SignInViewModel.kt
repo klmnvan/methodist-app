@@ -2,6 +2,7 @@ package com.example.prodjectformc.ui.screen.signin
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.signin.SignInState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
@@ -31,6 +33,8 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             val response = service.signIn(state.email, state.password)
             if(response.token != null){
+                CurrentUser.token = response.token
+                Log.d("token", CurrentUser.token)
                 navController.navigate(RoutesNavigation.GRAPHHOME)
             }
             if (response.error != null){

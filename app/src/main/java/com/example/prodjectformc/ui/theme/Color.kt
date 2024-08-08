@@ -3,6 +3,8 @@ package com.example.prodjectformc.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Blue = Color(0xFF1977FF)
+val Blue80 = Color(0xCC1977FF)
+val Blue20 = Color(0x334792FF)
 val Black = Color(0xFF000000)
 val Gray1 = Color(0xFFAAADB2)
 val Gray2 = Color(0xFFF0F0F3)

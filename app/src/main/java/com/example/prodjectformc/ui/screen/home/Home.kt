@@ -3,6 +3,9 @@ package com.example.prodjectformc.ui.screen.home
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -29,6 +32,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -36,14 +44,19 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.theme.Black
 import com.example.prodjectformc.ui.theme.Blue
+import com.example.prodjectformc.ui.theme.Blue20
+import com.example.prodjectformc.ui.theme.Blue80
 import com.example.prodjectformc.ui.theme.Gray1
 import com.example.prodjectformc.ui.theme.Green
+import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.White
 import com.example.prodjectformc.ui.theme.WhiteHomeBack
 
@@ -53,8 +66,7 @@ import com.example.prodjectformc.ui.theme.WhiteHomeBack
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state
     val scrollState = rememberScrollState()
-    //viewModel.context = LocalContext.current
-//fun Home(navHostController: NavHostController?){
+    var selectedCategory by remember { mutableStateOf("Всё") }
     Box (modifier = Modifier
         .fillMaxSize()
         .background(Color(WhiteHomeBack.value))) {
@@ -66,12 +78,17 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             ) {
             Spacer(modifier = Modifier.height(24.dp))
             Box {
-                Box(modifier = Modifier.fillMaxWidth(0.985f)
+                Box(modifier = Modifier
+                    .fillMaxWidth(0.985f)
                     .shadow(
                         elevation = 5.dp, shape = RoundedCornerShape(30), spotColor = Color(
-                            Black.value), ambientColor = Color(Black.value))
+                            Black.value
+                        ), ambientColor = Color(Black.value)
+                    )
                     .background(color = Color.Transparent, shape = RoundedCornerShape(30))
-                    .padding(horizontal = 5.dp).height(40.dp).align(Alignment.BottomCenter)
+                    .padding(horizontal = 5.dp)
+                    .height(40.dp)
+                    .align(Alignment.BottomCenter)
                 )
                 Box(
                     modifier = Modifier
@@ -126,43 +143,33 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(17.dp))
-            Text(text = "Пройденные мероприятия", style = MaterialTheme.typography.displayLarge)
-            Spacer(modifier = Modifier.height(17.dp))
-            Row(
-                modifier = Modifier
-                    .shadow(
-                        elevation = 4.dp, shape = RoundedCornerShape(30), spotColor = Color(
-                            Black.value
-                        )
-                    )
-                    .background(color = Color.White, shape = RoundedCornerShape(30))
-                    .padding(14.dp)
-                    .clickable {
-
-                    }
-            )
-            {
-                Text(text = "Сортировать по", style = MaterialTheme.typography.titleMedium,)
-                Spacer(modifier = Modifier.width(60.dp))
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.arrow_right),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .padding(vertical = 4.dp)
-                        .fillMaxWidth(),
-                    tint = Color(Blue.value)
-                )
+            Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Категории", style = MaterialTheme.typography.displayLarge)
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                val listCategory = state.listEvent.map { it.formOfWork.name }.distinct().toMutableList()
+                listCategory.add(0, "Всё")
+                for(event in listCategory){
+                    val isSelected = selectedCategory == event
+                    val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
+                    val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
+                    Text(modifier = Modifier
+                        .background(backgroundColor, RoundedCornerShape(15.dp))
+                        .padding(vertical = 14.dp, horizontal = 20.dp)
+                        .clickable(interactionSource = remember { MutableInteractionSource() },indication = null) {
+                            selectedCategory = event
+                        }, text = event, fontSize = 12.sp,
+                        fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
+                        color = textColor)
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
             }
             Spacer(modifier = Modifier.height(20.dp))
+            Text(text = "Пройденные мероприятия", style = MaterialTheme.typography.displayLarge)
+            Spacer(modifier = Modifier.height(8.dp))
             for (event in state.listEvent) {
-                Column (modifier = Modifier
-                    .shadow(
-                        elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(
-                            Black.value
-                        )
-                    )
+
+                Column (modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
                     .background(color = Color(White.value), shape = RoundedCornerShape(15))
                     .padding(vertical = 10.dp, horizontal = 18.dp)) {
                     Row (verticalAlignment = Alignment.CenterVertically) {
@@ -176,14 +183,14 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                             tint = Color(Green.value)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = event.title,
+                        Text(text = event.specifications,
                             modifier = Modifier.weight(1f),
                             style = MaterialTheme.typography.titleMedium,)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = event.date, style = MaterialTheme.typography.titleMedium)
+                        Text(text = event.dateOfEvent, style = MaterialTheme.typography.titleMedium)
                     }
                     Divider(modifier = Modifier.padding(vertical = 10.dp))
-                    Text(text = event.description, style = MaterialTheme.typography.titleMedium,)
+                    Text(text = event.specifications, style = MaterialTheme.typography.titleMedium,)
                 }
                 Spacer(modifier = Modifier.height(14.dp))
             }
@@ -191,14 +198,3 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
     }
 }
 
-
-
-//Для удобного Preview
-
-/*@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun Preview(){
-    ProdjectForMCTheme {
-        Home(null)
-    }
-}*/

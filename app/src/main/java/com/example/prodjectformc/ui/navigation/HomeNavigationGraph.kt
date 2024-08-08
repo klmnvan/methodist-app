@@ -8,7 +8,7 @@ import com.example.prodjectformc.ui.screen.Holder
 import com.example.prodjectformc.ui.screen.home.Home
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun HomeNavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = Destinations.HomeScreen.route, route = RoutesNavigation.GRAPHHOME) {
         composable(Destinations.HomeScreen.route) {
             Home(navController)

@@ -5,15 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.prodjectformc.ui.screen.HomeBottomBar
+import com.example.prodjectformc.ui.screen.bottombar.HomeBottomBar
 import com.example.prodjectformc.ui.screen.home.Home
 import com.example.prodjectformc.ui.screen.signin.SignIn
 import com.example.prodjectformc.ui.screen.signup.SignUp
 import com.example.prodjectformc.ui.screen.splash.SplashScreen
 
 @Composable
-fun Navigation(navController: NavHostController) {
-    var homeNavController = rememberNavController()
+fun RootNavigationGraph(navController: NavHostController) {
+    val homeNavController = rememberNavController()
     NavHost(
         route = RoutesNavigation.GRAPHROOT,
         navController = navController,

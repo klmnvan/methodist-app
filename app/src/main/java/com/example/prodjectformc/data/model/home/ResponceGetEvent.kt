@@ -1,9 +1,10 @@
-package com.example.prodjectformc.data.model.general
+package com.example.prodjectformc.data.model.home
 
+import com.example.prodjectformc.data.model.general.FormOfWork
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EventModel(
+data class ResponceGetEvent(
     val coefficient: Int? = 0,
     val dateOfEvent: String = "",
     val employeeId: String? = "",

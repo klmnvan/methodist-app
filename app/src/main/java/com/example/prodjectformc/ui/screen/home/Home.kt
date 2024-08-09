@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.ui.theme.Black
 import com.example.prodjectformc.ui.theme.Blue
 import com.example.prodjectformc.ui.theme.Blue20
@@ -147,52 +148,55 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Text(text = "Категории", style = MaterialTheme.typography.displayLarge)
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                val listCategory = state.listEvent.map { it.formOfWork.name }.distinct().toMutableList()
-                listCategory.add(0, "Всё")
-                for(event in listCategory){
-                    val isSelected = selectedCategory == event
-                    val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
-                    val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
-                    Text(modifier = Modifier
-                        .background(backgroundColor, RoundedCornerShape(15.dp))
-                        .padding(vertical = 14.dp, horizontal = 20.dp)
-                        .clickable(interactionSource = remember { MutableInteractionSource() },indication = null) {
-                            selectedCategory = event
-                        }, text = event, fontSize = 12.sp,
-                        fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
-                        color = textColor)
-                    Spacer(modifier = Modifier.width(8.dp))
+                if(CurrentUser.listEvents != null){
+                    val listCategory = CurrentUser.listEvents!!.map { it.formOfWork?.name }.distinct().toMutableList()
+                    listCategory.add(0, "Всё")
+                    for(event in listCategory){
+                        val isSelected = selectedCategory == event
+                        val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
+                        val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
+                        Text(modifier = Modifier
+                            .background(backgroundColor, RoundedCornerShape(15.dp))
+                            .padding(vertical = 14.dp, horizontal = 20.dp)
+                            .clickable(interactionSource = remember { MutableInteractionSource() },indication = null) {
+                                selectedCategory = event!!
+                            }, text = event!!, fontSize = 12.sp,
+                            fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
+                            color = textColor)
+                        Spacer(modifier = Modifier.width(8.dp))
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Пройденные мероприятия", style = MaterialTheme.typography.displayLarge)
             Spacer(modifier = Modifier.height(8.dp))
-            for (event in state.listEvent) {
-
-                Column (modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
-                    .background(color = Color(White.value), shape = RoundedCornerShape(15))
-                    .padding(vertical = 10.dp, horizontal = 18.dp)) {
-                    Row (verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_event),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(35.dp)
-                                .padding(vertical = 4.dp)
-                                .fillMaxWidth(),
-                            tint = Color(Green.value)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = event.specifications,
-                            modifier = Modifier.weight(1f),
-                            style = MaterialTheme.typography.titleMedium,)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = event.dateOfEvent, style = MaterialTheme.typography.titleMedium)
+            if(CurrentUser.listEvents != null){
+                for (event in CurrentUser.listEvents!!) {
+                    Column (modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
+                        .background(color = Color(White.value), shape = RoundedCornerShape(15))
+                        .padding(vertical = 10.dp, horizontal = 18.dp)) {
+                        Row (verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(R.drawable.icon_event),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(35.dp)
+                                    .padding(vertical = 4.dp)
+                                    .fillMaxWidth(),
+                                tint = Color(Green.value)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = event.specifications!!,
+                                modifier = Modifier.weight(1f),
+                                style = MaterialTheme.typography.titleMedium,)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = event.dateOfEvent, style = MaterialTheme.typography.titleMedium)
+                        }
+                        Divider(modifier = Modifier.padding(vertical = 10.dp))
+                        Text(text = event.specifications!!, style = MaterialTheme.typography.titleMedium,)
                     }
-                    Divider(modifier = Modifier.padding(vertical = 10.dp))
-                    Text(text = event.specifications, style = MaterialTheme.typography.titleMedium,)
+                    Spacer(modifier = Modifier.height(14.dp))
                 }
-                Spacer(modifier = Modifier.height(14.dp))
             }
         }
     }

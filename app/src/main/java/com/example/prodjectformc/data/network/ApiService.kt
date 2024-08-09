@@ -2,6 +2,8 @@ package com.example.prodjectformc.data.network
 
 import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.general.AccountInfo
+import com.example.prodjectformc.data.model.general.EventModel
+import com.example.prodjectformc.data.model.home.RequestGetEventModel
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -15,6 +17,7 @@ interface ApiService {
 
     suspend fun signIn(email: String, password: String): Response
     suspend fun getAccountInfo(token: String): AccountInfo?
+    suspend fun getEvent(idEmploeyy: String): List<EventModel>?
     suspend fun signUp(email: String, surname: String, name: String, patronymic: String, password: String, passwordConfirm: String): Response
 
     companion object {

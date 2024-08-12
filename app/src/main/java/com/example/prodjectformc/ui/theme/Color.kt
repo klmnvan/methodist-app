@@ -16,4 +16,5 @@ val WhiteHomeBack = Color(0xFFF7F7F9)
 val Green = Color(0xFF22B07D)
 val DarkBackground = Color(0xFF272A37)
 val DarkTextFiels = Color(0xFF323644)
+val CustomTransparent = Color(0x00323644)
 

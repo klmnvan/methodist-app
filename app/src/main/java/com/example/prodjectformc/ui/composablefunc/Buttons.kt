@@ -1,5 +1,6 @@
 package com.example.prodjectformc.ui.composablefunc
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -10,9 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.ui.theme.Blue
 import com.example.prodjectformc.ui.theme.Gray5
 import com.example.prodjectformc.ui.theme.Gray3
+import com.example.prodjectformc.ui.theme.White
 
 @Composable
 fun ButtonBlueGrayMP(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolean, text: String){
@@ -60,6 +63,32 @@ fun ButtonBlueGrayWC(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolea
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 15.dp),
             color = Color(0xFFFFFFFF),
             fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun MaxWidthButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
+    Button(
+        onClick = { onClick() },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
+        colors = ButtonDefaults.buttonColors(
+            contentColor = Color(White.value),
+            containerColor = Color(Blue.value),
+            disabledContainerColor = Color(Gray3.value),
+            disabledContentColor = Color(White.value)
+        ),
+        shape = RoundedCornerShape(10.dp),
+        enabled = enabled
+    ) {
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = Color.White,
+            modifier = Modifier.padding(vertical = 10.dp)
         )
     }
 }

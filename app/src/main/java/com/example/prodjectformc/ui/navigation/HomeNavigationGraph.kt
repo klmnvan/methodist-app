@@ -4,17 +4,21 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.prodjectformc.ui.screen.Holder
+import com.example.prodjectformc.ui.screen.CreateEvent
 import com.example.prodjectformc.ui.screen.home.Home
+import com.example.prodjectformc.ui.screen.profile.Profile
 
 @Composable
 fun HomeNavigationGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Destinations.HomeScreen.route, route = RoutesNavigation.GRAPHHOME) {
-        composable(Destinations.HomeScreen.route) {
+    NavHost(navController, startDestination = DestinationsBottomBar.ProfileScreen.route, route = RoutesNavigation.GRAPH_HOME) {
+        composable(DestinationsBottomBar.HomeScreen.route) {
             Home(navController)
         }
-        composable(Destinations.Profile.route) {
-            Holder(navController)
+        composable(DestinationsBottomBar.ProfileScreen.route) {
+            Profile(navController)
+        }
+        composable(DestinationsBottomBar.CreateEventScreen.route) {
+            CreateEvent(navController)
         }
     }
 }

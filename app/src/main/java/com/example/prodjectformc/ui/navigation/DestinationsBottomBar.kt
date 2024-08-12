@@ -1,23 +1,25 @@
 package com.example.prodjectformc.ui.navigation
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.prodjectformc.R
 
-sealed class Destinations(
+sealed class DestinationsBottomBar(
     val route: String,
     val title: String? = null,
     val resourceId: Int? = null
 ) {
-    object HomeScreen : Destinations(
+    object HomeScreen : DestinationsBottomBar(
         route = "home_screen",
         title = "Мероприятия",
         resourceId = R.drawable.icon_home
     )
 
-    object Profile : Destinations(
+    object CreateEventScreen : DestinationsBottomBar(
+        route = "event_screen",
+        title = null,
+        resourceId = R.drawable.button_create_event
+    )
+
+    object ProfileScreen : DestinationsBottomBar(
         route = "profile_screen",
         title = "Профиль",
         resourceId = R.drawable.icon_profile

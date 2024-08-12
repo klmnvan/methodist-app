@@ -7,11 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.ui.navigation.HomeNavigationGraph
-import com.example.prodjectformc.ui.navigation.RootNavigationGraph
-import com.example.prodjectformc.ui.screen.bottombar.BottomBar
 
 @Composable
-fun HomeBottomBar(navController: NavHostController){
+fun MainScaffold(navController: NavHostController){
     Scaffold(
         bottomBar = {
             BottomBar(

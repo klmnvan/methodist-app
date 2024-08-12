@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import com.example.prodjectformc.ui.theme.Black
 import com.example.prodjectformc.ui.theme.Blue
@@ -281,32 +282,6 @@ fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = h
         )
     }
 
-}
-
-@Composable
-fun MaxWidthButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
-    Button(
-        onClick = { onClick() },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
-        colors = ButtonDefaults.buttonColors(
-            contentColor = Color(White.value),
-            containerColor = Color(Blue.value),
-            disabledContainerColor = Color(Gray3.value),
-            disabledContentColor = Color(White.value)
-        ),
-        shape = RoundedCornerShape(10.dp),
-        enabled = enabled
-    ) {
-        Text(
-            text = text,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = Color.White,
-            modifier = Modifier.padding(vertical = 10.dp)
-        )
-    }
 }
 
 /*Для удобного Preview*/

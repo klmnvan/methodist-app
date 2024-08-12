@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.signin.SignInState
 import com.example.prodjectformc.data.network.ApiServiceImpl
@@ -35,7 +34,7 @@ class SignInViewModel @Inject constructor(
             if(response.token != null){
                 CurrentUser.token = response.token
                 Log.d("token", CurrentUser.token)
-                navController.navigate(RoutesNavigation.GRAPHHOME)
+                navController.navigate(RoutesNavigation.GRAPH_HOME)
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

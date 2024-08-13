@@ -9,4 +9,8 @@ object RoutesNavigation {
     const val PROFILE = "Profile"
     const val GRAPH_ROOT = "root_graph"
     const val GRAPH_HOME = "home_graph"
+    const val PUBLICATION = "Publication"
+    const val HOLDING = "Holding"
+    const val INTERNSHIP = "Internship"
+    const val PARTICIPATION = "Participation"
 }

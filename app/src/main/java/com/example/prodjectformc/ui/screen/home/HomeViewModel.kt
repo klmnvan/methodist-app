@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
             CurrentUser.accountInfo = service.getAccountInfo(CurrentUser.token)
             Log.d("accountInfo", CurrentUser.accountInfo.toString())
             if(CurrentUser.accountInfo != null){
-                CurrentUser.listEvents = service.getEvent((CurrentUser.accountInfo!!.id))?.toMutableList()
+                CurrentUser.listEvents = service.getEvent((CurrentUser.accountInfo!!.id), CurrentUser.token)?.toMutableList()
             }
         }
     }

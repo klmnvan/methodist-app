@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FormOfWork(
     val id: String = "",
-    val name: String = "Категория"
+    val name: String = ""
 )

@@ -90,7 +90,7 @@ fun BottomBar(
         Icon(imageVector = ImageVector.vectorResource(id = screens[1].resourceId!!), tint = Color.Unspecified,
             modifier = Modifier.align(Alignment.TopCenter)
                 .size(70.dp)
-                .offset(y = -16.dp)
+                .offset(y = (-16).dp)
                 .background(Color.Transparent).shadow(
                     elevation = 5.dp, shape = RoundedCornerShape(100), spotColor = Color(
                         Black.value

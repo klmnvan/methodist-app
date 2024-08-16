@@ -4,6 +4,8 @@ import android.util.Log
 import com.example.prodjectformc.data.model.signin.SignInRequest
 import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
+import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
+import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
@@ -172,6 +174,26 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
             return GetResultEventsResponse(null, e.message)
+        }
+    }
+
+    override suspend fun createParticipationEvent(
+        token: String,
+        request: CreateParticipationEventRequest
+    ): CreateParticipationEventResponse {
+        return try {
+            val response = client.post {
+                url(HttpRoutes.CREATEPARTICIPATIONEVENT)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+                setBody(request)
+            }
+            CreateParticipationEventResponse(response.body<EventModel>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return CreateParticipationEventResponse(null, e.message)
         }
     }
 

@@ -2,6 +2,8 @@ package com.example.prodjectformc.data.network
 
 import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
+import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
+import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
@@ -27,6 +29,7 @@ interface ApiService {
     suspend fun getStatusEvents(token: String): GetStatusEventsResponse
     suspend fun getEventForms(token: String): GetEventFormsResponse
     suspend fun getResultEvents(token: String): GetResultEventsResponse
+    suspend fun createParticipationEvent(token: String, request: CreateParticipationEventRequest): CreateParticipationEventResponse
 
     companion object {
         fun create(): ApiServiceImpl {

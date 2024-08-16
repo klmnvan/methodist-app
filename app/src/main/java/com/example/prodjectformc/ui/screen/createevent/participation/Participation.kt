@@ -310,7 +310,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                         .background(Color(Blue.value), shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
-                        .clickable {  },
+                        .clickable { viewModel.CreateParticipationEvent(navHostController) },
                     contentDescription = "",
                     tint = Color(
                         White.value)

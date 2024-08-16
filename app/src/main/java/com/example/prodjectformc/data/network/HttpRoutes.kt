@@ -11,4 +11,5 @@ object HttpRoutes {
     const val GETEVENTFORMS = "$BASE_URL/ValuesForms/GetEventForms"
     const val GETRESULTEVENTS = "$BASE_URL/ValuesForms/GetResultEvents"
     const val FORMOFWORKS = "$BASE_URL/FormOfWorks"
+    const val CREATEPARTICIPATIONEVENT = "$BASE_URL/Events/CreateParticipationEvent"
 }

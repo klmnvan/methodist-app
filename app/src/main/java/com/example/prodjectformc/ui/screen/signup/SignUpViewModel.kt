@@ -32,7 +32,12 @@ class SignUpViewModel @Inject constructor(
             val response = service.signUp(state.email, state.surname, state.name,
                 state.patronymic, state.password, state.passwordConfirm)
             if(response.token != null){
-                navController.navigate(RoutesNavigation.LOGIN)
+                navController.navigate(RoutesNavigation.LOGIN){
+                    popUpTo(RoutesNavigation.SIGNUP) {
+                        inclusive = true
+                    }
+                }
+
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

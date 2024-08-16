@@ -100,7 +100,11 @@ class ParticipationViewModel @Inject constructor(
             )
             if(response.event != null){
                 Log.d("event", response.event.toString())
-                navController.navigate(DestinationsBottomBar.HomeScreen.route)
+                navController.navigate(RoutesNavigation.GRAPH_HOME){
+                    popUpTo(RoutesNavigation.PARTICIPATION) {
+                        inclusive = true
+                    }
+                }
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

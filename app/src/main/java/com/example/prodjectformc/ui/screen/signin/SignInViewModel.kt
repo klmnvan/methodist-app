@@ -34,7 +34,11 @@ class SignInViewModel @Inject constructor(
             if(response.token != null){
                 CurrentUser.token = response.token
                 Log.d("token", CurrentUser.token)
-                navController.navigate(RoutesNavigation.GRAPH_HOME)
+                navController.navigate(RoutesNavigation.GRAPH_HOME){
+                    popUpTo(RoutesNavigation.LOGIN) {
+                        inclusive = true
+                    }
+                }
             }
             if (response.error != null){
                 Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()

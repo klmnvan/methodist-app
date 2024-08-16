@@ -3,14 +3,15 @@ package com.example.prodjectformc.data.network
 import android.util.Log
 import com.example.prodjectformc.data.model.signin.SignInRequest
 import com.example.prodjectformc.data.model.Response
-import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponce
-import com.example.prodjectformc.data.model.createevent.GetParticipationFormsResponce
+import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
+import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
+import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
+import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
+import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.EventModel
 import com.example.prodjectformc.data.model.general.FormOfWork
-import com.example.prodjectformc.data.model.general.Specifications
-import com.example.prodjectformc.data.model.home.RequestGetEventModel
 import com.example.prodjectformc.data.model.signup.SignUpRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -94,7 +95,7 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
         }
     }
 
-    override suspend fun getFormOfWorks(token: String): GetFormOfWorksResponce {
+    override suspend fun getFormOfWorks(token: String): GetFormOfWorksResponse {
         return try {
             val response = client.get {
                 url(HttpRoutes.FORMOFWORKS)
@@ -103,14 +104,14 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                     append(HttpHeaders.Authorization, "Bearer ${token}")
                 }
             }
-            GetFormOfWorksResponce(response.body<List<FormOfWork>>(), null)
+            GetFormOfWorksResponse(response.body<List<FormOfWork>>(), null)
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
-            return GetFormOfWorksResponce(null, e.message)
+            return GetFormOfWorksResponse(null, e.message)
         }
     }
 
-    override suspend fun getParticipationForms(token: String): GetParticipationFormsResponce {
+    override suspend fun getParticipationForms(token: String): GetParticipationFormsResponse {
         return try {
             val response = client.get {
                 url(HttpRoutes.GETPARTICIPATIONFORMS)
@@ -119,10 +120,58 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                     append(HttpHeaders.Authorization, "Bearer ${token}")
                 }
             }
-            GetParticipationFormsResponce(response.body<List<String>>(), null)
+            GetParticipationFormsResponse(response.body<List<String>>(), null)
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
-            return GetParticipationFormsResponce(null, e.message)
+            return GetParticipationFormsResponse(null, e.message)
+        }
+    }
+
+    override suspend fun getStatusEvents(token: String): GetStatusEventsResponse {
+        return try {
+            val response = client.get {
+                url(HttpRoutes.GETSTATUSEVENTS)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+            }
+            GetStatusEventsResponse(response.body<List<String>>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return GetStatusEventsResponse(null, e.message)
+        }
+    }
+
+    override suspend fun getEventForms(token: String): GetEventFormsResponse {
+        return try {
+            val response = client.get {
+                url(HttpRoutes.GETEVENTFORMS)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+            }
+            GetEventFormsResponse(response.body<List<String>>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return GetEventFormsResponse(null, e.message)
+        }
+    }
+
+    override suspend fun getResultEvents(token: String): GetResultEventsResponse {
+        return try {
+            val response = client.get {
+                url(HttpRoutes.GETRESULTEVENTS)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+            }
+            GetResultEventsResponse(response.body<List<String>>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return GetResultEventsResponse(null, e.message)
         }
     }
 

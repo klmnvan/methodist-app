@@ -20,23 +20,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ProdjectForMCTheme {
-
-                /*val navController: NavHostController = rememberNavController()
-
-                Scaffold(
-                    bottomBar = {
-                        BottomBar(
-                            navController = navController,
-                            modifier = Modifier
-                        )
-                    }) { paddingValues ->
-                    Box(
-                        modifier = Modifier.padding(paddingValues)
-                    ) {
-                        NavigationGraph(navController = navController)
-                    }
-                }*/
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background

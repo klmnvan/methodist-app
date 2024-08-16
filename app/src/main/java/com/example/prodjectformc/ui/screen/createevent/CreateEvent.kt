@@ -55,7 +55,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
     val state = viewModel.state
     viewModel.context = LocalContext.current
     var selectedOption by remember { mutableStateOf(state.selectedFormOfWork)}
-    var listViewTypeOfWork = listOf(ModelTypeOfWork(R.drawable.icon_typework1, "Проведение мероприятия"),
+    val listViewTypeOfWork = listOf(ModelTypeOfWork(R.drawable.icon_typework1, "Проведение мероприятия"),
         ModelTypeOfWork(R.drawable.icon_typework2, "Участие в мероприятии"),
         ModelTypeOfWork(R.drawable.icon_typework3, "Публикация"),
         ModelTypeOfWork(R.drawable.icon_typework4, "Стажировка"),)

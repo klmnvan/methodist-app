@@ -154,12 +154,3 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
     }
 
 }
-
-/*Для удобного Preview*/
-@Preview(showBackground = true)
-@Composable
-private fun Preview(){
-    ProdjectForMCTheme {
-        SignIn(null)
-    }
-}

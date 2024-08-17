@@ -1,37 +1,48 @@
 package com.example.prodjectformc.ui.screen.createevent.participation
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -41,18 +52,28 @@ import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.OptionsChooseFrom
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
+import com.example.prodjectformc.ui.composablefunc.currentDay
+import com.example.prodjectformc.ui.composablefunc.currentMonth
+import com.example.prodjectformc.ui.composablefunc.currentYear
+import com.example.prodjectformc.ui.composablefunc.monthsNames
 import com.example.prodjectformc.ui.theme.Blue
+import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Gray5
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.blueTextPoppins
+import com.example.prodjectformc.ui.theme.buttonTextStyle
 
 @Composable
 fun Participation(navHostController: NavHostController, viewModel: ParticipationViewModel = hiltViewModel()) {
@@ -63,6 +84,14 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
     var otherStatus by remember { mutableStateOf("")}
     var otherResult by remember { mutableStateOf("")}
     var expanded by remember { mutableStateOf(true) }
+    var chosenYear by remember { mutableIntStateOf(currentYear) }
+    var chosenMonth by remember { mutableIntStateOf(currentMonth) }
+    var chosenDay by remember { mutableIntStateOf(currentDay) }
+
+    LaunchedEffect(chosenYear, chosenMonth, chosenDay) {
+        viewModel.updateState(state.copy(dateOfEvent = "$chosenYear-$chosenMonth-$chosenDay",
+            endDateOfEvent = "$chosenYear-$chosenMonth-$chosenDay"))
+    }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -173,9 +202,8 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfParticipation.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfParticipation, state.formOfParticipation) { el ->
-                    viewModel.updateState(
-                        state.copy(formOfParticipation = el)
-                    )
+                    viewModel.updateState(state.copy(formOfParticipation = el))
+                    focusManager.clearFocus()
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -185,7 +213,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
             )
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.name, { viewModel.updateState(viewModel.state.copy(name = it)) },
-                "Концерт в актовом зале", {viewModel.updateState(viewModel.state.copy(name = ""))}, false, {} )
+                "Концерт в актовом зале", {viewModel.updateState(viewModel.state.copy(name = ""))}, state.name.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = "Форма мероприятия",
@@ -257,6 +285,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
             if (state.listResult.isNotEmpty()) {
                 OptionsChooseFrom(state.listResult, state.result) { el ->
                     viewModel.updateState(state.copy(result = el))
+                    focusManager.clearFocus()
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
@@ -279,6 +308,48 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
+            Text(
+                    text = "Дата",
+            style = MaterialTheme.typography.titleLarge
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                Text(text = "$chosenDay ${monthsNames[chosenMonth-1]} $chosenYear",
+                    modifier = Modifier
+                        .background(Color(Blue20.value), RoundedCornerShape(15.dp))
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                        .padding(horizontal = 16.dp, vertical = 18.dp),
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color(Blue.value)
+                )
+                var showDialog by remember { mutableStateOf(false) }
+                Button(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(1f),
+                    shape = RoundedCornerShape(15.dp),
+                    onClick = {
+                        showDialog = true
+                    }) {
+                    Icon(modifier = Modifier.padding(),
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_calendar), contentDescription = "",
+                        tint = Color.Unspecified
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(text = "Изменить", style = buttonTextStyle)
+                }
+
+                if (showDialog) {
+                    CustomDatePickerDialog("Выбор даты", {chosenYear = it}, {chosenMonth = it}, {chosenDay = it}) {
+                        showDialog = false
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
@@ -299,7 +370,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                 color = Color.Black)
                         ) {
                             Log.d("formOfParticipationtest", "${state.formOfParticipation}")
-                            append("${state.formOfParticipation}, ${state.name}, ${state.formOfEvent}, ${state.status}, ${state.result}")
+                            append("${state.formOfParticipation}, ${state.name}, ${state.formOfEvent}, ${state.status}, ${state.result}, дата: ${state.dateOfEvent}")
                         }
                     },
                     modifier = Modifier.weight(1f)
@@ -317,9 +388,15 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
+
         }
     }
 }
+
+
+
+
+
 
 
 

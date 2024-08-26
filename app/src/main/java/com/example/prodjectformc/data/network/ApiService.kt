@@ -3,11 +3,12 @@ package com.example.prodjectformc.data.network
 import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
-import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventResponse
+import com.example.prodjectformc.data.model.createevent.CreateEventResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
+import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.EventModel
 import io.ktor.client.HttpClient
@@ -29,7 +30,8 @@ interface ApiService {
     suspend fun getStatusEvents(token: String): GetStatusEventsResponse
     suspend fun getEventForms(token: String): GetEventFormsResponse
     suspend fun getResultEvents(token: String): GetResultEventsResponse
-    suspend fun createParticipationEvent(token: String, request: CreateParticipationEventRequest): CreateParticipationEventResponse
+    suspend fun createParticipationEvent(token: String, request: CreateParticipationEventRequest): CreateEventResponse
+    suspend fun createPublicationEvent(token: String, request: CreatePublicationEventRequest): CreateEventResponse
 
     companion object {
         fun create(): ApiServiceImpl {

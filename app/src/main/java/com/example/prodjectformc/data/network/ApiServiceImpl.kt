@@ -5,11 +5,12 @@ import com.example.prodjectformc.data.model.signin.SignInRequest
 import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
-import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventResponse
+import com.example.prodjectformc.data.model.createevent.CreateEventResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
+import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.EventModel
@@ -180,7 +181,7 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
     override suspend fun createParticipationEvent(
         token: String,
         request: CreateParticipationEventRequest
-    ): CreateParticipationEventResponse {
+    ): CreateEventResponse {
         return try {
             val response = client.post {
                 url(HttpRoutes.CREATEPARTICIPATIONEVENT)
@@ -190,10 +191,30 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                 }
                 setBody(request)
             }
-            CreateParticipationEventResponse(response.body<EventModel>(), null)
+            CreateEventResponse(response.body<EventModel>(), null)
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
-            return CreateParticipationEventResponse(null, e.message)
+            return CreateEventResponse(null, e.message)
+        }
+    }
+
+    override suspend fun createPublicationEvent(
+        token: String,
+        request: CreatePublicationEventRequest
+    ): CreateEventResponse {
+        return try {
+            val response = client.post {
+                url(HttpRoutes.CREATEPUBLICATIONEVENT)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+                setBody(request)
+            }
+            CreateEventResponse(response.body<EventModel>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return CreateEventResponse(null, e.message)
         }
     }
 

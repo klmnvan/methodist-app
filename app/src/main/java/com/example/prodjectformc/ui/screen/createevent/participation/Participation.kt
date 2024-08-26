@@ -10,7 +10,9 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -28,6 +30,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,13 +59,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.OptionsChooseFrom
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
+import com.example.prodjectformc.ui.composablefunc.TextTittleForm
+import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
 import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
@@ -72,7 +76,6 @@ import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Gray5
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.White
-import com.example.prodjectformc.ui.theme.blueTextPoppins
 import com.example.prodjectformc.ui.theme.buttonTextStyle
 
 @Composable
@@ -83,14 +86,14 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
     val focusManager = LocalFocusManager.current
     var otherStatus by remember { mutableStateOf("")}
     var otherResult by remember { mutableStateOf("")}
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
     var chosenYear by remember { mutableIntStateOf(currentYear) }
     var chosenMonth by remember { mutableIntStateOf(currentMonth) }
     var chosenDay by remember { mutableIntStateOf(currentDay) }
 
     LaunchedEffect(chosenYear, chosenMonth, chosenDay) {
-        viewModel.updateState(state.copy(dateOfEvent = "$chosenYear-$chosenMonth-$chosenDay",
-            endDateOfEvent = "$chosenYear-$chosenMonth-$chosenDay"))
+        viewModel.updateState(state.copy(dateOfEvent = "$chosenYear-${if(chosenMonth in 0..9) "0$chosenMonth" else chosenMonth }-${if(chosenDay in 0..9) "0$chosenDay" else chosenDay }",
+            endDateOfEvent = "$chosenYear-${if(chosenMonth in 0..9) "0$chosenMonth" else chosenMonth }-${if(chosenDay in 0..9) "0$chosenDay" else chosenDay }"))
     }
 
     Column(modifier = Modifier
@@ -99,21 +102,30 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
         .verticalScroll(rememberScrollState())) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = "Пояснение формы участия",
-                    style = MaterialTheme.typography.titleLarge
-                )
-                IconButton(modifier = Modifier.size(15.dp), onClick = { expanded = !expanded }) {
-                    Icon(
-                        modifier = Modifier.size(15.dp),
-                        imageVector = if (expanded) ImageVector.vectorResource(R.drawable.button_collapse_text)
-                        else ImageVector.vectorResource(R.drawable.button_expand_text),
-                        contentDescription = if (expanded) "Свернуть" else "Развернуть",
-                        tint = Color.Unspecified
-                    )
+            TextTittleForm("Сведения")
+            Spacer(modifier = Modifier.height(12.dp))
+            Row(modifier = Modifier.clickable(interactionSource = remember { MutableInteractionSource() },
+                indication = null) {
+                expanded = !expanded
+            },
+                verticalAlignment = Alignment.CenterVertically) {
+                Box(modifier = Modifier.weight(1f)) {
+                    TextTittleFormTextField("Пояснение формы участия")
                 }
+                Icon(
+                    modifier = Modifier
+                        .size(15.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            expanded = !expanded
+                        },
+                    imageVector = if (expanded) ImageVector.vectorResource(R.drawable.button_collapse_text)
+                    else ImageVector.vectorResource(R.drawable.button_expand_text),
+                    contentDescription = if (expanded) "Свернуть" else "Развернуть",
+                    tint = Color.Unspecified
+                )
             }
             AnimatedVisibility(
                 visible = expanded,
@@ -195,10 +207,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Форма участия",
-                style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Форма участия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfParticipation.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfParticipation, state.formOfParticipation) { el ->
@@ -207,18 +216,12 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = "Название мероприятия",
-                style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Название мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.name, { viewModel.updateState(viewModel.state.copy(name = it)) },
                 "Концерт в актовом зале", {viewModel.updateState(viewModel.state.copy(name = ""))}, state.name.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = "Форма мероприятия",
-                style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Форма мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfEvent.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfEvent, state.formOfEvent) { el ->
@@ -246,10 +249,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = "Статус мероприятия",
-                style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Статус мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listStatus.isNotEmpty()) {
                 OptionsChooseFrom(state.listStatus, state.status) {
@@ -277,10 +277,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                text = "Результат",
-                style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Результат")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listResult.isNotEmpty()) {
                 OptionsChooseFrom(state.listResult, state.result) { el ->
@@ -308,13 +305,12 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                    text = "Дата",
-            style = MaterialTheme.typography.titleLarge
-            )
+            TextTittleFormTextField("Дата")
             Spacer(modifier = Modifier.height(12.dp))
             Row(
-                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(text = "$chosenDay ${monthsNames[chosenMonth-1]} $chosenYear",
@@ -332,6 +328,9 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                         .weight(1f)
                         .fillMaxHeight(1f),
                     shape = RoundedCornerShape(15.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(Blue.value)
+                    ),
                     onClick = {
                         showDialog = true
                     }) {

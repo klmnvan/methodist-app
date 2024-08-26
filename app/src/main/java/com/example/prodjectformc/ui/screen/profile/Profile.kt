@@ -1,6 +1,8 @@
 package com.example.prodjectformc.ui.screen.profile
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -23,30 +25,37 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
+import com.example.prodjectformc.ui.composablefunc.TextFieldForm
+import com.example.prodjectformc.ui.composablefunc.TextTittleForm
+import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
 import com.example.prodjectformc.ui.theme.Blue
 import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Blue80
 import com.example.prodjectformc.ui.theme.Gray1
 import com.example.prodjectformc.ui.theme.Gray2
 import com.example.prodjectformc.ui.theme.Gray3
+import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.White
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Profile(navHostController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
     val state = viewModel.state
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,11 +63,9 @@ fun Profile(navHostController: NavHostController, viewModel: ProfileViewModel = 
             .background(Color(0xFFF7F7F9))
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Профиль",
-                Modifier
-                    .align(Alignment.CenterHorizontally), style = MaterialTheme.typography.bodyLarge)
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(24.dp))
+            TextTittleForm("Профиль")
+            Spacer(modifier = Modifier.height(20.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 Box(modifier = Modifier
                     .background(Color(Gray3.value), RoundedCornerShape(15.dp))
@@ -66,120 +73,62 @@ fun Profile(navHostController: NavHostController, viewModel: ProfileViewModel = 
                     .width(110.dp))
                 Spacer(modifier = Modifier.width(28.dp))
                 Column {
-                    Text(text = "Роль", style = MaterialTheme.typography.bodyMedium)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(text = state.role, modifier = Modifier
-                        .background(Color(Blue.value), RoundedCornerShape(15.dp))
-                        .padding(1.dp)
-                        .background(Color(White.value), RoundedCornerShape(14.dp))
-                        .padding(12.dp),
-                        style = MaterialTheme.typography.bodyMedium)
+                    TextTittleFormTextField("Роль")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(text = CurrentUser.accountInfo?.role!!.get(0), modifier = Modifier
+                        .background(Color(Blue20.value), RoundedCornerShape(14.dp))
+                        .border(BorderStroke(1.dp, Color(Blue.value)), RoundedCornerShape(15.dp))
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                        color = Color(Blue.value),
+                        fontFamily = Raleway,
+                        fontWeight = FontWeight.SemiBold,
+                        style = MaterialTheme.typography.titleMedium)
                 }
-
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Фамилия", style = MaterialTheme.typography.bodyMedium)
+            TextTittleFormTextField("Методическая комиссия")
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = state.surname,
-                onValueChange = { viewModel.state = viewModel.state.copy(surname = it) },
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(text = "Иванов", style = MaterialTheme.typography.labelMedium) },
-                singleLine = true,
-                maxLines = 1,
-                shape = RoundedCornerShape(10.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = Color(Blue80.value),
-                    focusedBorderColor = Color(Blue.value),
-                    containerColor = Color(White.value)
-                ),
-                trailingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable(interactionSource = remember { MutableInteractionSource() },
-                                indication = null) {
-                                viewModel.state = viewModel.state.copy(surname = "")
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                },
-            )
+            Text(text = CurrentUser.accountInfo?.methodicalCommision!!.name, modifier = Modifier
+                .fillMaxWidth()
+                .border(BorderStroke(1.dp, Color(Blue.value)), RoundedCornerShape(15.dp))
+                .background(Color(Blue20.value), RoundedCornerShape(14.dp))
+                .padding(horizontal = 16.dp, vertical = 18.dp),
+                color = Color(Blue.value),
+                fontFamily = Raleway,
+                fontWeight = FontWeight.SemiBold,
+                style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(12.dp))
-            Text(text = "Имя", style = MaterialTheme.typography.bodyMedium)
+            TextTittleFormTextField("Фамилия")
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = state.name,
-                onValueChange = { viewModel.state = viewModel.state.copy(name = it) },
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(text = "Иван", style = MaterialTheme.typography.labelMedium) },
-                singleLine = true,
-                maxLines = 1,
-                shape = RoundedCornerShape(10.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = Color(Blue80.value),
-                    focusedBorderColor = Color(Blue.value),
-                    containerColor = Color(White.value)
-                ),
-                trailingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable(interactionSource = remember { MutableInteractionSource() },
-                                indication = null) {
-                                viewModel.state = viewModel.state.copy(name = "")
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                },
-            )
+            TextFieldForm(state.surname,
+                { viewModel.updateState(viewModel.state.copy(surname = it)) },
+                "Иванов",
+                { viewModel.updateState(viewModel.state.copy(surname = "")) }, true, { })
             Spacer(modifier = Modifier.height(12.dp))
-            Text(text = "Отчество", style = MaterialTheme.typography.bodyMedium)
+            TextTittleFormTextField("Имя")
             Spacer(modifier = Modifier.height(8.dp))
-            OutlinedTextField(
-                value = state.patronymic,
-                onValueChange = { viewModel.state = viewModel.state.copy(patronymic = it) },
-                textStyle = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = { Text(text = "Иванович", style = MaterialTheme.typography.labelMedium) },
-                singleLine = true,
-                maxLines = 1,
-                shape = RoundedCornerShape(10.dp),
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = Color(Blue80.value),
-                    focusedBorderColor = Color(Blue.value),
-                    containerColor = Color(White.value)
-                ),
-                trailingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable(interactionSource = remember { MutableInteractionSource() },
-                                indication = null) {
-                                viewModel.state = viewModel.state.copy(patronymic = "")
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                },
-            )
-            Spacer(modifier = Modifier.height(40.dp))
-
-
+            TextFieldForm(state.name,
+                { viewModel.updateState(viewModel.state.copy(name = it)) },
+                "Иван",
+                { viewModel.updateState(viewModel.state.copy(name = "")) }, true, { })
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleFormTextField("Отчество")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldForm(state.patronymic,
+                { viewModel.updateState(viewModel.state.copy(patronymic = it)) },
+                "Иванович", { viewModel.updateState(viewModel.state.copy(patronymic = ""))},
+                true, { })
+            Spacer(modifier = Modifier.height(30.dp))
         }
         MaxWidthButton(
-            text = "Далее",
+            text = "Сохранить",
             onClick = {
 
             },
-            enabled = true)
+            enabled = (CurrentUser.accountInfo!!.name != state.name ||
+                    CurrentUser.accountInfo!!.surname != state.surname ||
+                    CurrentUser.accountInfo!!.patronymic != state.patronymic) )
+        Spacer(modifier = Modifier.height(30.dp))
     }
 
 

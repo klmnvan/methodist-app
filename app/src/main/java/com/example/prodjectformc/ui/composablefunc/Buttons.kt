@@ -80,15 +80,16 @@ fun MaxWidthButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
             disabledContainerColor = Color(Gray3.value),
             disabledContentColor = Color(White.value)
         ),
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(15.dp),
         enabled = enabled
     ) {
         Text(
             text = text,
+            modifier = Modifier
+                .padding(vertical = 8.dp),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
-            color = Color.White,
-            modifier = Modifier.padding(vertical = 10.dp)
+            color = Color.White
         )
     }
 }

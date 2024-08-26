@@ -12,4 +12,7 @@ object HttpRoutes {
     const val GETRESULTEVENTS = "$BASE_URL/ValuesForms/GetResultEvents"
     const val FORMOFWORKS = "$BASE_URL/FormOfWorks"
     const val CREATEPARTICIPATIONEVENT = "$BASE_URL/Events/CreateParticipationEvent"
+    const val CREATEHOLDINGEVENT = "$BASE_URL/Events/CreateHoldingEvent"
+    const val CREATEINTERNSHIPEVENT = "$BASE_URL/Events/CreateInternshipEvent"
+    const val CREATEPUBLICATIONEVENT = "$BASE_URL/Events/CreatePublicationEvent"
 }

@@ -53,7 +53,7 @@ fun TextFieldForm(value: String, input: (String) -> Unit, placeholder: String, c
         placeholder = { Text(text = placeholder, style = MaterialTheme.typography.labelMedium) },
         singleLine = true,
         maxLines = 1,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(15.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedContainerColor = Color(White.value),
             unfocusedContainerColor = Color(White.value),

@@ -15,7 +15,7 @@ import com.example.prodjectformc.ui.screen.profile.Profile
 
 @Composable
 fun HomeNavigationGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = RoutesNavigation.PARTICIPATION, route = RoutesNavigation.GRAPH_HOME) {
+    NavHost(navController, startDestination = DestinationsBottomBar.HomeScreen.route, route = RoutesNavigation.GRAPH_HOME) {
         composable(DestinationsBottomBar.HomeScreen.route) {
             Home(navController)
         }

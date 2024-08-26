@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
 import com.example.prodjectformc.ui.theme.Blue
 import com.example.prodjectformc.ui.theme.Gray2
 import com.example.prodjectformc.ui.theme.Raleway
@@ -54,7 +55,6 @@ import com.example.prodjectformc.ui.theme.White
 fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventViewModel = hiltViewModel()){
     val state = viewModel.state
     viewModel.context = LocalContext.current
-    var selectedOption by remember { mutableStateOf(state.selectedFormOfWork)}
     val listViewTypeOfWork = listOf(ModelTypeOfWork(R.drawable.icon_typework1, "Проведение мероприятия"),
         ModelTypeOfWork(R.drawable.icon_typework2, "Участие в мероприятии"),
         ModelTypeOfWork(R.drawable.icon_typework3, "Публикация"),
@@ -83,7 +83,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                     "Если Вы проводили/принимали участие в нескольких мероприятиях, то необходимо отправить данные несколько раз",
                 style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Форма работы", style = MaterialTheme.typography.titleLarge)
+            TextTittleFormTextField("Форма работы")
             Spacer(modifier = Modifier.height(12.dp))
             Column {
                 if(state.listFormOfWork.isNotEmpty()){
@@ -93,7 +93,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                         verticalArrangement = Arrangement.spacedBy(8.dp), maxItemsInEachRow = Int.MAX_VALUE){
                         state.listFormOfWork.forEach { typeOfWork ->
                             var colorBorder = Color(Gray2.value)
-                            if(typeOfWork == selectedOption){
+                            if(typeOfWork == state.selectedFormOfWork){
                                 colorBorder = Color(Blue.value)
                             }
                             val modelView = listViewTypeOfWork.find { it.title.contains(typeOfWork.name) }
@@ -107,10 +107,9 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                 .background(Color(White.value), shape = RoundedCornerShape(15.dp))) {
                                 RadioButton(
                                     modifier = Modifier.align(Alignment.TopEnd),
-                                    selected = ( typeOfWork == selectedOption),
+                                    selected = ( typeOfWork == state.selectedFormOfWork),
                                     onClick = {
-                                        state.selectedFormOfWork = typeOfWork
-                                        selectedOption = state.selectedFormOfWork
+                                        viewModel.updateState(state.copy(selectedFormOfWork = typeOfWork))
                                     },
                                     colors = RadioButtonDefaults.colors(
                                         selectedColor = Color(Blue.value),
@@ -155,7 +154,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                         fontSize = 16.sp,
                                         color = Color.Black)
                                 ) {
-                                    append(selectedOption.name.toLowerCase())
+                                    append(state.selectedFormOfWork.name.toLowerCase())
                                 }
                             }
                         )

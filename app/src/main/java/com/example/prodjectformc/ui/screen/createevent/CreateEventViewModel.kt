@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.prodjectformc.data.model.createevent.CreateEventState
+import com.example.prodjectformc.data.model.createevent.publication.PublicationState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.network.ApiServiceImpl
+import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,17 +24,21 @@ class CreateEventViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    val state by mutableStateOf(CreateEventState())
-
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
+
+    private val _state = mutableStateOf(CreateEventState())
+    val state: CreateEventState get() = _state.value
+
+    fun updateState(newState: CreateEventState) {
+        _state.value = newState
+    }
 
     init {
         viewModelScope.launch {
             val response = service.getFormOfWorks(CurrentUser.token)
             if(response.listParticipationForms != null){
                 state.listFormOfWork = response.listParticipationForms!!
-                state.selectedFormOfWork = state.listFormOfWork[0]
                 Log.d("listParticipationForms", CurrentUser.token)
             }
             if (response.error != null){
@@ -45,16 +51,32 @@ class CreateEventViewModel @Inject constructor(
         CurrentUser.selectedTypeOfWork = state.selectedFormOfWork
         when(state.selectedFormOfWork.name){
             "Публикация" -> {
-                navController.navigate(RoutesNavigation.PUBLICATION)
+                navController.navigate(RoutesNavigation.PUBLICATION){
+                    popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
             "Участие" -> {
-                navController.navigate(RoutesNavigation.PARTICIPATION)
+                navController.navigate(RoutesNavigation.PARTICIPATION){
+                    popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
             "Стажировка" -> {
-                navController.navigate(RoutesNavigation.INTERNSHIP)
+                navController.navigate(RoutesNavigation.INTERNSHIP){
+                    popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
             "Проведение" -> {
-                navController.navigate(RoutesNavigation.HOLDING)
+                navController.navigate(RoutesNavigation.HOLDING){
+                    popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
         }
     }

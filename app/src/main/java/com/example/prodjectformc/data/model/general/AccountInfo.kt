@@ -1,6 +1,5 @@
 package com.example.prodjectformc.data.model.general
 
-import com.example.prodjectformc.data.model.createevent.Role
 import kotlinx.serialization.Serializable
 
 @Serializable

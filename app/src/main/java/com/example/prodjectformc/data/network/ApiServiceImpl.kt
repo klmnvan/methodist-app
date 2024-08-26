@@ -14,6 +14,7 @@ import com.example.prodjectformc.data.model.createevent.publication.CreatePublic
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.EventModel
+import com.example.prodjectformc.data.model.general.EventModelResponse
 import com.example.prodjectformc.data.model.general.FormOfWork
 import com.example.prodjectformc.data.model.signup.SignUpRequest
 import io.ktor.client.HttpClient
@@ -81,7 +82,7 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
         }
     }
 
-    override suspend fun getEvent(idEmploeyy: String, token: String): List<EventModel>? {
+    override suspend fun getEvent(idEmploeyy: String, token: String): List<EventModelResponse>? {
         return try {
             val response = client.get {
                 url(HttpRoutes.GETEVENT)
@@ -91,7 +92,7 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                     append(HttpHeaders.Authorization, "Bearer ${token}")
                 }
             }
-            response.body<MutableList<EventModel>>()
+            response.body<MutableList<EventModelResponse>>()
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
             return null

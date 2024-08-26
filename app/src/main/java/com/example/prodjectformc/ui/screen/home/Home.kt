@@ -186,14 +186,14 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                 tint = Color(Green.value)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = event.specifications!!,
+                            Text(text = event.specifications?.name.toString(),
                                 modifier = Modifier.weight(1f),
                                 style = MaterialTheme.typography.titleMedium,)
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = event.dateOfEvent, style = MaterialTheme.typography.titleMedium)
                         }
                         Divider(modifier = Modifier.padding(vertical = 10.dp))
-                        Text(text = event.specifications!!, style = MaterialTheme.typography.titleMedium,)
+                        Text(text = event.specifications?.result.toString(), style = MaterialTheme.typography.titleMedium,)
                     }
                     Spacer(modifier = Modifier.height(14.dp))
                 }

@@ -11,6 +11,7 @@ import com.example.prodjectformc.data.model.createevent.participation.GetStatusE
 import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.EventModel
+import com.example.prodjectformc.data.model.general.EventModelResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -24,7 +25,7 @@ interface ApiService {
     suspend fun signIn(email: String, password: String): Response
     suspend fun signUp(email: String, surname: String, name: String, patronymic: String, password: String, passwordConfirm: String): Response
     suspend fun getAccountInfo(token: String): AccountInfo?
-    suspend fun getEvent(idEmploeyy: String, token: String): List<EventModel>?
+    suspend fun getEvent(idEmploeyy: String, token: String): List<EventModelResponse>?
     suspend fun getFormOfWorks(token: String): GetFormOfWorksResponse
     suspend fun getParticipationForms(token: String): GetParticipationFormsResponse
     suspend fun getStatusEvents(token: String): GetStatusEventsResponse

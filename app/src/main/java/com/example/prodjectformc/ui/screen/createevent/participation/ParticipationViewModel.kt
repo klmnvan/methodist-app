@@ -4,21 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.DialogNavigator
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
 import com.example.prodjectformc.data.model.createevent.participation.ParticipationState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.network.ApiServiceImpl
-import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
-import com.example.prodjectformc.ui.screen.createevent.CreateEventViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -85,7 +79,7 @@ class ParticipationViewModel @Inject constructor(
         }
     }
 
-    fun CreateParticipationEvent(navController: NavHostController){
+    fun createParticipationEvent(navController: NavHostController){
         viewModelScope.launch {
             val response = service.createParticipationEvent(CurrentUser.token,
                 CreateParticipationEventRequest(

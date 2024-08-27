@@ -36,6 +36,7 @@ class HomeViewModel @Inject constructor(
                     it.specifications!!.replace("\\\\u[0-9a-fA-F]{4}".toRegex()) { matchResult ->
                         matchResult.value.substring(2).toInt(16).toChar().toString()
                     }) } as MutableList<EventModelResponse>
+                    CurrentUser.listEvents?.clear()
                     listEvents.forEach {
                         val json = Json { ignoreUnknownKeys = true } // Игнорирование неизвестных ключей
                         val sp: Specifications = json.decodeFromString(it.specifications!!)

@@ -6,6 +6,7 @@ import com.example.prodjectformc.data.model.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
 import com.example.prodjectformc.data.model.createevent.CreateEventResponse
+import com.example.prodjectformc.data.model.createevent.holding.CreateHoldingEventRequest
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
@@ -192,7 +193,7 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                 }
                 setBody(request)
             }
-            CreateEventResponse(response.body<EventModel>(), null)
+            CreateEventResponse(response.body<EventModelResponse>(), null)
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
             return CreateEventResponse(null, e.message)
@@ -212,7 +213,27 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
                 }
                 setBody(request)
             }
-            CreateEventResponse(response.body<EventModel>(), null)
+            CreateEventResponse(response.body<EventModelResponse>(), null)
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return CreateEventResponse(null, e.message)
+        }
+    }
+
+    override suspend fun createHoldingEvent(
+        token: String,
+        request: CreateHoldingEventRequest
+    ): CreateEventResponse {
+        return try {
+            val response = client.post {
+                url(HttpRoutes.CREATEHOLDINGEVENT)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+                setBody(request)
+            }
+            CreateEventResponse(response.body<EventModelResponse>(), null)
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
             return CreateEventResponse(null, e.message)

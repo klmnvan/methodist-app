@@ -9,6 +9,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.ui.theme.Black
+import com.example.prodjectformc.ui.theme.Gray1
 import com.example.prodjectformc.ui.theme.Raleway
 
 @Composable
@@ -48,6 +49,28 @@ fun TextTittleFormTextField(text: String){
         fontSize = 20.sp,
         color = Color(Black.value),
     ),*/
+}
+
+@Composable
+fun TextTittleFragment(text: String){
+    Text(
+        text = text,
+        fontFamily = Raleway,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 16.sp,
+        color = Color(Black.value)
+    )
+}
+
+@Composable
+fun TextDescFragment(text: String){
+    Text(
+        text = text,
+        fontFamily = Raleway,
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = Color(Gray1.value)
+    )
 }
 
 @Composable

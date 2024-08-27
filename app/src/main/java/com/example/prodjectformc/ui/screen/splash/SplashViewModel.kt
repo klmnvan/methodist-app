@@ -1,9 +1,12 @@
 package com.example.prodjectformc.ui.screen.splash
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import com.example.prodjectformc.data.repository.PrefManager
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -12,18 +15,29 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor() : ViewModel() {
+
+    @SuppressLint("StaticFieldLeak")
+    lateinit var context: Context
+
     fun launch(navController: NavHostController, configuration: Configuration) {
         viewModelScope.launch {
             if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 delay(1500L)
-                //if (PrefManager.act == 0){
-                navController.navigate(RoutesNavigation.LOGIN) {
-                    popUpTo(RoutesNavigation.SPLASH) {
-                        inclusive = true
+                if (PrefManager.act == 0){
+                    navController.navigate(RoutesNavigation.LOGIN) {
+                        popUpTo(RoutesNavigation.SPLASH) {
+                            inclusive = true
+                        }
+                    }
+                }
+                if (PrefManager.act == 1){
+                    navController.navigate(RoutesNavigation.GRAPH_HOME) {
+                        popUpTo(RoutesNavigation.SPLASH) {
+                            inclusive = true
+                        }
                     }
                 }
             }
-            navController.navigate(RoutesNavigation.LOGIN)
         }
     }
 }

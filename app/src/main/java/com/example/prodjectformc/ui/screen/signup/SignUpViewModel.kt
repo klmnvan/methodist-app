@@ -9,8 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.prodjectformc.data.model.signin.SignInState
-import com.example.prodjectformc.data.model.signup.SignUpState
+import com.example.prodjectformc.data.model.auth.signup.SignUpState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel

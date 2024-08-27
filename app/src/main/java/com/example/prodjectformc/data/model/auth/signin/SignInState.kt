@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.signin
+package com.example.prodjectformc.data.model.auth.signin
 
 data class SignInState(
     var email: String = "",

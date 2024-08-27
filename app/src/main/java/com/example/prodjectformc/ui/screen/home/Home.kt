@@ -184,8 +184,9 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                     var title by remember { mutableStateOf("") }
                     var desc by remember { mutableStateOf("") }
                     desc = event.specifications.formOfEvent!!
-                    if(desc == "") desc = event.specifications.location!!
                     if(desc == "") desc = event.specifications.place!!
+                    if(desc == "") desc = "Количество часов: ${event.specifications.quantityOfHours.toString()}"
+                    if(desc == "") desc = event.specifications.location!!
                     title = event.specifications.name.toString()
                     if(event.specifications.name == "") title = event.specifications.location!!
                     Column (modifier = Modifier
@@ -201,19 +202,27 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                 imageVector = ImageVector.vectorResource(R.drawable.icon_event),
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .size(30.dp)
+                                    .size(40.dp)
                                     .fillMaxWidth(),
                                 tint = getColorIcon(category = event.formOfWork!!.name)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = title.firstCharUp(),
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .align(Alignment.CenterVertically)
-                                    .padding(bottom = 5.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = Raleway,
-                                style = MaterialTheme.typography.titleMedium,)
+                            Column(modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically)) {
+                                Text(text = title.firstCharUp(),
+                                    modifier = Modifier
+                                        .padding(bottom = 2.dp),
+                                    fontWeight = FontWeight.Bold,
+                                    fontFamily = Raleway,
+                                    style = MaterialTheme.typography.titleMedium)
+                                Text(text = event.formOfWork.name.firstCharUp(),
+                                    fontWeight = FontWeight.Normal,
+                                    fontFamily = Raleway,
+                                    fontSize = 12.sp,
+                                    color = Color(Gray1.value),
+                                    style = MaterialTheme.typography.titleMedium,)
+                            }
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = event.dateOfEvent,
                                 modifier = Modifier

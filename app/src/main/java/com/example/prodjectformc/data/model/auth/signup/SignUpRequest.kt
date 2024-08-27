@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.signup
+package com.example.prodjectformc.data.model.auth.signup
 
 import kotlinx.serialization.Serializable
 

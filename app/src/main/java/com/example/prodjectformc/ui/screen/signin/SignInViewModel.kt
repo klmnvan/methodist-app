@@ -11,8 +11,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.prodjectformc.data.model.general.CurrentUser
-import com.example.prodjectformc.data.model.signin.SignInState
+import com.example.prodjectformc.data.model.auth.signin.SignInState
 import com.example.prodjectformc.data.network.ApiServiceImpl
+import com.example.prodjectformc.data.repository.PrefManager
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -32,6 +33,8 @@ class SignInViewModel @Inject constructor(
         viewModelScope.launch {
             val response = service.signIn(state.email, state.password)
             if(response.token != null){
+                PrefManager.act = 1
+                PrefManager.token = response.token
                 CurrentUser.token = response.token
                 Log.d("token", CurrentUser.token)
                 navController.navigate(RoutesNavigation.GRAPH_HOME){

@@ -73,6 +73,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //Для декодирования JWT токена
+
+    implementation ("io.jsonwebtoken:jjwt-api:0.12.6")
+    runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.12.6")
+    implementation ("com.auth0.android:jwtdecode:2.0.2")
+
+    runtimeOnly ("io.jsonwebtoken:jjwt-gson:0.12.6")
+
     val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
 

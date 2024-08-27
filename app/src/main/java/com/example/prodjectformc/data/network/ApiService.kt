@@ -1,6 +1,6 @@
 package com.example.prodjectformc.data.network
 
-import com.example.prodjectformc.data.model.Response
+import com.example.prodjectformc.data.model.auth.Response
 import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
 import com.example.prodjectformc.data.model.createevent.CreateEventResponse
@@ -12,7 +12,6 @@ import com.example.prodjectformc.data.model.createevent.participation.GetResultE
 import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
 import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
-import com.example.prodjectformc.data.model.general.EventModel
 import com.example.prodjectformc.data.model.general.EventModelResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android

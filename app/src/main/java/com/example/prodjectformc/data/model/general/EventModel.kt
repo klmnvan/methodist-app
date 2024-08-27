@@ -13,6 +13,6 @@ data class EventModel(
     val id: String? = "",
     val isApproved: Boolean? = false,
     val onCheck: Boolean? = false,
-    var specifications: Specifications? = Specifications(),
+    var specifications: Specifications = Specifications(),
     val student: String? = ""
 )

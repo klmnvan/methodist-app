@@ -18,3 +18,8 @@ val blueTextPoppins = androidx.compose.ui.text.TextStyle(
     fontSize = 14.sp,
     color = Color(White.value)
 )
+
+fun String.firstCharUp(): String {
+    if (isEmpty()) return this
+    return this.first().uppercase() + this.substring(1)
+}

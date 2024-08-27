@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -57,9 +58,13 @@ import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Blue80
 import com.example.prodjectformc.ui.theme.Gray1
 import com.example.prodjectformc.ui.theme.Green
+import com.example.prodjectformc.ui.theme.Orange
+import com.example.prodjectformc.ui.theme.Poppins
+import com.example.prodjectformc.ui.theme.Purple
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.White
 import com.example.prodjectformc.ui.theme.WhiteHomeBack
+import com.example.prodjectformc.ui.theme.firstCharUp
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -158,7 +163,10 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                         Text(modifier = Modifier
                             .background(backgroundColor, RoundedCornerShape(15.dp))
                             .padding(vertical = 14.dp, horizontal = 20.dp)
-                            .clickable(interactionSource = remember { MutableInteractionSource() },indication = null) {
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
                                 selectedCategory = event!!
                             }, text = event!!, fontSize = 12.sp,
                             fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
@@ -171,34 +179,80 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Text(text = "Пройденные мероприятия", style = MaterialTheme.typography.displayLarge)
             Spacer(modifier = Modifier.height(8.dp))
             if(CurrentUser.listEvents != null){
-                for (event in CurrentUser.listEvents!!) {
-                    Column (modifier = Modifier.shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
+                for (event in CurrentUser.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
+                else it.formOfWork!!.name.contains("")}) {
+                    var title by remember { mutableStateOf("") }
+                    var desc by remember { mutableStateOf("") }
+                    desc = event.specifications.formOfEvent!!
+                    if(desc == "") desc = event.specifications.location!!
+                    if(desc == "") desc = event.specifications.place!!
+                    title = event.specifications.name.toString()
+                    if(event.specifications.name == "") title = event.specifications.location!!
+                    Column (modifier = Modifier
+                        .shadow(
+                            elevation = 4.dp,
+                            shape = RoundedCornerShape(15),
+                            spotColor = Color(Black.value)
+                        )
                         .background(color = Color(White.value), shape = RoundedCornerShape(15))
-                        .padding(vertical = 10.dp, horizontal = 18.dp)) {
+                        .padding(vertical = 16.dp, horizontal = 18.dp)) {
                         Row (verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(R.drawable.icon_event),
                                 contentDescription = "",
                                 modifier = Modifier
-                                    .size(35.dp)
-                                    .padding(vertical = 4.dp)
+                                    .size(30.dp)
                                     .fillMaxWidth(),
-                                tint = Color(Green.value)
+                                tint = getColorIcon(category = event.formOfWork!!.name)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = event.specifications?.name.toString(),
-                                modifier = Modifier.weight(1f),
+                            Text(text = title.firstCharUp(),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .align(Alignment.CenterVertically)
+                                    .padding(bottom = 5.dp),
+                                fontWeight = FontWeight.Bold,
+                                fontFamily = Raleway,
                                 style = MaterialTheme.typography.titleMedium,)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = event.dateOfEvent, style = MaterialTheme.typography.titleMedium)
+                            Text(text = event.dateOfEvent,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .padding(top = 3.dp),
+                                fontWeight = FontWeight.Medium,
+                                fontFamily = Poppins,
+                                fontSize = 12.sp,
+                                style = MaterialTheme.typography.titleMedium)
                         }
                         Divider(modifier = Modifier.padding(vertical = 10.dp))
-                        Text(text = event.specifications?.result.toString(), style = MaterialTheme.typography.titleMedium,)
+                        Text(text = desc.firstCharUp(), style = MaterialTheme.typography.titleMedium,)
                     }
                     Spacer(modifier = Modifier.height(14.dp))
                 }
             }
         }
+    }
+}
+
+@Composable
+fun getColorIcon(category: String): Color {
+    return when(category){
+        ("Участие") ->  {
+            Color(Green.value)
+        }
+        ("Проведение") ->  {
+            Color(Blue.value)
+        }
+        ("Стажировка") ->  {
+            Color(Purple.value)
+        }
+        ("Публикация") ->  {
+            Color(Orange.value)
+        }
+        else -> {
+            Color(Blue80.value)
+        }
+
     }
 }
 

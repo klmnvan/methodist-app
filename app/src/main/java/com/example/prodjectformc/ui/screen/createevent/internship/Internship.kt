@@ -144,8 +144,11 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
             if (state.quantityOfHours != 0) colorBorder = Color(Blue.value)
             OutlinedTextField(
                 value = state.quantityOfHours.toString(),
-                onValueChange = { if(it != "") viewModel.updateState(viewModel.state.copy(quantityOfHours = it.toInt()))
-                                else viewModel.updateState(viewModel.state.copy(quantityOfHours = 0))},
+                onValueChange = {
+                    if(it.length < 10){
+                        if(it != "") viewModel.updateState(viewModel.state.copy(quantityOfHours = it.toInt()))
+                        else viewModel.updateState(viewModel.state.copy(quantityOfHours = 0))
+                    }},
                 textStyle = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = { Text(text = "0", style = MaterialTheme.typography.labelMedium) },

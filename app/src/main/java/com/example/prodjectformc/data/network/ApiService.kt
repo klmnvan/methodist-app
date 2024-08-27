@@ -5,6 +5,7 @@ import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
 import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
 import com.example.prodjectformc.data.model.createevent.CreateEventResponse
 import com.example.prodjectformc.data.model.createevent.holding.CreateHoldingEventRequest
+import com.example.prodjectformc.data.model.createevent.internship.CreateInternshipEventRequest
 import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
 import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
@@ -35,6 +36,7 @@ interface ApiService {
     suspend fun createParticipationEvent(token: String, request: CreateParticipationEventRequest): CreateEventResponse
     suspend fun createPublicationEvent(token: String, request: CreatePublicationEventRequest): CreateEventResponse
     suspend fun createHoldingEvent(token: String, request: CreateHoldingEventRequest): CreateEventResponse
+    suspend fun createInternshipEvent(token: String, request: CreateInternshipEventRequest): CreateEventResponse
 
     companion object {
         fun create(): ApiServiceImpl {

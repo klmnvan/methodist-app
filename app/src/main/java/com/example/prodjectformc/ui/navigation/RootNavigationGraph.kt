@@ -17,7 +17,7 @@ fun RootNavigationGraph(navController: NavHostController) {
     NavHost(
         route = RoutesNavigation.GRAPH_ROOT,
         navController = navController,
-        startDestination = RoutesNavigation.GRAPH_HOME){
+        startDestination = RoutesNavigation.SPLASH){
 
         composable(RoutesNavigation.SPLASH){
             SplashScreen(navController)

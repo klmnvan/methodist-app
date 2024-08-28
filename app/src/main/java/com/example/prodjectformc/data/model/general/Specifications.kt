@@ -18,7 +18,7 @@ data class Specifications(
     @SerialName("Result")
     val result: String? = "",
     @SerialName("QuantityOfHours")
-    val quantityOfHours: Int? = 0,
+    val quantityOfHours: Int? = null,
     @SerialName("DateOfEvent")
     val dateOfEvent: String? = "",
     @SerialName("EndDateOfEvent")

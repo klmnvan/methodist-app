@@ -85,7 +85,6 @@ import com.example.prodjectformc.ui.theme.firstCharUp
 @Composable
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state
-    val scrollState = rememberScrollState()
     var selectedCategory by remember { mutableStateOf("Всё") }
     Box (modifier = Modifier
         .fillMaxSize()
@@ -94,74 +93,60 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(scrollState)
+                .verticalScroll(rememberScrollState())
             ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Box {
-                Box(modifier = Modifier
-                    .fillMaxWidth(0.985f)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
                     .shadow(
-                        elevation = 5.dp, shape = RoundedCornerShape(30), spotColor = Color(
+                        elevation = 4.dp, shape = RoundedCornerShape(30), spotColor = Color(
                             Black.value
-                        ), ambientColor = Color(Black.value)
+                        )
                     )
-                    .background(color = Color.Transparent, shape = RoundedCornerShape(30))
-                    .padding(horizontal = 5.dp)
-                    .height(40.dp)
-                    .align(Alignment.BottomCenter)
-                )
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        /*.shadow(
-                            elevation = 10.dp, shape = RoundedCornerShape(30), spotColor = Color(
-                                Black.value
-                            )
-                        )*/
-                        .background(color = Color.White, shape = RoundedCornerShape(30))
-                        .padding(14.dp)
-                ) {
-                    Row(modifier = Modifier
-                        .height(IntrinsicSize.Min)
-                        .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_search),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(24.dp),
-                            tint = Color(Gray1.value)
+                    .background(color = Color.White, shape = RoundedCornerShape(30))
+                    .padding(14.dp)
+            ) {
+                Row(modifier = Modifier
+                    .height(IntrinsicSize.Min)
+                    .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_search),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(24.dp),
+                        tint = Color(Gray1.value)
+                    )
+                    Spacer(modifier = Modifier.width(18.dp))
+                    Divider(color = Color(Blue.value), modifier = Modifier
+                        .fillMaxHeight()
+                        .width(1.dp)
+                        .padding(vertical = 5.dp))
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Box(modifier = Modifier.weight(1f),) {
+                        BasicTextField(
+                            value = state.searchText,
+                            onValueChange = { viewModel.updateState(viewModel.state.copy(searchText = it)) },
+                            textStyle = MaterialTheme.typography.titleMedium,
+                            singleLine = true,
+                            maxLines = 1
                         )
-                        Spacer(modifier = Modifier.width(18.dp))
-                        Divider(color = Color(Blue.value), modifier = Modifier
-                            .fillMaxHeight()
-                            .width(1.dp)
-                            .padding(vertical = 5.dp))
-                        Spacer(modifier = Modifier.width(14.dp))
-                        Box(modifier = Modifier.weight(1f),) {
-                            BasicTextField(
-                                value = state.searchText,
-                                onValueChange = { viewModel.state = viewModel.state.copy(searchText = it) },
-                                textStyle = MaterialTheme.typography.titleMedium,
-                                singleLine = true,
-                                maxLines = 1
-                            )
-                            if (state.searchText.isEmpty()) {
-                                Text(text = "Поиск", style = MaterialTheme.typography.labelMedium)
-                            }
+                        if (state.searchText.isEmpty()) {
+                            Text(text = "Поиск", style = MaterialTheme.typography.labelMedium)
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(24.dp)
-                                .fillMaxWidth()
-                                .clickable {
-                                    viewModel.state = viewModel.state.copy(searchText = "")
-                                },
-                            tint = Color(Gray1.value)
-                        )
                     }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                viewModel.updateState(viewModel.state.copy(searchText = ""))
+                            },
+                        tint = Color(Gray1.value)
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
@@ -195,7 +180,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Spacer(modifier = Modifier.height(8.dp))
             if(CurrentUser.listEvents != null){
                 for (event in CurrentUser.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
-                else it.formOfWork!!.name.contains("")}) {
+                else it.formOfWork!!.name.contains("")}.filter { it.specifications.toString().contains(state.searchText, ignoreCase = true) }) {
                     var title by remember { mutableStateOf("") }
                     var desc by remember { mutableStateOf("") }
                     desc = event.specifications.formOfEvent!!
@@ -257,25 +242,8 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                     }
                     Spacer(modifier = Modifier.height(14.dp))
                     if (showDialog) {
-                        if (event.formOfWork?.name == "Стажировка"){
-                            ShowFragmentEventInternship(event, getColorIcon(event.formOfWork.name)) {
-                                showDialog = false
-                            }
-                        }
-                        if (event.formOfWork?.name == "Проведение"){
-                            ShowFragmentEventHolding(event, getColorIcon(event.formOfWork.name)) {
-                                showDialog = false
-                            }
-                        }
-                        if (event.formOfWork?.name == "Участие"){
-                            ShowFragmentEventParticipation(event, getColorIcon(event.formOfWork.name)) {
-                                showDialog = false
-                            }
-                        }
-                        if (event.formOfWork?.name == "Публикация"){
-                            ShowFragmentEventPublication(event, getColorIcon(event.formOfWork.name)) {
-                                showDialog = false
-                            }
+                        ShowFragment(title, event, getColorIcon(event.formOfWork!!.name)){
+                            showDialog = false
                         }
                     }
                 }
@@ -285,7 +253,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
 }
 
 @Composable
-fun ShowFragmentEventInternship(event: EventModel, primaryColor: Color, onDismissRequest: () -> Unit){
+fun ShowFragment(title: String, event: EventModel, primaryColor: Color, onDismissRequest: () -> Unit){
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             shape = RoundedCornerShape(15.dp),
@@ -313,7 +281,7 @@ fun ShowFragmentEventInternship(event: EventModel, primaryColor: Color, onDismis
                     Column(modifier = Modifier
                         .weight(1f)
                         .align(Alignment.CenterVertically)) {
-                        Text(text = event.specifications.location!!.firstCharUp(),
+                        Text(text = title.firstCharUp(),
                             modifier = Modifier
                                 .padding(bottom = 2.dp),
                             fontWeight = FontWeight.Bold,
@@ -329,104 +297,9 @@ fun ShowFragmentEventInternship(event: EventModel, primaryColor: Color, onDismis
                     Spacer(modifier = Modifier.width(12.dp))
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier.align(Alignment.Top)
-                            .size(24.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ) {
-                                onDismissRequest()
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                }
-                GradientDivider(modifier = Modifier.padding(top = 16.dp, bottom = 24.dp), thickness = 2.dp,
-                    gradient = Brush.horizontalGradient(
-                        colors = listOf(Color(0xFF1977FF), Color(0xFF53B9F5))
-                    ))
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    TextTittleFragment("Место прохождения:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.location!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Дата прохождения:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.dateOfEvent.convertDateDefaultFormat())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Количество часов:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.quantityOfHours!!.toString())
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Button(modifier = Modifier.fillMaxWidth(1f),
-                        shape = RoundedCornerShape(15.dp),
-                        onClick = {  },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(Orange.value),
-                            contentColor = Color(White.value)
-                        )){
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_basket),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                                .size(20.dp),
-                            tint = Color(White.value)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ShowFragmentEventPublication(event: EventModel, primaryColor: Color, onDismissRequest: () -> Unit){
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            shape = RoundedCornerShape(15.dp),
-            elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            ) {
-                Row (verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_event),
                         contentDescription = "",
                         modifier = Modifier
-                            .size(40.dp)
-                            .fillMaxWidth(),
-                        tint = primaryColor
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically)) {
-                        Text(text = event.specifications.name!!.firstCharUp(),
-                            modifier = Modifier
-                                .padding(bottom = 2.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Raleway,
-                            style = MaterialTheme.typography.titleMedium)
-                        Text(text = event.formOfWork!!.name.firstCharUp(),
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = Raleway,
-                            fontSize = 12.sp,
-                            color = primaryColor,
-                            style = MaterialTheme.typography.titleMedium,)
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier.align(Alignment.Top)
+                            .align(Alignment.Top)
                             .size(24.dp)
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
@@ -442,18 +315,62 @@ fun ShowFragmentEventPublication(event: EventModel, primaryColor: Color, onDismi
                         colors = listOf(Color(0xFF1977FF), Color(0xFF53B9F5))
                     ))
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    TextTittleFragment("Вид:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.type!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Название:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.name!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Место публикации:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.place!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
+                    with(event.specifications){
+                        if(formOfParticipation != ""){
+                            TextTittleFragment("Форма участия:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.formOfParticipation!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(type != ""){
+                            TextTittleFragment("Вид:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.type!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(name != ""){
+                            TextTittleFragment("Название:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.name!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(formOfEvent != ""){
+                            TextTittleFragment("Форма мероприятия:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.formOfEvent!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(location != ""){
+                            TextTittleFragment("Место:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.location!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(status != ""){
+                            TextTittleFragment("Статус мероприятия:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.status!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(result != ""){
+                            TextTittleFragment("Результат:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.result!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(quantityOfHours != null){
+                            TextTittleFragment("Количество часов:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.quantityOfHours!!.toString())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                        if(place != ""){
+                            TextTittleFragment("Место публикации:")
+                            Spacer(modifier = Modifier.height(4.dp))
+                            TextDescFragment(event.specifications.place!!.firstCharUp())
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
+                    }
                     TextTittleFragment("Дата:")
                     Spacer(modifier = Modifier.height(4.dp))
                     TextDescFragment(event.dateOfEvent.convertDateDefaultFormat())
@@ -480,222 +397,6 @@ fun ShowFragmentEventPublication(event: EventModel, primaryColor: Color, onDismi
     }
 }
 
-@Composable
-fun ShowFragmentEventHolding(event: EventModel, primaryColor: Color, onDismissRequest: () -> Unit){
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            shape = RoundedCornerShape(15.dp),
-            elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            ) {
-                Row (verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_event),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .fillMaxWidth(),
-                        tint = primaryColor
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically)) {
-                        Text(text = event.specifications.name!!.firstCharUp(),
-                            modifier = Modifier
-                                .padding(bottom = 2.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Raleway,
-                            style = MaterialTheme.typography.titleMedium)
-                        Text(text = "Проведение мероприятия",
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = Raleway,
-                            fontSize = 12.sp,
-                            color = primaryColor,
-                            style = MaterialTheme.typography.titleMedium,)
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier.align(Alignment.Top)
-                            .size(24.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ) {
-                                onDismissRequest()
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                }
-                GradientDivider(modifier = Modifier.padding(top = 16.dp, bottom = 24.dp), thickness = 2.dp,
-                    gradient = Brush.horizontalGradient(
-                        colors = listOf(Color(0xFF1977FF), Color(0xFF53B9F5))
-                    ))
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    TextTittleFragment("Название мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.name!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Форма мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.formOfEvent!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Место проведения:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.location!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Статус мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.status!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Результат:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.result!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Дата прохождения:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.dateOfEvent.convertDateDefaultFormat())
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Button(modifier = Modifier.fillMaxWidth(1f),
-                        shape = RoundedCornerShape(15.dp),
-                        onClick = {  },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(Orange.value),
-                            contentColor = Color(White.value)
-                        )){
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_basket),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                                .size(20.dp),
-                            tint = Color(White.value)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ShowFragmentEventParticipation(event: EventModel, primaryColor: Color, onDismissRequest: () -> Unit){
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            modifier = Modifier.padding(vertical = 20.dp),
-            shape = RoundedCornerShape(15.dp),
-            elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.White
-            ),
-        ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth().verticalScroll(rememberScrollState())
-                    .padding(20.dp)
-            ) {
-                Row (verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_event),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(40.dp)
-                            .fillMaxWidth(),
-                        tint = primaryColor
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically)) {
-                        Text(text = event.specifications.name!!.firstCharUp(),
-                            modifier = Modifier
-                                .padding(bottom = 2.dp),
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = Raleway,
-                            style = MaterialTheme.typography.titleMedium)
-                        Text(text = "Участие в мероприятии",
-                            fontWeight = FontWeight.Normal,
-                            fontFamily = Raleway,
-                            fontSize = 12.sp,
-                            color = primaryColor,
-                            style = MaterialTheme.typography.titleMedium,)
-                    }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier.align(Alignment.Top)
-                            .size(24.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ) {
-                                onDismissRequest()
-                            },
-                        tint = Color(Gray1.value)
-                    )
-                }
-                GradientDivider(modifier = Modifier.padding(top = 16.dp, bottom = 24.dp), thickness = 2.dp,
-                    gradient = Brush.horizontalGradient(
-                        colors = listOf(Color(0xFF1977FF), Color(0xFF53B9F5))
-                    ))
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    TextTittleFragment("Форма участия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.formOfParticipation!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Название мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.name!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Форма мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.formOfEvent!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Статус мероприятия:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.status!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Результат:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.specifications.result!!.firstCharUp())
-                    Spacer(modifier = Modifier.height(12.dp))
-                    TextTittleFragment("Дата прохождения:")
-                    Spacer(modifier = Modifier.height(4.dp))
-                    TextDescFragment(event.dateOfEvent.convertDateDefaultFormat())
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Button(modifier = Modifier.fillMaxWidth(1f),
-                        shape = RoundedCornerShape(15.dp),
-                        onClick = {  },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(Orange.value),
-                            contentColor = Color(White.value)
-                        )){
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_basket),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .padding(vertical = 10.dp)
-                                .size(20.dp),
-                            tint = Color(White.value)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun GradientDivider(

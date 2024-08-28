@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.prodjectformc.data.model.createevent.publication.PublicationState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.EventModel
 import com.example.prodjectformc.data.model.general.EventModelResponse
@@ -22,7 +23,12 @@ class HomeViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    var state by mutableStateOf(HomeState())
+    private val _state = mutableStateOf(HomeState())
+    val state: HomeState get() = _state.value
+
+    fun updateState(newState: HomeState) {
+        _state.value = newState
+    }
 
     init {
         viewModelScope.launch {
@@ -58,14 +64,5 @@ class HomeViewModel @Inject constructor(
                 Log.d("listEvents", CurrentUser.listEvents.toString())
             }
         }
-    }
-
-
-
-}
-
-fun decodeUnicodeString(input: String): String {
-    return input.replace("\\\\u[0-9a-fA-F]{4}".toRegex()) { matchResult ->
-        matchResult.value.substring(2).toInt(16).toChar().toString()
     }
 }

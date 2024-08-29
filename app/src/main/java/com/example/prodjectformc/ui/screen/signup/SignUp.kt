@@ -42,13 +42,10 @@ import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
-import com.example.prodjectformc.ui.theme.Black
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Gray1
-import com.example.prodjectformc.ui.theme.Gray2
-import com.example.prodjectformc.ui.theme.Gray3
-import com.example.prodjectformc.ui.theme.ProdjectForMCTheme
-import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.custom.Black
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Gray1
+import com.example.prodjectformc.ui.theme.custom.Gray2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -282,13 +279,4 @@ fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = h
         )
     }
 
-}
-
-/*Для удобного Preview*/
-@Preview(showBackground = true)
-@Composable
-private fun Preview(){
-    ProdjectForMCTheme {
-        SignUp(null)
-    }
 }

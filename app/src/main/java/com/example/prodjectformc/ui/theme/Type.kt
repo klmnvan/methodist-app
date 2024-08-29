@@ -1,14 +1,9 @@
 package com.example.prodjectformc.ui.theme
 
 import androidx.compose.material3.Typography
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.R
 
 val Poppins = FontFamily(
@@ -35,56 +30,7 @@ val Raleway = FontFamily(
     Font(R.font.raleway_thin, FontWeight.Thin)
 )
 
-// Set of Material typography styles to start with
+
 val Typography = Typography(
-
-    bodyLarge = TextStyle(
-        fontFamily = Poppins,
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp,
-        color = Color(Black.value),
-    ),
-    titleLarge = TextStyle(
-        fontFamily = Raleway,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        color = Color(Black.value),
-    ),
-    displayLarge = TextStyle(
-        fontFamily = Poppins,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 18.sp,
-        color = Color(Black.value),
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = Raleway,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        color = Color(Black.value),
-        lineHeight = 20.sp
-    ),
-
-    labelMedium = TextStyle(
-        fontFamily = Raleway,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        color = Color(Gray1.value)
-    ),
-
-    titleMedium = TextStyle(
-        fontFamily = Raleway,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        color = Color(Black.value)
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = Raleway,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        color = Color(Gray5.value)
-    ),
-
-
 
 )

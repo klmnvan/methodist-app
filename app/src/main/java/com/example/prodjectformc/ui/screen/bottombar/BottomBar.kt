@@ -7,10 +7,8 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -23,24 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import coil.compose.ImagePainter
 import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
-import com.example.prodjectformc.ui.theme.Black
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.CustomTransparent
-import com.example.prodjectformc.ui.theme.Gray3
-import com.example.prodjectformc.ui.theme.White
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import com.example.prodjectformc.ui.theme.Raleway
+import com.example.prodjectformc.ui.theme.custom.Black
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
 
 @Composable
 fun BottomBar(
@@ -50,7 +42,7 @@ fun BottomBar(
     Box(modifier = Modifier) {
         NavigationBar(
             modifier = modifier,
-            containerColor = Color(CustomTransparent.value),
+            containerColor = NewsTheme.colors.primaryContainer,
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
@@ -73,16 +65,18 @@ fun BottomBar(
                                 restoreState = true
                             }
                         },horizontalAlignment = Alignment.CenterHorizontally) {
-                        var selectedColor = Color(Gray3.value)
+                        var selectedColor = NewsTheme.colors.onBackground
                         if(currentRoute == screen.route) {
-                            selectedColor = Color(Blue.value)
+                            selectedColor = NewsTheme.colors.primary
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Icon(imageVector = ImageVector.vectorResource(id = screen.resourceId!!),
-                            modifier = Modifier.size(30.dp)
-                            ,contentDescription = "", tint = selectedColor)
+                            modifier = Modifier.size(30.dp),
+                            contentDescription = "", tint = selectedColor)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = screen.title!!, color = selectedColor, fontSize = 12.sp)
+                        Text(text = screen.title!!, color = selectedColor, fontSize = 12.sp,
+                            fontFamily = Raleway, fontWeight = FontWeight.SemiBold
+                        )
                     }
                 }
             }

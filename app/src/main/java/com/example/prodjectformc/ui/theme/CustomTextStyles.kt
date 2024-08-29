@@ -1,27 +1,15 @@
 package com.example.prodjectformc.ui.theme
 
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
-
-val buttonTextStyle = androidx.compose.ui.text.TextStyle(
-    fontFamily = Raleway,
-    fontWeight = FontWeight.SemiBold,
-    fontSize = 14.sp,
-    color = Color(White.value)
-)
-
-val blueTextPoppins = androidx.compose.ui.text.TextStyle(
-    fontFamily = Poppins,
-    fontWeight = FontWeight.Normal,
-    fontSize = 14.sp,
-    color = Color(White.value)
-)
 
 fun String.firstCharUp(): String {
     if (isEmpty()) return this

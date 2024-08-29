@@ -55,11 +55,11 @@ import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
 import com.example.prodjectformc.ui.composablefunc.monthsNames
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.White
-import com.example.prodjectformc.ui.theme.buttonTextStyle
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Blue20
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
+import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
 fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = hiltViewModel()){
@@ -78,7 +78,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
     }
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFF7F7F9))
+        .background(NewsTheme.colors.background)
         .verticalScroll(rememberScrollState())) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -102,10 +102,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Если ни один вариант в списке не подошёл, введите вручную",
-                style = MaterialTheme.typography.headlineMedium
-            )
+            Text(text = "Если ни один вариант в списке не подошёл, введите вручную", style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(otherFormOfEvent,
                 {
@@ -144,10 +141,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Если ни один вариант в списке не подошёл, введите вручную",
-                style = MaterialTheme.typography.headlineMedium
-            )
+            Text(text = "Если ни один вариант в списке не подошёл, введите вручную", style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(otherStatus,
                 {
@@ -177,10 +171,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = "Если ни один вариант в списке не подошёл, введите вручную",
-                style = MaterialTheme.typography.headlineMedium
-            )
+            Text(text = "Если ни один вариант в списке не подошёл, введите вручную", style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(otherResult,
                 {
@@ -209,15 +200,13 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                     .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(
-                    text = "$chosenDay ${monthsNames[chosenMonth - 1]} $chosenYear",
+                Text(text = "$chosenDay ${monthsNames[chosenMonth-1]} $chosenYear",
                     modifier = Modifier
                         .background(Color(Blue20.value), RoundedCornerShape(15.dp))
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                         .padding(horizontal = 16.dp, vertical = 18.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color(Blue.value)
+                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.primary),
                 )
                 var showDialog by remember { mutableStateOf(false) }
                 Button(
@@ -238,7 +227,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                         tint = Color.Unspecified
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text(text = "Изменить", style = buttonTextStyle)
+                    Text(text = "Изменить", style = NewsTheme.typography.buttonTextStyle)
                 }
 
                 if (showDialog) {
@@ -263,7 +252,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                                 fontWeight = FontWeight.Medium,
                                 fontFamily = Raleway,
                                 fontSize = 16.sp,
-                                color = Color.Black
+                                color = NewsTheme.colors.onPrimary
                             )
                         ) {
                             append("Выбрано: ")
@@ -273,7 +262,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = Raleway,
                                 fontSize = 16.sp,
-                                color = Color.Black
+                                color = NewsTheme.colors.onPrimary
                             )
                         ) {
                             append("${state.name}, ${state.formOfEvent}, ${state.location}, ${state.status}, ${state.result}, дата: ${state.dateOfEvent}")
@@ -285,7 +274,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.button_next),
                     modifier = Modifier
-                        .background(Color(Blue.value), shape = RoundedCornerShape(15.dp))
+                        .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
                         .clickable { viewModel.createEvent(navHostController) },

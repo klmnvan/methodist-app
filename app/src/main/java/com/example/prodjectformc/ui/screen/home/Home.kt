@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,24 +52,24 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
-import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.event.EventModel
 import com.example.prodjectformc.ui.composablefunc.TextDescFragment
 import com.example.prodjectformc.ui.composablefunc.TextTittleFragment
-import com.example.prodjectformc.ui.theme.Black
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Blue20
-import com.example.prodjectformc.ui.theme.Blue80
-import com.example.prodjectformc.ui.theme.Gray1
-import com.example.prodjectformc.ui.theme.Green
-import com.example.prodjectformc.ui.theme.Orange
 import com.example.prodjectformc.ui.theme.Poppins
-import com.example.prodjectformc.ui.theme.Purple
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.White
-import com.example.prodjectformc.ui.theme.WhiteHomeBack
 import com.example.prodjectformc.ui.theme.convertDate
 import com.example.prodjectformc.ui.theme.convertDateDefaultFormat
+import com.example.prodjectformc.ui.theme.custom.Black
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Blue20
+import com.example.prodjectformc.ui.theme.custom.Blue80
+import com.example.prodjectformc.ui.theme.custom.Gray1
+import com.example.prodjectformc.ui.theme.custom.Green
+import com.example.prodjectformc.ui.theme.custom.LightBack
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
+import com.example.prodjectformc.ui.theme.custom.Orange
+import com.example.prodjectformc.ui.theme.custom.Purple
+import com.example.prodjectformc.ui.theme.custom.White
 import com.example.prodjectformc.ui.theme.firstCharUp
 
 
@@ -80,7 +81,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
     var selectedCategory by remember { mutableStateOf("Всё") }
     Box (modifier = Modifier
         .fillMaxSize()
-        .background(Color(WhiteHomeBack.value))) {
+        .background(NewsTheme.colors.background)) {
         Column (
             modifier = Modifier
                 .fillMaxSize()
@@ -96,7 +97,10 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                             Black.value
                         )
                     )
-                    .background(color = Color.White, shape = RoundedCornerShape(30))
+                    .background(
+                        color = NewsTheme.colors.primaryContainer,
+                        shape = RoundedCornerShape(30)
+                    )
                     .padding(14.dp)
             ) {
                 Row(modifier = Modifier
@@ -107,10 +111,10 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                         contentDescription = "",
                         modifier = Modifier
                             .size(24.dp),
-                        tint = Color(Gray1.value)
+                        tint = NewsTheme.colors.onPrimary
                     )
                     Spacer(modifier = Modifier.width(18.dp))
-                    Divider(color = Color(Blue.value), modifier = Modifier
+                    Divider(color = NewsTheme.colors.primary, modifier = Modifier
                         .fillMaxHeight()
                         .width(1.dp)
                         .padding(vertical = 5.dp))
@@ -119,12 +123,12 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                         BasicTextField(
                             value = state.searchText,
                             onValueChange = { viewModel.updateState(viewModel.state.copy(searchText = it)) },
-                            textStyle = MaterialTheme.typography.titleMedium,
+                            textStyle = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),
                             singleLine = true,
                             maxLines = 1
                         )
                         if (state.searchText.isEmpty()) {
-                            Text(text = "Поиск", style = MaterialTheme.typography.labelMedium)
+                            Text(text = "Поиск", style = NewsTheme.typography.labelMedium)
                         }
                     }
                     Spacer(modifier = Modifier.width(12.dp))
@@ -137,12 +141,12 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                             .clickable {
                                 viewModel.updateState(viewModel.state.copy(searchText = ""))
                             },
-                        tint = Color(Gray1.value)
+                        tint = NewsTheme.colors.surface
                     )
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Категории", style = MaterialTheme.typography.displayLarge)
+            Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                 if(state.listEvents != null){
@@ -168,7 +172,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            Text(text = "Пройденные мероприятия", style = MaterialTheme.typography.displayLarge)
+            Text(text = "Пройденные мероприятия", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
             if(state.listEvents != null){
                 val pattern = Regex(state.searchText, RegexOption.IGNORE_CASE)
@@ -192,7 +196,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                         .clickable {
                             showDialog = true
                         }
-                        .background(color = Color(White.value), shape = RoundedCornerShape(15))
+                        .background(color = NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15))
                         .padding(vertical = 16.dp, horizontal = 18.dp)) {
                         Row (verticalAlignment = Alignment.CenterVertically) {
                             Icon(
@@ -212,13 +216,12 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                         .padding(bottom = 2.dp),
                                     fontWeight = FontWeight.Bold,
                                     fontFamily = Raleway,
-                                    style = MaterialTheme.typography.titleMedium)
+                                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
                                 Text(text = event.formOfWork.name.firstCharUp(),
                                     fontWeight = FontWeight.Normal,
                                     fontFamily = Raleway,
                                     fontSize = 12.sp,
-                                    color = Color(Gray1.value),
-                                    style = MaterialTheme.typography.titleMedium,)
+                                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.surface),)
                             }
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = event.dateOfEvent.convertDate(),
@@ -228,10 +231,10 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                 fontWeight = FontWeight.Medium,
                                 fontFamily = Poppins,
                                 fontSize = 12.sp,
-                                style = MaterialTheme.typography.titleMedium)
+                                style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
                         }
-                        Divider(modifier = Modifier.padding(vertical = 10.dp))
-                        Text(text = desc.firstCharUp(), style = MaterialTheme.typography.titleMedium,)
+                        Divider(modifier = Modifier.padding(vertical = 10.dp), color = NewsTheme.colors.primary, thickness = 0.5.dp)
+                        Text(text = desc.firstCharUp(), style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),)
                     }
                     Spacer(modifier = Modifier.height(14.dp))
                     if (showDialog) {
@@ -252,7 +255,7 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
             shape = RoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation(10.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = NewsTheme.colors.primaryContainer
             ),
         ) {
             Column(
@@ -279,13 +282,13 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
                                 .padding(bottom = 2.dp),
                             fontWeight = FontWeight.Bold,
                             fontFamily = Raleway,
-                            style = MaterialTheme.typography.titleMedium)
+                            style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
                         Text(text = event.formOfWork!!.name.firstCharUp(),
                             fontWeight = FontWeight.Normal,
                             fontFamily = Raleway,
                             fontSize = 12.sp,
                             color = primaryColor,
-                            style = MaterialTheme.typography.titleMedium,)
+                            style = NewsTheme.typography.titleMedium,)
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Icon(

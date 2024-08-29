@@ -52,11 +52,11 @@ import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
 import com.example.prodjectformc.ui.composablefunc.monthsNames
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.White
-import com.example.prodjectformc.ui.theme.buttonTextStyle
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Blue20
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
+import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
 fun Publication(navHostController: NavHostController, viewModel: PublicationViewModel = hiltViewModel()){
@@ -70,7 +70,7 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
     }
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color(0xFFF7F7F9))
+        .background(NewsTheme.colors.background)
         .verticalScroll(rememberScrollState())) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -105,8 +105,7 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                         .padding(horizontal = 16.dp, vertical = 18.dp),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color(Blue.value)
+                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.primary),
                 )
                 var showDialog by remember { mutableStateOf(false) }
                 Button(
@@ -125,7 +124,7 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                         tint = Color.Unspecified
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text(text = "Изменить", style = buttonTextStyle)
+                    Text(text = "Изменить", style = NewsTheme.typography.buttonTextStyle)
                 }
 
                 if (showDialog) {
@@ -144,7 +143,7 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                                 fontWeight = FontWeight.Medium,
                                 fontFamily = Raleway,
                                 fontSize = 16.sp,
-                                color = Color.Black)
+                                color = NewsTheme.colors.onPrimary)
                         ){
                             append("Выбрано: ")
                         }
@@ -153,7 +152,7 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                                 fontWeight = FontWeight.Bold,
                                 fontFamily = Raleway,
                                 fontSize = 16.sp,
-                                color = Color.Black)
+                                color = NewsTheme.colors.onPrimary)
                         ) {
                             append("${state.name}, ${state.place}, дата: ${state.dateOfEvent}")
                         }

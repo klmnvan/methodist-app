@@ -45,10 +45,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Gray2
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Gray2
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
+import com.example.prodjectformc.ui.theme.custom.White
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -62,26 +63,15 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF7F7F9))
+            .background(NewsTheme.colors.background)
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "Создание формы мероприятия", fontSize = 32.sp, style = MaterialTheme.typography.titleLarge)
-            /*Spacer(modifier = Modifier.height(12.dp))
-            val progress by remember {  mutableFloatStateOf(0.1f) }
-            LinearProgressIndicator(
-                modifier = Modifier
-                    .height(10.dp)
-                    .fillMaxWidth(),
-                progress = progress,
-                color = Color(Blue.value),
-                trackColor = Color(0xFFD9D9D9),
-                strokeCap = StrokeCap.Round
-            )*/
+            Text(text = "Создание формы мероприятия", fontSize = 32.sp, style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Одно заполнение формы отражает одно мероприятие.\n" +
                     "Если Вы проводили/принимали участие в нескольких мероприятиях, то необходимо отправить данные несколько раз",
-                style = MaterialTheme.typography.headlineMedium)
+                style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(20.dp))
             TextTittleFormTextField("Форма работы")
             Spacer(modifier = Modifier.height(12.dp))
@@ -92,7 +82,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp), maxItemsInEachRow = Int.MAX_VALUE){
                         state.listFormOfWork.forEach { typeOfWork ->
-                            var colorBorder = Color(Gray2.value)
+                            var colorBorder = NewsTheme.colors.outline
                             if(typeOfWork == state.selectedFormOfWork){
                                 colorBorder = Color(Blue.value)
                             }
@@ -104,7 +94,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                     color = colorBorder,
                                     shape = RoundedCornerShape(15.dp)
                                 )
-                                .background(Color(White.value), shape = RoundedCornerShape(15.dp))) {
+                                .background(NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15.dp))) {
                                 RadioButton(
                                     modifier = Modifier.align(Alignment.TopEnd),
                                     selected = ( typeOfWork == state.selectedFormOfWork),
@@ -113,7 +103,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                     },
                                     colors = RadioButtonDefaults.colors(
                                         selectedColor = Color(Blue.value),
-                                        unselectedColor = Color(Gray2.value)
+                                        unselectedColor = NewsTheme.colors.outline
                                     )
                                 )
                                 Column(modifier = Modifier
@@ -128,7 +118,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                         fontSize = 14.sp,
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.SemiBold,
-                                        style = MaterialTheme.typography.bodyMedium
+                                        style = MaterialTheme.typography.bodyMedium.copy(color = NewsTheme.colors.onPrimary)
                                     )
                                 }
                             }
@@ -144,7 +134,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                         fontWeight = FontWeight.Medium,
                                         fontFamily = Raleway,
                                         fontSize = 16.sp,
-                                        color = Color.Black)){
+                                        color = NewsTheme.colors.onPrimary)){
                                     append("Выбрано: ")
                                 }
                                 withStyle(
@@ -152,7 +142,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                         fontWeight = FontWeight.Bold,
                                         fontFamily = Raleway,
                                         fontSize = 16.sp,
-                                        color = Color.Black)
+                                        color = NewsTheme.colors.onPrimary)
                                 ) {
                                     append(state.selectedFormOfWork.name.toLowerCase())
                                 }
@@ -161,7 +151,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                         Spacer(modifier = Modifier.width(8.dp))
                         Icon(imageVector = ImageVector.vectorResource(R.drawable.button_next),
                             modifier = Modifier
-                                .background(Color(Blue.value), shape = RoundedCornerShape(15.dp))
+                                .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))
                                 .size(45.dp)
                                 .padding(12.dp)
                                 .clickable { viewModel.openForm(navHostController) },

@@ -21,7 +21,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
@@ -38,9 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Gray2
-import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import java.util.Calendar
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -53,7 +51,7 @@ fun OptionsChooseFrom (list: List<String>, selected: String, onClick: (String) -
         maxItemsInEachRow = Int.MAX_VALUE
     ) {
         list.forEach { el ->
-            var colorBorder = Color(Gray2.value)
+            var colorBorder = NewsTheme.colors.outline
             if (el == selected) {
                 colorBorder = Color(Blue.value)
             }
@@ -64,7 +62,7 @@ fun OptionsChooseFrom (list: List<String>, selected: String, onClick: (String) -
                         color = colorBorder,
                         shape = RoundedCornerShape(15.dp)
                     )
-                    .background(Color(White.value), shape = RoundedCornerShape(15.dp))
+                    .background(NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15.dp))
                     .clickable(interactionSource = remember { MutableInteractionSource() },
                         indication = null) {
                         onClick(el)
@@ -79,7 +77,7 @@ fun OptionsChooseFrom (list: List<String>, selected: String, onClick: (String) -
                     },
                     colors = RadioButtonDefaults.colors(
                         selectedColor = Color(Blue.value),
-                        unselectedColor = Color(Gray2.value)
+                        unselectedColor = NewsTheme.colors.outline
                     )
                 )
                 Text(
@@ -87,7 +85,7 @@ fun OptionsChooseFrom (list: List<String>, selected: String, onClick: (String) -
                         .padding(end = 24.dp)
                         .padding(vertical = 8.dp),
                     text = el,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = NewsTheme.typography.bodyMedium.copy(color = NewsTheme.colors.onPrimary)
                 )
             }
         }
@@ -107,7 +105,7 @@ fun CustomDatePickerDialog(
             shape = RoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation(10.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White
+                containerColor = NewsTheme.colors.primaryContainer,
             ),
         ) {
             Column(
@@ -118,7 +116,7 @@ fun CustomDatePickerDialog(
             ) {
                 Text(
                     text = label,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onPrimary),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -135,7 +133,7 @@ fun CustomDatePickerDialog(
                         .padding(horizontal = 10.dp),
                     shape = RoundedCornerShape(15.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(Blue.value)
+                        containerColor = NewsTheme.colors.primary
                     ),
                     onClick = {
                         onDismissRequest()
@@ -176,7 +174,7 @@ fun DateSelectionSection(
         Box(modifier = Modifier.weight(1f)){
             InfiniteItemsPicker(
                 items = monthsNames,
-                firstIndex = Int.MAX_VALUE / 2 - 4 + currentMonth,
+                firstIndex = Int.MAX_VALUE / 2 - 4 + currentMonth-1,
                 onItemSelected =  onMonthChosen
             )
         }
@@ -225,7 +223,7 @@ fun InfiniteItemsPicker(
                         modifier = Modifier
                             .alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f)
                             .weight(1f),
-                        style = MaterialTheme.typography.headlineMedium,
+                        style = NewsTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(6.dp))

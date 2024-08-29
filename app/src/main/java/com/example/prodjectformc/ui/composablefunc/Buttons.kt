@@ -12,10 +12,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Gray5
-import com.example.prodjectformc.ui.theme.Gray3
-import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Gray3
+import com.example.prodjectformc.ui.theme.custom.Gray5
+import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
 fun ButtonBlueGrayMP(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolean, text: String){

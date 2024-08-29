@@ -9,8 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.ui.navigation.HomeNavigationGraph
-import com.example.prodjectformc.ui.theme.Blue20
-import com.example.prodjectformc.ui.theme.CustomTransparent
+import com.example.prodjectformc.ui.theme.custom.Black
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.CustomTransparent
+import com.example.prodjectformc.ui.theme.custom.Gray3
+import com.example.prodjectformc.ui.theme.custom.Gray5
+import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
 fun MainScaffold(navController: NavHostController){

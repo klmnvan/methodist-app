@@ -44,14 +44,10 @@ import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
-import com.example.prodjectformc.ui.theme.Blue
-import com.example.prodjectformc.ui.theme.Blue20
-import com.example.prodjectformc.ui.theme.Blue80
-import com.example.prodjectformc.ui.theme.Gray1
-import com.example.prodjectformc.ui.theme.Gray2
-import com.example.prodjectformc.ui.theme.Gray3
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.White
+import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.theme.custom.Blue20
+import com.example.prodjectformc.ui.theme.custom.Gray3
 
 @Composable
 fun Profile(navHostController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {

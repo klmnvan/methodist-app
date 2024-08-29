@@ -4,7 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.prodjectformc.data.model.general.FormOfWork
 import com.example.prodjectformc.ui.screen.createevent.CreateEvent
 import com.example.prodjectformc.ui.screen.createevent.holding.Holding
 import com.example.prodjectformc.ui.screen.createevent.internship.Internship

@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.createevent.participation
+package com.example.prodjectformc.data.model.event.participation
 
 import kotlinx.serialization.Serializable
 

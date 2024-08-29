@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.example.prodjectformc.data.model.createevent.CreateEventState
-import com.example.prodjectformc.data.model.createevent.publication.PublicationState
+import com.example.prodjectformc.data.model.event.CreateEventState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.DestinationsBottomBar

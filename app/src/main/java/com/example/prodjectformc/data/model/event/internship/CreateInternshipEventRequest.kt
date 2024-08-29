@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.createevent.internship
+package com.example.prodjectformc.data.model.event.internship
 
 import kotlinx.serialization.Serializable
 

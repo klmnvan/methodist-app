@@ -1,6 +1,6 @@
 package com.example.prodjectformc.data.model.home
 
-import com.example.prodjectformc.data.model.general.FormOfWork
+import com.example.prodjectformc.data.model.event.FormOfWork
 import kotlinx.serialization.Serializable
 
 @Serializable

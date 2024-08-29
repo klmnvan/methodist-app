@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.general
+package com.example.prodjectformc.data.model.event
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

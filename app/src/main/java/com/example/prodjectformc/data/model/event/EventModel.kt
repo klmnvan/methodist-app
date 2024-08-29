@@ -1,9 +1,9 @@
-package com.example.prodjectformc.data.model.general
+package com.example.prodjectformc.data.model.event
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EventModelResponse(
+data class EventModel(
     val coefficient: Int? = 0,
     val dateOfEvent: String = "",
     val employeeId: String? = "",
@@ -13,6 +13,6 @@ data class EventModelResponse(
     val id: String? = "",
     val isApproved: Boolean? = false,
     val onCheck: Boolean? = false,
-    var specifications: String? = "",
+    var specifications: Specifications = Specifications(),
     val student: String? = ""
 )

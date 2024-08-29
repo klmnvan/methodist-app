@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.createevent.holding
+package com.example.prodjectformc.data.model.event.holding
 
 import kotlinx.serialization.Serializable
 

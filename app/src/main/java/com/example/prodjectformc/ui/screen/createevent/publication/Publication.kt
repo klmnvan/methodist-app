@@ -1,6 +1,5 @@
 package com.example.prodjectformc.ui.screen.createevent.publication
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
-import com.example.prodjectformc.data.model.general.FormOfWork
 import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
@@ -55,7 +52,6 @@ import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
 import com.example.prodjectformc.ui.composablefunc.monthsNames
-import com.example.prodjectformc.ui.screen.createevent.participation.ParticipationViewModel
 import com.example.prodjectformc.ui.theme.Blue
 import com.example.prodjectformc.ui.theme.Blue20
 import com.example.prodjectformc.ui.theme.Raleway

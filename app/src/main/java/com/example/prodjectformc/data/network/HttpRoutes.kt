@@ -15,4 +15,5 @@ object HttpRoutes {
     const val CREATEHOLDINGEVENT = "$BASE_URL/Events/CreateHoldingEvent"
     const val CREATEINTERNSHIPEVENT = "$BASE_URL/Events/CreateInternshipEvent"
     const val CREATEPUBLICATIONEVENT = "$BASE_URL/Events/CreatePublicationEvent"
+    const val DELETEEVENT = "$BASE_URL/Events/DeleteEvent"
 }

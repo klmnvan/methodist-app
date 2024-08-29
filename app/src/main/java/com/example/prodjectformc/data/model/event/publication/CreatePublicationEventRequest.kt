@@ -1,4 +1,4 @@
-package com.example.prodjectformc.data.model.createevent.publication
+package com.example.prodjectformc.data.model.event.publication
 
 import kotlinx.serialization.Serializable
 

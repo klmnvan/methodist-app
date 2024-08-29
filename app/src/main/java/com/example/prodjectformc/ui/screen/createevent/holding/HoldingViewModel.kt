@@ -8,10 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.example.prodjectformc.data.model.createevent.holding.CreateHoldingEventRequest
-import com.example.prodjectformc.data.model.createevent.holding.HoldingState
-import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
-import com.example.prodjectformc.data.model.createevent.participation.ParticipationState
+import com.example.prodjectformc.data.model.event.holding.CreateHoldingEventRequest
+import com.example.prodjectformc.data.model.event.holding.HoldingState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation

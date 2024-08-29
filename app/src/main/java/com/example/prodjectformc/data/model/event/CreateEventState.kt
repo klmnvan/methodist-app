@@ -1,6 +1,4 @@
-package com.example.prodjectformc.data.model.createevent
-
-import com.example.prodjectformc.data.model.general.FormOfWork
+package com.example.prodjectformc.data.model.event
 
 data class CreateEventState (
     var listFormOfWork: List<FormOfWork> = ArrayList(),

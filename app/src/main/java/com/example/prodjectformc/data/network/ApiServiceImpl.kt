@@ -3,26 +3,27 @@ package com.example.prodjectformc.data.network
 import android.util.Log
 import com.example.prodjectformc.data.model.auth.signin.SignInRequest
 import com.example.prodjectformc.data.model.auth.Response
-import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
-import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
-import com.example.prodjectformc.data.model.createevent.CreateEventResponse
-import com.example.prodjectformc.data.model.createevent.holding.CreateHoldingEventRequest
-import com.example.prodjectformc.data.model.createevent.internship.CreateInternshipEventRequest
-import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
-import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
+import com.example.prodjectformc.data.model.event.GetFormOfWorksResponse
+import com.example.prodjectformc.data.model.event.participation.CreateParticipationEventRequest
+import com.example.prodjectformc.data.model.event.CreateEventResponse
+import com.example.prodjectformc.data.model.event.holding.CreateHoldingEventRequest
+import com.example.prodjectformc.data.model.event.internship.CreateInternshipEventRequest
+import com.example.prodjectformc.data.model.event.participation.GetEventFormsResponse
+import com.example.prodjectformc.data.model.event.participation.GetParticipationFormsResponse
+import com.example.prodjectformc.data.model.event.participation.GetResultEventsResponse
+import com.example.prodjectformc.data.model.event.participation.GetStatusEventsResponse
+import com.example.prodjectformc.data.model.event.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
 import com.example.prodjectformc.data.model.general.CurrentUser
-import com.example.prodjectformc.data.model.general.EventModelResponse
-import com.example.prodjectformc.data.model.general.FormOfWork
+import com.example.prodjectformc.data.model.event.EventModelResponse
+import com.example.prodjectformc.data.model.event.FormOfWork
 import com.example.prodjectformc.data.model.auth.signup.SignUpRequest
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.RedirectResponseException
 import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
@@ -257,6 +258,22 @@ class ApiServiceImpl (private val client: HttpClient): ApiService {
         } catch (e: Exception) {
             Log.d("Error ${e.message}", e.message.toString())
             return CreateEventResponse(null, e.message)
+        }
+    }
+
+    override suspend fun deleteEvent(token: String, idEvent: String): String {
+        return try {
+            client.delete {
+                url(HttpRoutes.DELETEEVENT+"/${idEvent}")
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(HttpHeaders.Authorization, "Bearer ${token}")
+                }
+            }
+            ""
+        } catch (e: Exception) {
+            Log.d("Error ${e.message}", e.message.toString())
+            return e.message.toString()
         }
     }
 

@@ -1,16 +1,16 @@
 package com.example.prodjectformc.ui.screen.home
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
-import androidx.compose.runtime.getValue
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.prodjectformc.data.model.createevent.publication.PublicationState
 import com.example.prodjectformc.data.model.general.CurrentUser
-import com.example.prodjectformc.data.model.general.EventModel
-import com.example.prodjectformc.data.model.general.EventModelResponse
-import com.example.prodjectformc.data.model.general.Specifications
+import com.example.prodjectformc.data.model.event.EventModel
+import com.example.prodjectformc.data.model.event.EventModelResponse
+import com.example.prodjectformc.data.model.event.Specifications
 import com.example.prodjectformc.data.model.home.HomeState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,23 +30,27 @@ class HomeViewModel @Inject constructor(
         _state.value = newState
     }
 
+    @SuppressLint("StaticFieldLeak")
+    lateinit var context: Context
+
     init {
         viewModelScope.launch {
             CurrentUser.accountInfo = service.getAccountInfo(CurrentUser.token)
             Log.d("accountInfo", CurrentUser.accountInfo.toString())
             if(CurrentUser.accountInfo != null){
                 val listEvents = service.getEvent((CurrentUser.accountInfo!!.id), CurrentUser.token)?.toMutableList()
-                Log.d("listEventsfirst", CurrentUser.listEvents.toString())
+                Log.d("listEventsfirst", state.listEvents.toString())
                 if(listEvents != null){
                     listEvents.map { it.copy(specifications =
                     it.specifications!!.replace("\\\\u[0-9a-fA-F]{4}".toRegex()) { matchResult ->
                         matchResult.value.substring(2).toInt(16).toChar().toString()
                     }) } as MutableList<EventModelResponse>
-                    CurrentUser.listEvents?.clear()
+                    state.listEvents?.clear()
                     listEvents.forEach {
                         val json = Json { ignoreUnknownKeys = true } // Игнорирование неизвестных ключей
                         val sp: Specifications = json.decodeFromString(it.specifications!!)
-                        CurrentUser.listEvents!!.add(EventModel(
+                        state.listEvents!!.add(
+                            EventModel(
                             coefficient = it.coefficient,
                             dateOfEvent = it.dateOfEvent,
                             employeeId = it.employeeId,
@@ -58,10 +62,25 @@ class HomeViewModel @Inject constructor(
                             onCheck = it.onCheck,
                             specifications = sp,
                             student = it.student,
-                        ))
+                        )
+                        )
                     }
                 }
-                Log.d("listEvents", CurrentUser.listEvents.toString())
+                Log.d("listEvents", state.listEvents.toString())
+            }
+        }
+    }
+
+    fun deleteEvent(id: String) {
+        viewModelScope.launch {
+            val response = service.deleteEvent(CurrentUser.token, id)
+            Log.d("response delete event", response)
+            if(response == "") {
+                Log.d("", response)
+                state.listEvents!!.removeIf { it.id == id }
+                updateState(state.copy(listEvents = state.listEvents))
+            } else {
+                Toast.makeText(context, "$response", Toast.LENGTH_LONG).show()
             }
         }
     }

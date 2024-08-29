@@ -1,8 +1,8 @@
 package com.example.prodjectformc.data.model.home
 
-import com.example.prodjectformc.data.model.general.EventModel
-import java.util.LinkedList
+import com.example.prodjectformc.data.model.event.EventModel
 
 data class HomeState(
     var searchText: String = "тест",
+    var listEvents: MutableList<EventModel>? = ArrayList()
 )

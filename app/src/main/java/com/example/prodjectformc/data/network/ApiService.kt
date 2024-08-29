@@ -1,18 +1,18 @@
 package com.example.prodjectformc.data.network
 
 import com.example.prodjectformc.data.model.auth.Response
-import com.example.prodjectformc.data.model.createevent.GetFormOfWorksResponse
-import com.example.prodjectformc.data.model.createevent.participation.CreateParticipationEventRequest
-import com.example.prodjectformc.data.model.createevent.CreateEventResponse
-import com.example.prodjectformc.data.model.createevent.holding.CreateHoldingEventRequest
-import com.example.prodjectformc.data.model.createevent.internship.CreateInternshipEventRequest
-import com.example.prodjectformc.data.model.createevent.participation.GetEventFormsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetParticipationFormsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetResultEventsResponse
-import com.example.prodjectformc.data.model.createevent.participation.GetStatusEventsResponse
-import com.example.prodjectformc.data.model.createevent.publication.CreatePublicationEventRequest
+import com.example.prodjectformc.data.model.event.GetFormOfWorksResponse
+import com.example.prodjectformc.data.model.event.participation.CreateParticipationEventRequest
+import com.example.prodjectformc.data.model.event.CreateEventResponse
+import com.example.prodjectformc.data.model.event.holding.CreateHoldingEventRequest
+import com.example.prodjectformc.data.model.event.internship.CreateInternshipEventRequest
+import com.example.prodjectformc.data.model.event.participation.GetEventFormsResponse
+import com.example.prodjectformc.data.model.event.participation.GetParticipationFormsResponse
+import com.example.prodjectformc.data.model.event.participation.GetResultEventsResponse
+import com.example.prodjectformc.data.model.event.participation.GetStatusEventsResponse
+import com.example.prodjectformc.data.model.event.publication.CreatePublicationEventRequest
 import com.example.prodjectformc.data.model.general.AccountInfo
-import com.example.prodjectformc.data.model.general.EventModelResponse
+import com.example.prodjectformc.data.model.event.EventModelResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -36,6 +36,7 @@ interface ApiService {
     suspend fun createPublicationEvent(token: String, request: CreatePublicationEventRequest): CreateEventResponse
     suspend fun createHoldingEvent(token: String, request: CreateHoldingEventRequest): CreateEventResponse
     suspend fun createInternshipEvent(token: String, request: CreateInternshipEventRequest): CreateEventResponse
+    suspend fun deleteEvent(token: String, idEvent: String): String
 
     companion object {
         fun create(): ApiServiceImpl {

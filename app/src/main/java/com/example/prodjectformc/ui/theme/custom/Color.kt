@@ -28,13 +28,6 @@ val DarkBackground = Color(0xFF272A37)
 val DarkTextFiels = Color(0xFF323644)
 val CustomTransparent = Color(0x00323644)
 
-@Immutable
-data class NewsColors(
-    val primary: Color,
-    val background: Color,
-    val onBackground: Color,
-)
-
 val DarkColorScheme = darkColorScheme(
     background = DarkBack,
     primaryContainer = DarkContainers,
@@ -61,7 +54,7 @@ val LightColorScheme = lightColorScheme(
     surface = Gray1,
 )
 
-val SpaceColorScheme = NewsColors(
+val SpaceColorScheme = lightColorScheme(
     primary = Purple,
     background = DarkBackground,
     onBackground = White,

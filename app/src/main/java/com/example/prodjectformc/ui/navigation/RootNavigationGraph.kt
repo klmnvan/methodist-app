@@ -16,9 +16,10 @@ import com.example.prodjectformc.ui.screen.profile.Profile
 import com.example.prodjectformc.ui.screen.signin.SignIn
 import com.example.prodjectformc.ui.screen.signup.SignUp
 import com.example.prodjectformc.ui.screen.splash.SplashScreen
+import com.example.prodjectformc.ui.theme.custom.ThemeMode
 
 @Composable
-fun RootNavigationGraph(navController: NavHostController, visibleBBar: MutableState<Boolean>) {
+fun RootNavigationGraph(navController: NavHostController, visibleBBar: MutableState<Boolean>, currentThemeMode: MutableState<ThemeMode>) {
     val homeNavController = rememberNavController()
     NavHost(
         route = RoutesNavigation.GRAPH_ROOT,
@@ -49,7 +50,7 @@ fun RootNavigationGraph(navController: NavHostController, visibleBBar: MutableSt
             visibleBBar.value = true
         }
         composable(DestinationsBottomBar.ProfileScreen.route) {
-            Profile(navController)
+            Profile(navController, currentThemeMode)
         }
         composable(DestinationsBottomBar.CreateEventScreen.route) {
             CreateEvent(navController)

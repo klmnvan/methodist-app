@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
@@ -30,15 +32,14 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("ProduceStateDoesNotAssignValue")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var themes = listOf(ThemeMode.Light, ThemeMode.Dark, ThemeMode.Space)
         setContent {
-            val currentThemeMode by remember { mutableStateOf<ThemeMode>(ThemeMode.Dark) }
+            PrefManager.init(LocalContext.current)
+            val currentThemeMode = remember { mutableStateOf(CurrentUser.themes.first { it.title == PrefManager.theme }) }
             val isBottomBarVisible = remember { mutableStateOf(false) }
             val controller = rememberNavController()
             NewsTheme(
-                themeMode = currentThemeMode
+                themeMode = currentThemeMode.value
             ) {
-                PrefManager.init(LocalContext.current)
                 CurrentUser.token = PrefManager.token
                 PrefManager.checkToken()
                 Surface(
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
                         Box(
                             modifier = Modifier.padding(paddingValues)
                         ) {
-                            RootNavigationGraph(controller, isBottomBarVisible)
+                            RootNavigationGraph(controller, isBottomBarVisible, currentThemeMode)
                         }
                     }
                 }

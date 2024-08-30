@@ -49,8 +49,7 @@ class HomeViewModel @Inject constructor(
                     listEvents.forEach {
                         val json = Json { ignoreUnknownKeys = true } // Игнорирование неизвестных ключей
                         val sp: Specifications = json.decodeFromString(it.specifications!!)
-                        state.listEvents!!.add(
-                            EventModel(
+                        state.listEvents!!.add(EventModel(
                             coefficient = it.coefficient,
                             dateOfEvent = it.dateOfEvent,
                             employeeId = it.employeeId,
@@ -61,9 +60,7 @@ class HomeViewModel @Inject constructor(
                             isApproved = it.isApproved,
                             onCheck = it.onCheck,
                             specifications = sp,
-                            student = it.student,
-                        )
-                        )
+                            student = it.student))
                     }
                 }
                 Log.d("listEvents", state.listEvents.toString())

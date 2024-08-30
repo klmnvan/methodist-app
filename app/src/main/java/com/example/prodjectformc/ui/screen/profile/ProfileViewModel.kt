@@ -2,9 +2,13 @@ package com.example.prodjectformc.ui.screen.profile
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavHostController
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.profile.ProfileState
 import com.example.prodjectformc.data.network.ApiServiceImpl
+import com.example.prodjectformc.data.repository.PrefManager
+import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
+import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -27,6 +31,17 @@ class ProfileViewModel @Inject constructor(
             name = CurrentUser.accountInfo?.name!!,
             patronymic = CurrentUser.accountInfo?.patronymic!!)
         )
+    }
+
+    fun logOut(navController: NavHostController){
+        PrefManager.act = 0
+        PrefManager.token = ""
+        CurrentUser.token = ""
+        navController.navigate(RoutesNavigation.LOGIN){
+            popUpTo(DestinationsBottomBar.ProfileScreen.route) {
+                inclusive = true
+            }
+        }
     }
 
 

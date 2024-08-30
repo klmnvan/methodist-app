@@ -6,7 +6,9 @@ import android.content.res.Configuration
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.DialogNavigator
 import com.example.prodjectformc.data.repository.PrefManager
+import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -31,7 +33,7 @@ class SplashViewModel @Inject constructor() : ViewModel() {
                     }
                 }
                 if (PrefManager.act == 1){
-                    navController.navigate(RoutesNavigation.GRAPH_HOME) {
+                    navController.navigate(DestinationsBottomBar.HomeScreen.route) {
                         popUpTo(RoutesNavigation.SPLASH) {
                             inclusive = true
                         }

@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HeadOfCorpuse(
-    val fullName: String,
-    val headOfCorpuseId: String,
-    val id: String,
-    val idMC: String,
-    val name: String,
-    val patronymic: String,
-    val surname: String
+    val fullName: String = "",
+    val headOfCorpuseId: String = "",
+    val id: String = "",
+    val idMC: String = "",
+    val name: String = "",
+    val patronymic: String = "",
+    val surname: String = "",
 )

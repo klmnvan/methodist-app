@@ -13,4 +13,5 @@ object RoutesNavigation {
     const val HOLDING = "Holding"
     const val INTERNSHIP = "Internship"
     const val PARTICIPATION = "Participation"
+    const val BACKTOROOTGRAPH = "Go to root"
 }

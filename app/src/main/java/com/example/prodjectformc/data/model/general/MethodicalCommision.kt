@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MethodicalCommision(
-    val headMC: HeadMC,
-    val id: String,
-    val name: String
+    val headMC: HeadMC = HeadMC(),
+    val id: String = "",
+    val name: String = "",
 )

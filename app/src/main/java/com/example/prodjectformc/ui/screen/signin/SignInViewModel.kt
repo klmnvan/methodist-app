@@ -14,6 +14,7 @@ import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.auth.signin.SignInState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.data.repository.PrefManager
+import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ class SignInViewModel @Inject constructor(
                 PrefManager.token = response.token
                 CurrentUser.token = response.token
                 Log.d("token", CurrentUser.token)
-                navController.navigate(RoutesNavigation.GRAPH_HOME){
+                navController.navigate(DestinationsBottomBar.HomeScreen.route){
                     popUpTo(RoutesNavigation.LOGIN) {
                         inclusive = true
                     }

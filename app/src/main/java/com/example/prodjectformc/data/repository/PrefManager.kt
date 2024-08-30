@@ -18,15 +18,20 @@ object PrefManager {
     }
 
     fun checkToken(){
-        val mDecode = decodeToken(CurrentUser.token)
-        val exp = JSONObject(mDecode).getString("exp")
-        val localDate = utcToLocalDateTime(exp.toLong())
-        val now = Date()
-        if (localDate.before(now)) {
-            Log.d("token", "истек")
-            act = 0
+        if (CurrentUser.token != ""){
+            val mDecode = decodeToken(CurrentUser.token)
+            val exp = JSONObject(mDecode).getString("exp")
+            val localDate = utcToLocalDateTime(exp.toLong())
+            val now = Date()
+            if (localDate.before(now)) {
+                Log.d("token", "истек")
+                act = 0
+            } else {
+                Log.d("token", "не истек")
+            }
         } else {
-            Log.d("token", "не истек")
+            Log.d("token", "отсутствует")
+            act = 0
         }
     }
 

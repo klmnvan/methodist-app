@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.auth.signin.SignInState
+import com.example.prodjectformc.data.model.profile.ProfileState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.data.repository.PrefManager
 import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
@@ -25,7 +26,12 @@ class SignInViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    var state by mutableStateOf(SignInState())
+    private val _state = mutableStateOf(SignInState())
+    val state: SignInState get() = _state.value
+
+    fun updateState(newState: SignInState) {
+        _state.value = newState
+    }
 
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context

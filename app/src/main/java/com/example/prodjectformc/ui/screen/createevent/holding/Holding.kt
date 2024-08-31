@@ -1,6 +1,5 @@
 package com.example.prodjectformc.ui.screen.createevent.holding
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,7 +48,7 @@ import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.OptionsChooseFrom
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
@@ -84,7 +82,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
             Spacer(modifier = Modifier.height(24.dp))
             TextTittleForm("Сведения")
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Название мероприятия")
+            TextTittle("Название мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.name,
                 { viewModel.updateState(viewModel.state.copy(name = it)) },
@@ -93,7 +91,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 state.name.isNotEmpty(),
                 {})
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Форма мероприятия")
+            TextTittle("Форма мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfEvent.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfEvent, state.formOfEvent) { el ->
@@ -123,7 +121,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Место проведения")
+            TextTittle("Место проведения")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.location,
                 { viewModel.updateState(viewModel.state.copy(location = it)) },
@@ -132,7 +130,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                 state.location.isNotEmpty(),
                 {})
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Статус мероприятия")
+            TextTittle("Статус мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listStatus.isNotEmpty()) {
                 OptionsChooseFrom(state.listStatus, state.status) {
@@ -162,7 +160,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Результат")
+            TextTittle("Результат")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listResult.isNotEmpty()) {
                 OptionsChooseFrom(state.listResult, state.result) { el ->
@@ -192,7 +190,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Дата")
+            TextTittle("Дата")
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier

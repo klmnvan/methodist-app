@@ -38,7 +38,7 @@ fun NewsTheme(
     val colors = when (themeMode) {
         ThemeMode.Dark -> DarkColorScheme
         ThemeMode.Light -> LightColorScheme
-        ThemeMode.Space -> SpaceColorScheme
+        ThemeMode.DarkBlue -> DarkBlueColorScheme
     }
     LaunchedEffect(key1 = colors){
         Log.d("NewsTheme -> ", "Colors changed")

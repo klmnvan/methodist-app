@@ -1,8 +1,7 @@
 package com.example.prodjectformc.ui.screen.profile
 
-import androidx.compose.foundation.BorderStroke
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +25,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,31 +47,16 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
-import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.CurrentUser.themes
 import com.example.prodjectformc.data.repository.PrefManager
-import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
-import com.example.prodjectformc.ui.composablefunc.DateSelectionSection
-import com.example.prodjectformc.ui.composablefunc.InfiniteItemsPicker
-import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
-import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
-import com.example.prodjectformc.ui.composablefunc.currentDay
-import com.example.prodjectformc.ui.composablefunc.currentMonth
-import com.example.prodjectformc.ui.composablefunc.currentYear
-import com.example.prodjectformc.ui.composablefunc.days
-import com.example.prodjectformc.ui.composablefunc.monthsNames
-import com.example.prodjectformc.ui.composablefunc.years
-import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.custom.Blue
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
 import com.example.prodjectformc.ui.theme.custom.Gray3
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.ThemeMode
 import com.example.prodjectformc.ui.theme.custom.White
-import java.util.ArrayList
 
 @Composable
 fun Profile(navHostController: NavHostController, currentThemeMode: MutableState<ThemeMode>, viewModel: ProfileViewModel = hiltViewModel()) {
@@ -130,7 +112,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                 }
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-                    TextTittleFormTextField("Тема приложения")
+                    TextTittle("Тема приложения")
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
@@ -145,7 +127,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                             .weight(1f)
                             .align(Alignment.CenterVertically)
                             .padding(horizontal = 16.dp, vertical = 18.dp),
-                        style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.primary, fontWeight = FontWeight.SemiBold,
+                        style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.primary,
                             fontSize = 16.sp)
                     )
                     var showDialog by remember { mutableStateOf(false) }
@@ -171,7 +153,10 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                     }
 
                     if (showDialog) {
-                        ApplicationThemePickerDialog({ currentThemeMode.value = themes.find { theme -> theme.title == it }!! }) {
+
+                        ApplicationThemePickerDialog({ currentThemeMode.value = themes.find { theme -> theme.title == it }!!
+                            Log.d("currentThemeMode", currentThemeMode.value.toString())}
+                        ) {
                             PrefManager.theme = currentThemeMode.value.title
                             showDialog = false
                         }
@@ -213,7 +198,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
 
 @Composable
 fun ApplicationThemePickerDialog(chosenTheme: (String) -> Unit, onDismissRequest: () -> Unit){
-    var onThemeChosenValue = ""
+    var onThemeChosenValue = "Dark"
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             shape = RoundedCornerShape(15.dp),
@@ -293,7 +278,7 @@ fun ThemeInfiniteItemsPicker(
     onItemSelected: (String) -> Unit,
 ) {
 
-    val listState = rememberLazyListState(firstIndex)
+    val listState = rememberLazyListState(firstIndex-1)
     var currentValue = ""
 
     LaunchedEffect(key1 = !listState.isScrollInProgress) {
@@ -321,7 +306,7 @@ fun ThemeInfiniteItemsPicker(
                         modifier = Modifier
                             .alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f)
                             .weight(1f),
-                        style = NewsTheme.typography.headlineMedium,
+                        style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary),
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(6.dp))

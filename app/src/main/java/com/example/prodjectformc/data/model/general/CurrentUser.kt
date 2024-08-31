@@ -8,5 +8,5 @@ object CurrentUser {
     var token = ""
     var accountInfo: AccountInfo? = AccountInfo()
     var selectedTypeOfWork: FormOfWork = FormOfWork()
-    var themes = listOf(ThemeMode.Light, ThemeMode.Dark, ThemeMode.Space)
+    var themes = listOf(ThemeMode.Light, ThemeMode.Dark, ThemeMode.DarkBlue)
 }

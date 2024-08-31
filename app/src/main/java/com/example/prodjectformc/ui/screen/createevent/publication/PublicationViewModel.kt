@@ -12,6 +12,7 @@ import com.example.prodjectformc.data.model.event.publication.CreatePublicationE
 import com.example.prodjectformc.data.model.event.publication.PublicationState
 import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.network.ApiServiceImpl
+import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ class PublicationViewModel @Inject constructor(
             )
             if(response.event != null){
                 Log.d("event", response.event.toString())
-                navController.navigate(RoutesNavigation.GRAPH_HOME){
+                navController.navigate(DestinationsBottomBar.HomeScreen.route){
                     popUpTo(RoutesNavigation.PUBLICATION) {
                         inclusive = true
                     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Gray3
 import com.example.prodjectformc.ui.theme.custom.Gray5
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
@@ -71,13 +72,11 @@ fun ButtonBlueGrayWC(click: () -> Unit, modifier: Modifier, buttonIsBlue: Boolea
 fun MaxWidthButton(text: String, onClick: () -> Unit, enabled: Boolean = true) {
     Button(
         onClick = { onClick() },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+        modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             contentColor = Color(White.value),
-            containerColor = Color(Blue.value),
-            disabledContainerColor = Color(Gray3.value),
+            containerColor = NewsTheme.colors.primary,
+            disabledContainerColor = NewsTheme.colors.inversePrimary,
             disabledContentColor = Color(White.value)
         ),
         shape = RoundedCornerShape(15.dp),

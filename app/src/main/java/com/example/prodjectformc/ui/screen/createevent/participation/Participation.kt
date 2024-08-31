@@ -28,7 +28,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,7 +57,7 @@ import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.OptionsChooseFrom
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
@@ -66,7 +65,6 @@ import com.example.prodjectformc.ui.composablefunc.monthsNames
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Blue20
-import com.example.prodjectformc.ui.theme.custom.Gray5
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.White
 
@@ -102,7 +100,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
             },
                 verticalAlignment = Alignment.CenterVertically) {
                 Box(modifier = Modifier.weight(1f)) {
-                    TextTittleFormTextField("Пояснение формы участия")
+                    TextTittle("Пояснение формы участия")
                 }
                 Icon(
                     modifier = Modifier
@@ -126,6 +124,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
             ) {
                 Column {
                     Spacer(modifier = Modifier.height(8.dp))
+                    val textColor = NewsTheme.colors.onSecondary
                     Text(
                         buildAnnotatedString {
                             withStyle(
@@ -138,7 +137,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append("Очное")
@@ -148,7 +147,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append(" - преподаватель непосредственно принимал участие в мероприятии и находился на площадке проведения мероприятия.\n")
@@ -158,7 +157,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append("Заочное")
@@ -168,7 +167,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append("  - преподаватель отправил свои материалы организаторам мероприятия.\n")
@@ -178,7 +177,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append("Дистанционное")
@@ -188,7 +187,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.Medium,
                                         fontSize = 14.sp,
-                                        color = Color(Gray5.value)
+                                        color = textColor
                                     )
                                 ) {
                                     append(" - преподаватель непосредственно принимал участие в мероприятии, но не находился на площадке проведения мероприятия, а использовал дистанционные технологии.")
@@ -199,7 +198,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            TextTittleFormTextField("Форма участия")
+            TextTittle("Форма участия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfParticipation.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfParticipation, state.formOfParticipation) { el ->
@@ -208,12 +207,12 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Название мероприятия")
+            TextTittle("Название мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.name, { viewModel.updateState(viewModel.state.copy(name = it)) },
                 "Концерт в актовом зале", {viewModel.updateState(viewModel.state.copy(name = ""))}, state.name.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Форма мероприятия")
+            TextTittle("Форма мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listFormOfEvent.isNotEmpty()) {
                 OptionsChooseFrom(state.listFormOfEvent, state.formOfEvent) { el ->
@@ -241,7 +240,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Статус мероприятия")
+            TextTittle("Статус мероприятия")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listStatus.isNotEmpty()) {
                 OptionsChooseFrom(state.listStatus, state.status) {
@@ -269,7 +268,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Результат")
+            TextTittle("Результат")
             Spacer(modifier = Modifier.height(12.dp))
             if (state.listResult.isNotEmpty()) {
                 OptionsChooseFrom(state.listResult, state.result) { el ->
@@ -278,7 +277,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Text(text = "Если ни один вариант в списке не подошёл, введите вручную", style = NewsTheme.typography.headlineMedium)
+            Text(text = "Если ни один вариант в списке не подошёл, введите вручную", style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(otherResult,
                 { viewModel.updateState(viewModel.state.copy(result = it))
@@ -297,7 +296,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                     }
                 })
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Дата")
+            TextTittle("Дата")
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier

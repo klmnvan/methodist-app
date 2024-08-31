@@ -223,7 +223,7 @@ fun InfiniteItemsPicker(
                         modifier = Modifier
                             .alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f)
                             .weight(1f),
-                        style = NewsTheme.typography.headlineMedium,
+                        style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary),
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(6.dp))

@@ -128,7 +128,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                             maxLines = 1
                         )
                         if (state.searchText.isEmpty()) {
-                            Text(text = "Поиск", style = NewsTheme.typography.labelMedium)
+                            Text(text = "Поиск", style = NewsTheme.typography.labelMedium.copy(color = NewsTheme.colors.onSecondary))
                         }
                     }
                     Spacer(modifier = Modifier.width(12.dp))
@@ -303,7 +303,7 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
                             ) {
                                 onDismissRequest()
                             },
-                        tint = Color(Gray1.value)
+                        tint = NewsTheme.colors.surface
                     )
                 }
                 GradientDivider(modifier = Modifier.padding(top = 16.dp, bottom = 24.dp), thickness = 2.dp,
@@ -377,7 +377,7 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
                             event.id?.let { viewModel.deleteEvent(it) }
                         },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(Orange.value),
+                            containerColor = NewsTheme.colors.error,
                             contentColor = Color(White.value)
                         )){
                         Icon(

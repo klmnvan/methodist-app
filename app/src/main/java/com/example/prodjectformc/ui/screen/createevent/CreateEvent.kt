@@ -24,10 +24,6 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,10 +40,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.custom.Blue
-import com.example.prodjectformc.ui.theme.custom.Gray2
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.White
 
@@ -73,7 +68,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                     "Если Вы проводили/принимали участие в нескольких мероприятиях, то необходимо отправить данные несколько раз",
                 style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary))
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Форма работы")
+            TextTittle("Форма работы")
             Spacer(modifier = Modifier.height(12.dp))
             Column {
                 if(state.listFormOfWork.isNotEmpty()){

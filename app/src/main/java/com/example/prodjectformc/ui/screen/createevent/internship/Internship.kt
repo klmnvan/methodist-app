@@ -1,6 +1,5 @@
 package com.example.prodjectformc.ui.screen.createevent.internship
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -35,7 +34,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -54,15 +52,13 @@ import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
 import com.example.prodjectformc.ui.composablefunc.monthsNames
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.custom.Blue20
-import com.example.prodjectformc.ui.theme.custom.Gray1
-import com.example.prodjectformc.ui.theme.custom.Gray2
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.White
 
@@ -87,12 +83,12 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
             Spacer(modifier = Modifier.height(24.dp))
             TextTittleForm("Сведения")
             Spacer(modifier = Modifier.height(12.dp))
-            TextTittleFormTextField("Место прохождения")
+            TextTittle("Место прохождения")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.location, { viewModel.updateState(viewModel.state.copy(location = it)) },
                 "Место прохождения", {viewModel.updateState(viewModel.state.copy(location = ""))}, state.location.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Дата")
+            TextTittle("Дата")
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier
@@ -135,7 +131,7 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Количество часов")
+            TextTittle("Количество часов")
             Spacer(modifier = Modifier.height(12.dp))
             var colorBorder = NewsTheme.colors.outline
             if (state.quantityOfHours != 0) colorBorder = Color(Blue.value)

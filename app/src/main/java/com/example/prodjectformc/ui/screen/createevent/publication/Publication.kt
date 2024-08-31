@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,7 +46,7 @@ import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.CustomDatePickerDialog
 import com.example.prodjectformc.ui.composablefunc.TextFieldForm
 import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittleFormTextField
+import com.example.prodjectformc.ui.composablefunc.TextTittle
 import com.example.prodjectformc.ui.composablefunc.currentDay
 import com.example.prodjectformc.ui.composablefunc.currentMonth
 import com.example.prodjectformc.ui.composablefunc.currentYear
@@ -76,22 +75,22 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
             Spacer(modifier = Modifier.height(24.dp))
             TextTittleForm("Сведения")
             Spacer(modifier = Modifier.height(12.dp))
-            TextTittleFormTextField("Вид")
+            TextTittle("Вид")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.type, { viewModel.updateState(viewModel.state.copy(type = it)) },
                 "Вид публикации", {viewModel.updateState(viewModel.state.copy(type = ""))}, state.type.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Название публикации")
+            TextTittle("Название публикации")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.name, { viewModel.updateState(viewModel.state.copy(name = it)) },
                 "Название публикации", {viewModel.updateState(viewModel.state.copy(name = ""))}, state.name.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Место публикации")
+            TextTittle("Место публикации")
             Spacer(modifier = Modifier.height(12.dp))
             TextFieldForm(state.place, { viewModel.updateState(viewModel.state.copy(place = it)) },
                 "Место публикации", {viewModel.updateState(viewModel.state.copy(place = ""))}, state.place.isNotEmpty(), {} )
             Spacer(modifier = Modifier.height(20.dp))
-            TextTittleFormTextField("Дата")
+            TextTittle("Дата")
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier

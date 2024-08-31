@@ -25,7 +25,15 @@ val DarkBack = Color(0xFF18181B)
 val DarkContainers = Color(0xFF26272B)
 val Green = Color(0xFF22B07D)
 val DarkBackground = Color(0xFF272A37)
-val DarkTextFiels = Color(0xFF323644)
+val DarkBlueBackground = Color(0xFF24293E)
+val DarkBlueContainer = Color(0xFF2F3855)
+val DarkBlueTextTitle = Color(0xFFF4F4FC)
+val DarkBlueTextDesc = Color(0xFF9FDCFF)
+val DarkBlueOutline = Color(0xFF8FBAF7)
+val DarkBluePrimaryInverse = Color(0xFF535A76)
+val DarkBlueError = Color(0xFFFF3B3B)
+val DarkBlueOnBackground = Color(0xFF8FBAF7)
+val DarkBlueSurface = Color(0xFF8FBAF7)
 val CustomTransparent = Color(0x00323644)
 
 val DarkColorScheme = darkColorScheme(
@@ -39,6 +47,19 @@ val DarkColorScheme = darkColorScheme(
     error = Orange,
     onBackground = Gray1,
     surface = Gray1,
+)
+
+val DarkBlueColorScheme = darkColorScheme(
+    background = DarkBlueBackground,
+    primaryContainer = DarkBlueContainer,
+    onPrimary = DarkBlueTextTitle,
+    onSecondary = DarkBlueTextDesc,
+    outline = DarkBlueOutline,
+    primary = Blue,
+    inversePrimary = DarkBluePrimaryInverse,
+    error = DarkBlueError,
+    onBackground = DarkBlueOnBackground,
+    surface = DarkBlueSurface,
 )
 
 val LightColorScheme = lightColorScheme(

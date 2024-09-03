@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
-    init {
+    fun launch() {
         viewModelScope.launch {
             CurrentUser.accountInfo = service.getAccountInfo(CurrentUser.token)
             Log.d("accountInfo", CurrentUser.accountInfo.toString())

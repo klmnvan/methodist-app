@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -73,6 +75,7 @@ import com.example.prodjectformc.ui.theme.firstCharUp
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state
     viewModel.context = LocalContext.current
+    viewModel.launch()
     var selectedCategory by remember { mutableStateOf("Всё") }
     Box (modifier = Modifier
         .fillMaxSize()
@@ -81,7 +84,6 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState())
             ) {
             Spacer(modifier = Modifier.height(24.dp))
             Box(
@@ -171,70 +173,76 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Spacer(modifier = Modifier.height(8.dp))
             if(state.listEvents != null){
                 val pattern = Regex(state.searchText, RegexOption.IGNORE_CASE)
-                for (event in state.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
-                else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }){
-                    var title by remember { mutableStateOf("") }
-                    var desc by remember { mutableStateOf("") }
-                    desc = event.specifications.formOfEvent!!
-                    if(desc == "") desc = event.specifications.place!!
-                    if(desc == "") desc = "Количество часов: ${event.specifications.quantityOfHours.toString()}"
-                    if(desc == "") desc = event.specifications.location!!
-                    title = event.specifications.name.toString()
-                    if(title == "") title = event.specifications.location!!
-                    var showDialog by remember { mutableStateOf(false) }
-                    Column (modifier = Modifier
-                        .shadow(
-                            elevation = 4.dp,
-                            shape = RoundedCornerShape(15),
-                            spotColor = Color(Black.value)
-                        )
-                        .clickable {
-                            showDialog = true
-                        }
-                        .background(color = NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15))
-                        .padding(vertical = 16.dp, horizontal = 18.dp)) {
-                        Row (verticalAlignment = Alignment.CenterVertically) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.icon_event),
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .fillMaxWidth(),
-                                tint = getColorIcon(category = event.formOfWork!!.name)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column(modifier = Modifier
-                                .weight(1f)
-                                .align(Alignment.CenterVertically)) {
-                                Text(text = title.firstCharUp(),
-                                    modifier = Modifier
-                                        .padding(bottom = 2.dp),
-                                    fontWeight = FontWeight.Bold,
-                                    fontFamily = Raleway,
-                                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
-                                Text(text = event.formOfWork.name.firstCharUp(),
-                                    fontWeight = FontWeight.Normal,
-                                    fontFamily = Raleway,
-                                    fontSize = 12.sp,
-                                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.surface),)
+                val filteredListEvent = state.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
+                else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    LazyColumn(modifier = Modifier.fillMaxWidth()){
+                        items(filteredListEvent) { event ->
+                            var title by remember { mutableStateOf("") }
+                            var desc by remember { mutableStateOf("") }
+                            desc = event.specifications.formOfEvent!!
+                            if(desc == "") desc = event.specifications.place!!
+                            if(desc == "") desc = "Количество часов: ${event.specifications.quantityOfHours.toString()}"
+                            if(desc == "") desc = event.specifications.location!!
+                            title = event.specifications.name.toString()
+                            if(title == "") title = event.specifications.location!!
+                            var showDialog by remember { mutableStateOf(false) }
+                            Column (modifier = Modifier
+                                .shadow(
+                                    elevation = 4.dp,
+                                    shape = RoundedCornerShape(15),
+                                    spotColor = Color(Black.value)
+                                )
+                                .clickable {
+                                    showDialog = true
+                                }
+                                .background(color = NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15))
+                                .padding(vertical = 16.dp, horizontal = 18.dp)) {
+                                Row (verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(R.drawable.icon_event),
+                                        contentDescription = "",
+                                        modifier = Modifier
+                                            .size(40.dp)
+                                            .fillMaxWidth(),
+                                        tint = getColorIcon(category = event.formOfWork!!.name)
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Column(modifier = Modifier
+                                        .weight(1f)
+                                        .align(Alignment.CenterVertically)) {
+                                        Text(text = title.firstCharUp(),
+                                            modifier = Modifier
+                                                .padding(bottom = 2.dp),
+                                            fontWeight = FontWeight.Bold,
+                                            fontFamily = Raleway,
+                                            style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
+                                        Text(text = event.formOfWork.name.firstCharUp(),
+                                            fontWeight = FontWeight.Normal,
+                                            fontFamily = Raleway,
+                                            fontSize = 12.sp,
+                                            style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.surface),)
+                                    }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(text = event.dateOfEvent.convertDate(),
+                                        modifier = Modifier
+                                            .align(Alignment.CenterVertically)
+                                            .padding(top = 3.dp),
+                                        fontWeight = FontWeight.Medium,
+                                        fontFamily = Poppins,
+                                        fontSize = 12.sp,
+                                        style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
+                                }
+                                Divider(modifier = Modifier.padding(vertical = 10.dp), color = NewsTheme.colors.primary, thickness = 0.5.dp)
+                                Text(text = desc.firstCharUp(), style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),)
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = event.dateOfEvent.convertDate(),
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .padding(top = 3.dp),
-                                fontWeight = FontWeight.Medium,
-                                fontFamily = Poppins,
-                                fontSize = 12.sp,
-                                style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
-                        }
-                        Divider(modifier = Modifier.padding(vertical = 10.dp), color = NewsTheme.colors.primary, thickness = 0.5.dp)
-                        Text(text = desc.firstCharUp(), style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),)
-                    }
-                    Spacer(modifier = Modifier.height(14.dp))
-                    if (showDialog) {
-                        ShowFragment(title, event, getColorIcon(event.formOfWork!!.name), viewModel){
-                            showDialog = false
+                            Spacer(modifier = Modifier.height(14.dp))
+                            if (showDialog) {
+                                ShowFragment(title, event, getColorIcon(event.formOfWork!!.name), viewModel){
+                                    showDialog = false
+                                }
+                            }
+
                         }
                     }
                 }

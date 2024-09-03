@@ -20,12 +20,10 @@ import com.example.prodjectformc.ui.theme.custom.ThemeMode
 
 @Composable
 fun RootNavigationGraph(navController: NavHostController, visibleBBar: MutableState<Boolean>, currentThemeMode: MutableState<ThemeMode>) {
-    val homeNavController = rememberNavController()
     NavHost(
         route = RoutesNavigation.GRAPH_ROOT,
         navController = navController,
-        startDestination = RoutesNavigation.SPLASH){
-
+        startDestination = RoutesNavigation.SPLASH) {
         composable(RoutesNavigation.SPLASH){
             SplashScreen(navController)
         }
@@ -42,9 +40,6 @@ fun RootNavigationGraph(navController: NavHostController, visibleBBar: MutableSt
         composable(RoutesNavigation.HOLDER){
             //Holder(navController)
         }
-        /*composable(RoutesNavigation.GRAPH_HOME){
-            MainScaffold(homeNavController, navController)
-        }*/
         composable(DestinationsBottomBar.HomeScreen.route) {
             Home(navController)
             visibleBBar.value = true

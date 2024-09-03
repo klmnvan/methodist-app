@@ -1,6 +1,7 @@
 package com.example.prodjectformc.ui.screen.signup
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,11 +42,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.composablefunc.MaxWidthButton
+import com.example.prodjectformc.ui.composablefunc.TextDescription
+import com.example.prodjectformc.ui.composablefunc.TextFieldAuth
+import com.example.prodjectformc.ui.composablefunc.TextTittleAuth
+import com.example.prodjectformc.ui.composablefunc.TextTittleForm
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import com.example.prodjectformc.ui.theme.custom.Black
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Gray1
 import com.example.prodjectformc.ui.theme.custom.Gray2
+import com.example.prodjectformc.ui.theme.custom.NewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,228 +61,83 @@ fun SignUp(navHostController: NavHostController?, viewModel: SignUpViewModel = h
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(NewsTheme.colors.background)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Регистрация", Modifier.padding(top = 25.dp).padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyLarge)
-        Text(text = "Зарегистрируйтесь, чтобы пользоваться функциями приложения",
-            Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodyMedium)
-
-        Spacer(modifier = Modifier.height(30.dp))
-        OutlinedTextField(
-            value = state.surname,
-            onValueChange = { viewModel.state = viewModel.state.copy(surname = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Фамилия", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(email = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-        OutlinedTextField(
-            value = state.name,
-            onValueChange = { viewModel.state = viewModel.state.copy(name = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Имя", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(password = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-        OutlinedTextField(
-            value = state.patronymic,
-            onValueChange = { viewModel.state = viewModel.state.copy(patronymic = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Отчество", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(password = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-        OutlinedTextField(
-            value = state.email,
-            onValueChange = { viewModel.state = viewModel.state.copy(email = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Логин", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(password = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-        OutlinedTextField(
-            value = state.password,
-            onValueChange = { viewModel.state = viewModel.state.copy(password = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Пароль", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(password = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
-        OutlinedTextField(
-            value = state.passwordConfirm,
-            onValueChange = { viewModel.state = viewModel.state.copy(passwordConfirm = it) },
-            textStyle = MaterialTheme.typography.titleMedium,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp),
-            placeholder = { Text(text = "Пароль", style = MaterialTheme.typography.labelMedium) },
-            singleLine = true,
-            maxLines = 1,
-            shape = RoundedCornerShape(10.dp),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = Color.Transparent,
-                focusedBorderColor = Color.Transparent,
-                containerColor = Color(Gray2.value)
-            ),
-            trailingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            viewModel.state = viewModel.state.copy(password = "")
-                        },
-                    tint = Color(Gray1.value)
-                )
-            },
-        )
-
-        Spacer(modifier = Modifier.height(30.dp))
-        MaxWidthButton(
-            text = "Далее",
-            onClick = {
-                viewModel.signUp(navHostController!!)
-            },
-            enabled =
-            state.email.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty()
-                    && state.name.isNotEmpty() && state.surname.isNotEmpty() && state.patronymic.isNotEmpty()
-        )
-        Spacer(modifier = Modifier.height(15.dp))
-        Text(
-            text = buildAnnotatedString {
-                withStyle(SpanStyle(color = Color(Black.value))) {
-                    append("Уже есть аккаунт? ")
-                }
-                withStyle(SpanStyle(color = Color(Blue.value), fontWeight = FontWeight.Bold)) {
-                    append("Авторизуйтесь!")
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    navHostController!!.navigate(RoutesNavigation.LOGIN)
+                .padding(horizontal = 20.dp)
+                .padding(vertical = 50.dp)) {
+            TextTittleForm("Регистрация")
+            Spacer(modifier = Modifier.height(4.dp))
+            TextDescription("Зарегистрируйтесь, чтобы пользоваться функциями приложения")
+            Spacer(modifier = Modifier.height(30.dp))
+            TextTittleAuth("Фамилия")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.surname, { viewModel.updateState(viewModel.state.copy(surname = it)) }, "Иванов") {
+                viewModel.updateState(viewModel.state.copy(surname = ""))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleAuth("Имя")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.name, { viewModel.updateState(viewModel.state.copy(name = it)) }, "Иван") {
+                viewModel.updateState(viewModel.state.copy(name = ""))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleAuth("Отчество")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.patronymic, { viewModel.updateState(viewModel.state.copy(patronymic = it)) }, "Иванович") {
+                viewModel.updateState(viewModel.state.copy(patronymic = ""))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleAuth("Логин")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.email, { viewModel.updateState(viewModel.state.copy(email = it)) }, "user@mail.ru") {
+                viewModel.updateState(viewModel.state.copy(email = ""))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleAuth("Пароль")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.password, { viewModel.updateState(viewModel.state.copy(password = it)) }, "******") {
+                viewModel.updateState(viewModel.state.copy(password = ""))
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            TextTittleAuth("Подтвердите пароль")
+            Spacer(modifier = Modifier.height(8.dp))
+            TextFieldAuth(state.password, { viewModel.updateState(viewModel.state.copy(password = it)) }, "******") {
+                viewModel.updateState(viewModel.state.copy(password = ""))
+            }
+            Spacer(modifier = Modifier.height(30.dp))
+            MaxWidthButton(
+                text = "Далее",
+                onClick = {
+                    viewModel.signUp(navHostController!!)
                 },
-            textAlign = TextAlign.Center,
-            fontSize = 14.sp,
-            style = MaterialTheme.typography.bodyMedium
-        )
+                enabled =
+                state.email.isNotEmpty() && state.password.isNotEmpty() && state.passwordConfirm.isNotEmpty()
+                        && state.name.isNotEmpty() && state.surname.isNotEmpty() && state.patronymic.isNotEmpty()
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(color = NewsTheme.colors.onPrimary)) {
+                        append("Уже есть аккаунт? ")
+                    }
+                    withStyle(SpanStyle(color = NewsTheme.colors.primary, fontWeight = FontWeight.Bold)) {
+                        append("Авторизуйтесь!")
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        navHostController!!.navigate(RoutesNavigation.LOGIN)
+                    },
+                textAlign = TextAlign.Center,
+                fontSize = 14.sp,
+                style = NewsTheme.typography.bodyMedium
+            )
+        }
     }
 
 }

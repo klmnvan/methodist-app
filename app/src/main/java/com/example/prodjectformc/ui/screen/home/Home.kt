@@ -29,7 +29,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,7 +42,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -63,9 +61,7 @@ import com.example.prodjectformc.ui.theme.custom.Black
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
-import com.example.prodjectformc.ui.theme.custom.Gray1
 import com.example.prodjectformc.ui.theme.custom.Green
-import com.example.prodjectformc.ui.theme.custom.LightBack
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.Orange
 import com.example.prodjectformc.ui.theme.custom.Purple
@@ -73,7 +69,6 @@ import com.example.prodjectformc.ui.theme.custom.White
 import com.example.prodjectformc.ui.theme.firstCharUp
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state

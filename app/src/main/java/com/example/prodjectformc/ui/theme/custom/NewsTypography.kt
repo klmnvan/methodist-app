@@ -23,7 +23,6 @@ data class NewsTypography(
     val titleMedium: TextStyle
 )
 
-// Our customized typography property that we will provide to the theme ^_^
 val newsTypography = NewsTypography(
     bodyLarge = TextStyle(
         fontFamily = Poppins,

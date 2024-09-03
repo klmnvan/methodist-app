@@ -75,10 +75,4 @@ val LightColorScheme = lightColorScheme(
     surface = Gray1,
 )
 
-val SpaceColorScheme = lightColorScheme(
-    primary = Purple,
-    background = DarkBackground,
-    onBackground = White,
-)
-
 val LocalNewsColors = staticCompositionLocalOf { LightColorScheme }

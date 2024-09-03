@@ -9,6 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
+import com.example.prodjectformc.data.model.auth.signin.SignInState
 import com.example.prodjectformc.data.model.auth.signup.SignUpState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
@@ -21,7 +22,12 @@ class SignUpViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    var state by mutableStateOf(SignUpState())
+    private val _state = mutableStateOf(SignUpState())
+    val state: SignUpState get() = _state.value
+
+    fun updateState(newState: SignUpState) {
+        _state.value = newState
+    }
 
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context

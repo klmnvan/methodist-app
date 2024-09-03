@@ -151,8 +151,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                 .padding(12.dp)
                                 .clickable { viewModel.openForm(navHostController) },
                             contentDescription = "",
-                            tint = Color(
-                                White.value)
+                            tint = Color(White.value)
                         )
                     }
                 }

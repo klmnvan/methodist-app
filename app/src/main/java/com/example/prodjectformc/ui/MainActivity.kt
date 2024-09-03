@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -42,24 +43,19 @@ class MainActivity : ComponentActivity() {
             ) {
                 CurrentUser.token = PrefManager.token
                 PrefManager.checkToken()
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Scaffold(
-                        bottomBar = {
-                            if (isBottomBarVisible.value) {
-                                BottomBar(
-                                    navController = controller,
-                                )
-                            }
-
-                        }) { paddingValues ->
-                        Box(
-                            modifier = Modifier.padding(paddingValues)
-                        ) {
-                            RootNavigationGraph(controller, isBottomBarVisible, currentThemeMode)
+                Scaffold(
+                    modifier = Modifier.fillMaxSize().background(NewsTheme.colors.background),
+                    bottomBar = {
+                        if (isBottomBarVisible.value) {
+                            BottomBar(
+                                navController = controller,
+                            )
                         }
+                    }) { paddingValues ->
+                    Box(
+                        modifier = Modifier.padding(paddingValues)
+                    ) {
+                        RootNavigationGraph(controller, isBottomBarVisible, currentThemeMode)
                     }
                 }
             }

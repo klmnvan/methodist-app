@@ -121,29 +121,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                     }
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top,
-                        horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text(
-                            buildAnnotatedString {
-                                withStyle(
-                                    style = SpanStyle(
-                                        fontWeight = FontWeight.Medium,
-                                        fontFamily = Raleway,
-                                        fontSize = 16.sp,
-                                        color = NewsTheme.colors.onPrimary)){
-                                    append("Выбрано: ")
-                                }
-                                withStyle(
-                                    style = SpanStyle(
-                                        fontWeight = FontWeight.Bold,
-                                        fontFamily = Raleway,
-                                        fontSize = 16.sp,
-                                        color = NewsTheme.colors.onPrimary)
-                                ) {
-                                    append(state.selectedFormOfWork.name.toLowerCase())
-                                }
-                            }
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
+                        horizontalArrangement = Arrangement.End) {
                         Icon(imageVector = ImageVector.vectorResource(R.drawable.button_next),
                             modifier = Modifier
                                 .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))

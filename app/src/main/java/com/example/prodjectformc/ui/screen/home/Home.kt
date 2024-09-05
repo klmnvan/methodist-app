@@ -8,10 +8,8 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,17 +20,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
+import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,12 +40,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -54,7 +60,9 @@ import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.data.model.event.EventModel
 import com.example.prodjectformc.ui.composablefunc.TextDescFragment
+import com.example.prodjectformc.ui.composablefunc.TextFiledSesrch
 import com.example.prodjectformc.ui.composablefunc.TextTittleFragment
+import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import com.example.prodjectformc.ui.theme.Poppins
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.convertDate
@@ -63,19 +71,35 @@ import com.example.prodjectformc.ui.theme.custom.Black
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
+import com.example.prodjectformc.ui.theme.custom.CustomTransparent
 import com.example.prodjectformc.ui.theme.custom.Green
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.Orange
 import com.example.prodjectformc.ui.theme.custom.Purple
 import com.example.prodjectformc.ui.theme.custom.White
 import com.example.prodjectformc.ui.theme.firstCharUp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Composable
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state
     viewModel.context = LocalContext.current
-    viewModel.launch()
+    LaunchedEffect(state.sortedType) {
+        withContext(Dispatchers.IO){
+            if(state.listEvents.isNotEmpty()){
+                viewModel.updateState(viewModel.state.copy(listEvents = sortedEvents(state.listEvents, state.sortedType)))
+            }
+        }
+    }
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO){
+            viewModel.launch()
+        }
+    }
     var selectedCategory by remember { mutableStateOf("Всё") }
     Box (modifier = Modifier
         .fillMaxSize()
@@ -86,63 +110,67 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                 .padding(horizontal = 20.dp)
             ) {
             Spacer(modifier = Modifier.height(24.dp))
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(
-                        elevation = 4.dp, shape = RoundedCornerShape(30), spotColor = Color(
-                            Black.value
-                        )
-                    )
-                    .background(
-                        color = NewsTheme.colors.primaryContainer,
-                        shape = RoundedCornerShape(30)
-                    )
-                    .padding(14.dp)
-            ) {
+            TextFiledSesrch(state.searchText, { viewModel.updateState(viewModel.state.copy(searchText = it)) }, "Поиск") {
+                viewModel.updateState(viewModel.state.copy(searchText = ""))
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            var expanded by remember { mutableStateOf(false) }
+            Column {
                 Row(modifier = Modifier
-                    .height(IntrinsicSize.Min)
-                    .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    .fillMaxWidth()
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        expanded = !expanded
+                    },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_search),
+                        imageVector = ImageVector.vectorResource(R.drawable.icon_sorted),
                         contentDescription = "",
                         modifier = Modifier
-                            .size(24.dp),
-                        tint = NewsTheme.colors.onPrimary
+                            .size(16.dp),
+                        tint = NewsTheme.colors.primary
                     )
-                    Spacer(modifier = Modifier.width(18.dp))
-                    Divider(color = NewsTheme.colors.primary, modifier = Modifier
-                        .fillMaxHeight()
-                        .width(1.dp)
-                        .padding(vertical = 5.dp))
-                    Spacer(modifier = Modifier.width(14.dp))
-                    Box(modifier = Modifier.weight(1f),) {
-                        BasicTextField(
-                            value = state.searchText,
-                            onValueChange = { viewModel.updateState(viewModel.state.copy(searchText = it)) },
-                            textStyle = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),
-                            singleLine = true,
-                            maxLines = 1
-                        )
-                        if (state.searchText.isEmpty()) {
-                            Text(text = "Поиск", style = NewsTheme.typography.labelMedium.copy(color = NewsTheme.colors.onSecondary))
-                        }
-                    }
                     Spacer(modifier = Modifier.width(12.dp))
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .fillMaxWidth()
-                            .clickable {
-                                viewModel.updateState(viewModel.state.copy(searchText = ""))
-                            },
-                        tint = NewsTheme.colors.surface
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(SpanStyle(color = NewsTheme.colors.onPrimary)) {
+                                append("Сортировка: ")
+                            }
+                            withStyle(SpanStyle(color = NewsTheme.colors.primary, fontWeight = FontWeight.Bold)) {
+                                append(state.listSortedType[state.sortedType])
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        fontSize = 14.sp,
+                        style = NewsTheme.typography.bodyMedium
                     )
                 }
+                DropdownMenu(
+                    modifier = Modifier.background(NewsTheme.colors.primaryContainer),
+                    offset = DpOffset(0.dp, 8.dp),
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    state.listSortedType.forEach { item ->
+                        DropdownMenuItem(
+                            text = { Text(text = item) },
+                            onClick = {
+                                viewModel.updateState(viewModel.state.copy(sortedType = state.listSortedType.indexOf(item)))
+                                expanded = false
+                            },
+                            colors = MenuDefaults.itemColors(
+                                textColor = NewsTheme.colors.onPrimary,
+                            )
+                        )
+                    }
+                }
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Divider(thickness = 0.5.dp, color = NewsTheme.colors.primary)
+            Spacer(modifier = Modifier.height(12.dp))
             Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
@@ -175,7 +203,6 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                 val pattern = Regex(state.searchText, RegexOption.IGNORE_CASE)
                 val filteredListEvent = state.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
                 else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }
-                Box(modifier = Modifier.fillMaxWidth()) {
                     LazyColumn(modifier = Modifier.fillMaxWidth()){
                         items(filteredListEvent) { event ->
                             var title by remember { mutableStateOf("") }
@@ -196,7 +223,10 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                 .clickable {
                                     showDialog = true
                                 }
-                                .background(color = NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15))
+                                .background(
+                                    color = NewsTheme.colors.primaryContainer,
+                                    shape = RoundedCornerShape(15)
+                                )
                                 .padding(vertical = 16.dp, horizontal = 18.dp)) {
                                 Row (verticalAlignment = Alignment.CenterVertically) {
                                     Icon(
@@ -242,10 +272,9 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                     showDialog = false
                                 }
                             }
-
                         }
                     }
-                }
+
             }
         }
     }
@@ -396,6 +425,28 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
             }
         }
     }
+}
+
+fun sortedEvents(list: MutableList<EventModel>, idSorting: Int): MutableList<EventModel> {
+    when(idSorting) {
+        0 -> {
+            return list.sortedWith(Comparator.comparing<EventModel, LocalDate> { model ->
+                LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
+            }.reversed()) as MutableList<EventModel>
+        }
+        1 -> {
+            return list.sortedWith(Comparator.comparing { model ->
+                LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
+            }) as MutableList<EventModel>
+        }
+        2 -> {
+
+        }
+        3 -> {
+
+        }
+    }
+    return list
 }
 
 

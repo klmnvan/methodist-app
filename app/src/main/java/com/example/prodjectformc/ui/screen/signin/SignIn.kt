@@ -68,7 +68,6 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
             TextTittleForm("Авторизация")
             Spacer(modifier = Modifier.height(4.dp))
             TextDescription("Войдите, чтобы пользоваться функциями приложения")
-            //Ввод почты
             Spacer(modifier = Modifier.height(30.dp))
             TextTittleAuth("Адрес эл. почты")
             Spacer(modifier = Modifier.height(8.dp))

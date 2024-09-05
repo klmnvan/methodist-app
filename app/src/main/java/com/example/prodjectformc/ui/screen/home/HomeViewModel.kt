@@ -14,7 +14,9 @@ import com.example.prodjectformc.data.model.event.Specifications
 import com.example.prodjectformc.data.model.home.HomeState
 import com.example.prodjectformc.data.network.ApiServiceImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
@@ -33,8 +35,8 @@ class HomeViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
-    fun launch() {
-        viewModelScope.launch {
+    suspend fun launch() {
+        withContext(Dispatchers.IO) {
             CurrentUser.accountInfo = service.getAccountInfo(CurrentUser.token)
             Log.d("accountInfo", CurrentUser.accountInfo.toString())
             if(CurrentUser.accountInfo != null){

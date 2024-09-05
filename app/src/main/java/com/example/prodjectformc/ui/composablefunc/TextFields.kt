@@ -83,6 +83,56 @@ fun TextFieldForm(value: String, input: (String) -> Unit, placeholder: String, c
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun TextFiledSesrch(value: String, input: (String) -> Unit, placeholder: String, clickOnIcon: () -> Unit){
+    OutlinedTextField(
+        value = value,
+        onValueChange = {input(it) },
+        textStyle = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary, fontSize = 14.sp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 4.dp, shape = RoundedCornerShape(30), spotColor = Color(
+                    Black.value
+                )
+            ),
+        placeholder = { Text(text = placeholder, style = NewsTheme.typography.labelMedium.copy(color = NewsTheme.colors.onSecondary, fontSize = 14.sp)) },
+        singleLine = true,
+        shape = RoundedCornerShape(15.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color.Transparent,
+            focusedBorderColor = Color.Transparent,
+            containerColor = NewsTheme.colors.primaryContainer,
+            cursorColor = NewsTheme.colors.primary
+        ),
+        leadingIcon = {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.icon_search),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(24.dp),
+                tint = NewsTheme.colors.onPrimary
+            )
+        },
+        trailingIcon = {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.icon_clear),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        clickOnIcon()
+                    },
+                tint = NewsTheme.colors.surface
+            )
+        },
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun TextFieldAuth(value: String, input: (String) -> Unit, placeholder: String, clickOnIcon: () -> Unit){
     OutlinedTextField(
         value = value,
@@ -97,7 +147,6 @@ fun TextFieldAuth(value: String, input: (String) -> Unit, placeholder: String, c
             ),
         placeholder = { Text(text = placeholder, style = NewsTheme.typography.labelMedium.copy(color = NewsTheme.colors.onSecondary, fontSize = 14.sp)) },
         singleLine = true,
-        maxLines = 1,
         shape = RoundedCornerShape(15.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             unfocusedBorderColor = Color.Transparent,

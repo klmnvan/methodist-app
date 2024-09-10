@@ -1,4 +1,4 @@
-package com.example.prodjectformc.ui.composablefunc
+package com.example.prodjectformc.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -174,7 +174,7 @@ fun DateSelectionSection(
         Box(modifier = Modifier.weight(1f)){
             InfiniteItemsPicker(
                 items = monthsNames,
-                firstIndex = Int.MAX_VALUE / 2 - 4 + currentMonth-1,
+                firstIndex = Int.MAX_VALUE / 2 - 4 + currentMonth -1,
                 onItemSelected =  onMonthChosen
             )
         }

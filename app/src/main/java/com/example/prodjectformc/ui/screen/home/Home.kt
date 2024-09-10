@@ -29,7 +29,6 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MenuDefaults
-import androidx.compose.material3.MenuItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -40,15 +39,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
@@ -59,10 +57,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.data.model.event.EventModel
-import com.example.prodjectformc.ui.composablefunc.TextDescFragment
-import com.example.prodjectformc.ui.composablefunc.TextFiledSesrch
-import com.example.prodjectformc.ui.composablefunc.TextTittleFragment
-import com.example.prodjectformc.ui.navigation.RoutesNavigation
+import com.example.prodjectformc.ui.components.TextDescFragment
+import com.example.prodjectformc.ui.components.TextFiledSesrch
+import com.example.prodjectformc.ui.components.TextTittleFragment
 import com.example.prodjectformc.ui.theme.Poppins
 import com.example.prodjectformc.ui.theme.Raleway
 import com.example.prodjectformc.ui.theme.convertDate
@@ -71,7 +68,6 @@ import com.example.prodjectformc.ui.theme.custom.Black
 import com.example.prodjectformc.ui.theme.custom.Blue
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
-import com.example.prodjectformc.ui.theme.custom.CustomTransparent
 import com.example.prodjectformc.ui.theme.custom.Green
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.Orange
@@ -88,6 +84,7 @@ import java.time.format.DateTimeFormatter
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state
     viewModel.context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     LaunchedEffect(state.sortedType) {
         withContext(Dispatchers.IO){
             if(state.listEvents.isNotEmpty()){
@@ -112,6 +109,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Spacer(modifier = Modifier.height(24.dp))
             TextFiledSesrch(state.searchText, { viewModel.updateState(viewModel.state.copy(searchText = it)) }, "Поиск") {
                 viewModel.updateState(viewModel.state.copy(searchText = ""))
+                focusManager.clearFocus()
             }
             Spacer(modifier = Modifier.height(16.dp))
             var expanded by remember { mutableStateOf(false) }
@@ -320,7 +318,7 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
                             fontFamily = Raleway,
                             fontSize = 12.sp,
                             color = primaryColor,
-                            style = NewsTheme.typography.titleMedium,)
+                            style = NewsTheme.typography.titleMedium)
                     }
                     Spacer(modifier = Modifier.width(12.dp))
                     Icon(

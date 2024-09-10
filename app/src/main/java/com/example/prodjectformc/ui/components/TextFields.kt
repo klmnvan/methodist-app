@@ -1,17 +1,15 @@
 @file:Suppress("UNUSED_EXPRESSION")
 
-package com.example.prodjectformc.ui.composablefunc
+package com.example.prodjectformc.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -24,16 +22,13 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.R
 import com.example.prodjectformc.ui.theme.custom.Black
 import com.example.prodjectformc.ui.theme.custom.Blue
-import com.example.prodjectformc.ui.theme.custom.Gray1
 import com.example.prodjectformc.ui.theme.custom.Gray2
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
-import com.example.prodjectformc.ui.theme.custom.White
 
 @Composable
 fun TextFieldForm(value: String, input: (String) -> Unit, placeholder: String, clickOnIcon: () -> Unit, textFieldIsSelect: Boolean,

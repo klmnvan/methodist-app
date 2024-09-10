@@ -47,16 +47,18 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
+import com.example.prodjectformc.data.model.general.CurrentUser
 import com.example.prodjectformc.data.model.general.CurrentUser.themes
 import com.example.prodjectformc.data.repository.PrefManager
-import com.example.prodjectformc.ui.composablefunc.TextTittleForm
-import com.example.prodjectformc.ui.composablefunc.TextTittle
+import com.example.prodjectformc.ui.components.TextTittleForm
+import com.example.prodjectformc.ui.components.TextTittle
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
 import com.example.prodjectformc.ui.theme.custom.Gray3
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 import com.example.prodjectformc.ui.theme.custom.ThemeMode
 import com.example.prodjectformc.ui.theme.custom.White
+import com.example.prodjectformc.ui.theme.firstCharUp
 
 @Composable
 fun Profile(navHostController: NavHostController, currentThemeMode: MutableState<ThemeMode>, viewModel: ProfileViewModel = hiltViewModel()) {
@@ -80,13 +82,13 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                     .height(110.dp)
                     .width(110.dp))
                 Spacer(modifier = Modifier.height(12.dp))
-                Text(text = "Иванов Иван Иванович", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onPrimary, fontSize = 20.sp), fontWeight = FontWeight.Bold,
+                Text(text = "${state.surname.firstCharUp()} ${state.name.firstCharUp()} ${state.patronymic.firstCharUp()}", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onPrimary, fontSize = 20.sp), fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = "ivanov_ivan@mail.com | Преподаватель", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onSecondary, fontSize = 16.sp), fontWeight = FontWeight.Normal,
+                Text(text = CurrentUser.accountInfo?.email ?: "", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onSecondary, fontSize = 16.sp), fontWeight = FontWeight.Normal,
                     textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(text = "Информационные системы", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.primary, fontSize = 16.sp), fontWeight = FontWeight.SemiBold,
+                Text(text = CurrentUser.accountInfo?.methodicalCommision?.name ?: "", style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.primary, fontSize = 16.sp), fontWeight = FontWeight.SemiBold,
                     textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.height(40.dp))
                 Button(

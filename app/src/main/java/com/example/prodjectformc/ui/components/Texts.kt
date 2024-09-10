@@ -1,12 +1,10 @@
-package com.example.prodjectformc.ui.composablefunc
+package com.example.prodjectformc.ui.components
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.ui.theme.Raleway
-import com.example.prodjectformc.ui.theme.custom.Gray5
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 
 @Composable

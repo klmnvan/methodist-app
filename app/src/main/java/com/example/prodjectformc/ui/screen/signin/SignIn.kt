@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
@@ -33,10 +34,9 @@ import com.example.prodjectformc.ui.components.TextTittleForm
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import com.example.prodjectformc.ui.theme.custom.NewsTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = hiltViewModel()) {
-    val state = viewModel.state
+    val state = viewModel.state.collectAsState()
     viewModel.context = LocalContext.current
     Column(
         modifier = Modifier
@@ -53,14 +53,14 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
             Spacer(modifier = Modifier.height(30.dp))
             TextTittleAuth("Адрес эл. почты")
             Spacer(modifier = Modifier.height(8.dp))
-            TextFieldAuth(state.email, { viewModel.updateState(viewModel.state.copy(email = it)) }, "user@mail.ru") {
-                viewModel.updateState(viewModel.state.copy(email = ""))
+            TextFieldAuth(state.value.email, { viewModel.stateValue = state.value.copy(email = it) }, "user@mail.ru") {
+                viewModel.stateValue = state.value.copy(email = "")
             }
             Spacer(modifier = Modifier.height(20.dp))
             TextTittleAuth("Пароль")
             Spacer(modifier = Modifier.height(8.dp))
-            TextFieldAuth(state.password, { viewModel.updateState(viewModel.state.copy(password = it)) }, "********") {
-                viewModel.updateState(viewModel.state.copy(password = ""))
+            TextFieldAuth(state.value.password, { viewModel.stateValue = state.value.copy(password = it) }, "********") {
+                viewModel.stateValue = state.value.copy(password = "")
             }
             Spacer(modifier = Modifier.height(30.dp))
             MaxWidthButton(
@@ -68,7 +68,7 @@ fun SignIn(navHostController: NavHostController?, viewModel: SignInViewModel = h
                 onClick = {
                     viewModel.signIn(navHostController!!)
                 },
-                enabled = state.email.isNotEmpty() && state.password.isNotEmpty())
+                enabled = state.value.email.isNotEmpty() && state.value.password.isNotEmpty())
             Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = buildAnnotatedString {

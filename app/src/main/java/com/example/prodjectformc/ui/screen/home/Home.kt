@@ -32,6 +32,8 @@ import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,6 +77,7 @@ import com.example.prodjectformc.ui.theme.custom.Purple
 import com.example.prodjectformc.ui.theme.custom.White
 import com.example.prodjectformc.ui.theme.firstCharUp
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -82,13 +85,24 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
-    val state = viewModel.state
+    val state = viewModel.state.collectAsState()
     viewModel.context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    LaunchedEffect(state.sortedType) {
-        withContext(Dispatchers.IO){
-            if(state.listEvents.isNotEmpty()){
-                viewModel.updateState(viewModel.state.copy(listEvents = sortedEvents(state.listEvents, state.sortedType)))
+    val items: MutableState<MutableList<EventModel>> = remember { mutableStateOf(mutableListOf()) }
+    viewModel.filteredListEvents()
+
+    LaunchedEffect(key1 = viewModel.filteredListEvent) {
+        viewModel.filteredListEvent.collect {
+            listEvent -> listEvent.let {
+            items.value = listEvent
+            }
+        }
+    }
+
+    LaunchedEffect(state.value.sortedType) {
+        withContext(Dispatchers.IO) {
+            if(state.value.listEvents.isNotEmpty()){
+                viewModel.stateValue = state.value.copy(listEvents = sortedEvents(state.value.listEvents, state.value.sortedType))
             }
         }
     }
@@ -97,33 +111,20 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             viewModel.launch()
         }
     }
-    var selectedCategory by remember { mutableStateOf("Всё") }
-    Box (modifier = Modifier
-        .fillMaxSize()
-        .background(NewsTheme.colors.background)) {
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-            ) {
+    Box (modifier = Modifier.fillMaxSize().background(NewsTheme.colors.background)) {
+        Column (modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
-            TextFiledSesrch(state.searchText, { viewModel.updateState(viewModel.state.copy(searchText = it)) }, "Поиск") {
-                viewModel.updateState(viewModel.state.copy(searchText = ""))
+            TextFiledSesrch(state.value.searchText, { viewModel.stateValue = state.value.copy(searchText = it) }, "Поиск") {
+                viewModel.stateValue = state.value.copy(searchText = "")
                 focusManager.clearFocus()
             }
             Spacer(modifier = Modifier.height(16.dp))
             var expanded by remember { mutableStateOf(false) }
             Column {
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) {
-                        expanded = !expanded
-                    },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row(modifier = Modifier.fillMaxWidth().clickable(interactionSource = remember { MutableInteractionSource() },
+                    indication = null) { expanded = !expanded },
+                    verticalAlignment = Alignment.CenterVertically )
+                {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.icon_sorted),
                         contentDescription = "",
@@ -138,7 +139,7 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                                 append("Сортировка: ")
                             }
                             withStyle(SpanStyle(color = NewsTheme.colors.primary, fontWeight = FontWeight.Bold)) {
-                                append(state.listSortedType[state.sortedType])
+                                append(state.value.listSortedType[state.value.sortedType])
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -152,11 +153,11 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                 ) {
-                    state.listSortedType.forEach { item ->
+                    state.value.listSortedType.forEach { item ->
                         DropdownMenuItem(
                             text = { Text(text = item) },
                             onClick = {
-                                viewModel.updateState(viewModel.state.copy(sortedType = state.listSortedType.indexOf(item)))
+                                viewModel.stateValue.sortedType = state.value.listSortedType.indexOf(item)
                                 expanded = false
                             },
                             colors = MenuDefaults.itemColors(
@@ -172,108 +173,113 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                if(state.listEvents != null){
-                    val listCategory = state.listEvents!!.map { it.formOfWork?.name }.distinct().toMutableList()
-                    listCategory.add(0, "Всё")
-                    for(event in listCategory){
-                        val isSelected = selectedCategory == event
-                        val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
-                        val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
-                        Text(modifier = Modifier
-                            .background(backgroundColor, RoundedCornerShape(15.dp))
-                            .padding(vertical = 14.dp, horizontal = 20.dp)
-                            .clickable(
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null
-                            ) {
-                                selectedCategory = event!!
-                            }, text = event!!, fontSize = 12.sp,
-                            fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
-                            color = textColor)
-                        Spacer(modifier = Modifier.width(8.dp))
-                    }
+                for(event in state.value.listCategory){
+                    val isSelected = state.value.selectedCategory == event
+                    val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
+                    val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
+                    Text(modifier = Modifier
+                        .background(backgroundColor, RoundedCornerShape(15.dp))
+                        .padding(vertical = 14.dp, horizontal = 20.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            viewModel.stateValue = state.value.copy(selectedCategory = event)
+                        }, text = event, fontSize = 12.sp,
+                        fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
+                        color = textColor)
+                    Spacer(modifier = Modifier.width(8.dp))
                 }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Пройденные мероприятия", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
-            if(state.listEvents != null){
-                val pattern = Regex(state.searchText, RegexOption.IGNORE_CASE)
-                val filteredListEvent = state.listEvents!!.filter { if(selectedCategory != "Всё") it.formOfWork!!.name.contains(selectedCategory)
-                else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }
-                    LazyColumn(modifier = Modifier.fillMaxWidth()){
-                        items(filteredListEvent) { event ->
-                            var title by remember { mutableStateOf("") }
-                            var desc by remember { mutableStateOf("") }
-                            desc = event.specifications.formOfEvent!!
-                            if(desc == "") desc = event.specifications.place!!
-                            if(desc == "") desc = "Количество часов: ${event.specifications.quantityOfHours.toString()}"
-                            if(desc == "") desc = event.specifications.location!!
-                            title = event.specifications.name.toString()
-                            if(title == "") title = event.specifications.location!!
-                            var showDialog by remember { mutableStateOf(false) }
-                            Column (modifier = Modifier
-                                .shadow(
-                                    elevation = 4.dp,
-                                    shape = RoundedCornerShape(15),
-                                    spotColor = Color(Black.value)
-                                )
-                                .clickable {
-                                    showDialog = true
-                                }
-                                .background(
-                                    color = NewsTheme.colors.primaryContainer,
-                                    shape = RoundedCornerShape(15)
-                                )
-                                .padding(vertical = 16.dp, horizontal = 18.dp)) {
-                                Row (verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(
-                                        imageVector = ImageVector.vectorResource(R.drawable.icon_event),
-                                        contentDescription = "",
-                                        modifier = Modifier
-                                            .size(40.dp)
-                                            .fillMaxWidth(),
-                                        tint = getColorIcon(category = event.formOfWork!!.name)
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Column(modifier = Modifier
-                                        .weight(1f)
-                                        .align(Alignment.CenterVertically)) {
-                                        Text(text = title.firstCharUp(),
-                                            modifier = Modifier
-                                                .padding(bottom = 2.dp),
-                                            fontWeight = FontWeight.Bold,
-                                            fontFamily = Raleway,
-                                            style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
-                                        Text(text = event.formOfWork.name.firstCharUp(),
-                                            fontWeight = FontWeight.Normal,
-                                            fontFamily = Raleway,
-                                            fontSize = 12.sp,
-                                            style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.surface),)
-                                    }
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(text = event.dateOfEvent.convertDate(),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterVertically)
-                                            .padding(top = 3.dp),
-                                        fontWeight = FontWeight.Medium,
-                                        fontFamily = Poppins,
-                                        fontSize = 12.sp,
-                                        style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
-                                }
-                                Divider(modifier = Modifier.padding(vertical = 10.dp), color = NewsTheme.colors.primary, thickness = 0.5.dp)
-                                Text(text = desc.firstCharUp(), style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),)
-                            }
-                            Spacer(modifier = Modifier.height(14.dp))
-                            if (showDialog) {
-                                ShowFragment(title, event, getColorIcon(event.formOfWork!!.name), viewModel){
-                                    showDialog = false
-                                }
-                            }
-                        }
-                    }
-
+            LazyColumn(modifier = Modifier.fillMaxWidth()){
+                items(items.value) { event ->
+                    EventItem(event, viewModel)
+                }
             }
+
+
+        }
+    }
+}
+
+@Composable
+fun EventItem(event: EventModel, viewModel: HomeViewModel) {
+
+    val title = remember { MutableStateFlow("") }
+    val desc = remember { MutableStateFlow("") }
+
+    LaunchedEffect(event) { // Запускаем coroutine для обновления значений
+        desc.value = when {
+            event.specifications.formOfEvent != "" -> event.specifications.formOfEvent!!
+            event.specifications.place != "" -> event.specifications.place!!
+            event.specifications.quantityOfHours != 0 -> "Количество часов: ${event.specifications.quantityOfHours}"
+            event.specifications.location != "" -> event.specifications.location!!
+            else -> ""
+        }
+        title.value = (event.specifications.name.toString().takeIf { it.isNotBlank() } ?: event.specifications.location)!!
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+    /*var title by remember { mutableStateOf("") }
+    var desc by remember { mutableStateOf("") }
+    desc = when {
+        event.specifications.formOfEvent != "" -> event.specifications.formOfEvent!!
+        event.specifications.place != "" -> event.specifications.place!!
+        event.specifications.quantityOfHours != 0 -> "Количество часов: ${event.specifications.quantityOfHours}"
+        event.specifications.location != "" -> event.specifications.location!!
+        else -> ""
+    }
+    title = (event.specifications.name.toString().takeIf { it.isNotBlank() } ?: event.specifications.location)!!*/
+    Column (modifier = Modifier
+        .shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
+        .clickable { showDialog = true }
+        .background( color = NewsTheme.colors.primaryContainer, shape = RoundedCornerShape(15) )
+        .padding(vertical = 16.dp, horizontal = 18.dp)) {
+        Row (verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = ImageVector.vectorResource(R.drawable.icon_event),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(40.dp)
+                    .fillMaxWidth(),
+                tint = getColorIcon(category = event.formOfWork!!.name)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)) {
+                Text(text = title.collectAsState().value.firstCharUp(),
+                    modifier = Modifier
+                        .padding(bottom = 2.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = Raleway,
+                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
+                Text(text = event.formOfWork.name.firstCharUp(),
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = Raleway,
+                    fontSize = 12.sp,
+                    style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.surface),)
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = event.dateOfEvent.convertDate(),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 3.dp),
+                fontWeight = FontWeight.Medium,
+                fontFamily = Poppins,
+                fontSize = 12.sp,
+                style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary))
+        }
+        Divider(modifier = Modifier.padding(vertical = 10.dp), color = NewsTheme.colors.primary, thickness = 0.5.dp)
+        Text(text = desc.collectAsState().value.firstCharUp(), style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),)
+    }
+    Spacer(modifier = Modifier.height(14.dp))
+    if (showDialog) {
+        ShowFragment(title.collectAsState().value, event, getColorIcon(event.formOfWork!!.name), viewModel){
+            showDialog = false
         }
     }
 }
@@ -404,7 +410,9 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
                     Button(modifier = Modifier.fillMaxWidth(1f),
                         shape = RoundedCornerShape(15.dp),
                         onClick = {
-                            event.id?.let { viewModel.deleteEvent(it) }
+                            event.id?.let {
+                                viewModel.deleteEvent(it, onDismissRequest)
+                            }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = NewsTheme.colors.error,

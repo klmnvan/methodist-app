@@ -18,6 +18,9 @@ import com.example.prodjectformc.data.repository.PrefManager
 import com.example.prodjectformc.ui.navigation.DestinationsBottomBar
 import com.example.prodjectformc.ui.navigation.RoutesNavigation
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,19 +29,22 @@ class SignInViewModel @Inject constructor(
     private val service: ApiServiceImpl
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(SignInState())
-    val state: SignInState get() = _state.value
+    private val _state = MutableStateFlow(SignInState())
+    val state: StateFlow<SignInState> get() = _state.asStateFlow()
 
-    fun updateState(newState: SignInState) {
-        _state.value = newState
-    }
+    var stateValue: SignInState
+        get() = _state.value
+        set(value) {
+            _state.value = value
+        }
 
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
     fun signIn(navController: NavController) {
         viewModelScope.launch {
-            val response = service.signIn(state.email, state.password)
+            Log.d("test", "${state.value.email} ${state.value.password}")
+            val response = service.signIn(state.value.email, state.value.password)
             if(response.token != null){
                 PrefManager.act = 1
                 PrefManager.token = response.token

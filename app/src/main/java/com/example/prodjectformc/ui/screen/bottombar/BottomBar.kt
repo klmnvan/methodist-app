@@ -1,6 +1,7 @@
 package com.example.prodjectformc.ui.screen.bottombar
 
 import android.media.Image
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -57,12 +58,14 @@ fun BottomBar(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+                            if(currentRoute != screen.route) {
+                                navController.navigate(screen.route) {
+                                    currentRoute?.let {
+                                        popUpTo(it) {
+                                            inclusive = true
+                                        }
+                                    }
                                 }
-                                launchSingleTop = true
-                                restoreState = true
                             }
                         },horizontalAlignment = Alignment.CenterHorizontally) {
                         var selectedColor = NewsTheme.colors.onBackground
@@ -94,11 +97,9 @@ fun BottomBar(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null) {
                     navController.navigate(screens[1].route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                        popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                            inclusive = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
                     }
                 },contentDescription = "")
 

@@ -60,6 +60,7 @@ import androidx.navigation.NavHostController
 import com.example.prodjectformc.R
 import com.example.prodjectformc.data.model.event.EventModel
 import com.example.prodjectformc.ui.components.TextDescFragment
+import com.example.prodjectformc.ui.components.TextDescription
 import com.example.prodjectformc.ui.components.TextFiledSesrch
 import com.example.prodjectformc.ui.components.TextTittleFragment
 import com.example.prodjectformc.ui.theme.Poppins
@@ -79,38 +80,28 @@ import com.example.prodjectformc.ui.theme.firstCharUp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltViewModel()){
+fun Home(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state.collectAsState()
     viewModel.context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val items: MutableState<MutableList<EventModel>> = remember { mutableStateOf(mutableListOf()) }
-    viewModel.filteredListEvents()
 
-    LaunchedEffect(key1 = viewModel.filteredListEvent) {
-        viewModel.filteredListEvent.collect {
-            listEvent -> listEvent.let {
-            items.value = listEvent
-            }
-        }
+    LaunchedEffect(state.value.selectedCategory, state.value.searchText) {
+        viewModel.filteredListEvents()
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.launch()
     }
 
     LaunchedEffect(state.value.sortedType) {
-        withContext(Dispatchers.IO) {
-            if(state.value.listEvents.isNotEmpty()){
-                viewModel.stateValue = state.value.copy(listEvents = sortedEvents(state.value.listEvents, state.value.sortedType))
-            }
+        if(state.value.listEvents.isNotEmpty()) {
+            viewModel.stateValue = state.value.copy(filteredListEvent = viewModel.sortedEvents(state.value.filteredListEvent, state.value.sortedType))
         }
     }
-    LaunchedEffect(Unit) {
-        withContext(Dispatchers.IO){
-            viewModel.launch()
-        }
-    }
+
     Box (modifier = Modifier.fillMaxSize().background(NewsTheme.colors.background)) {
         Column (modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
@@ -194,13 +185,15 @@ fun Home(navHostController: NavHostController?, viewModel: HomeViewModel = hiltV
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Пройденные мероприятия", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(modifier = Modifier.fillMaxWidth()){
-                items(items.value) { event ->
-                    EventItem(event, viewModel)
+            if(state.value.filteredListEvent.isNotEmpty()){
+                LazyColumn(modifier = Modifier.fillMaxWidth()){
+                    items(state.value.filteredListEvent) { event ->
+                        EventItem(event, viewModel)
+                    }
                 }
+            } else {
+                TextDescription("Мероприятий пока нет")
             }
-
-
         }
     }
 }
@@ -211,7 +204,7 @@ fun EventItem(event: EventModel, viewModel: HomeViewModel) {
     val title = remember { MutableStateFlow("") }
     val desc = remember { MutableStateFlow("") }
 
-    LaunchedEffect(event) { // Запускаем coroutine для обновления значений
+    LaunchedEffect(event) {
         desc.value = when {
             event.specifications.formOfEvent != "" -> event.specifications.formOfEvent!!
             event.specifications.place != "" -> event.specifications.place!!
@@ -223,16 +216,7 @@ fun EventItem(event: EventModel, viewModel: HomeViewModel) {
     }
 
     var showDialog by remember { mutableStateOf(false) }
-    /*var title by remember { mutableStateOf("") }
-    var desc by remember { mutableStateOf("") }
-    desc = when {
-        event.specifications.formOfEvent != "" -> event.specifications.formOfEvent!!
-        event.specifications.place != "" -> event.specifications.place!!
-        event.specifications.quantityOfHours != 0 -> "Количество часов: ${event.specifications.quantityOfHours}"
-        event.specifications.location != "" -> event.specifications.location!!
-        else -> ""
-    }
-    title = (event.specifications.name.toString().takeIf { it.isNotBlank() } ?: event.specifications.location)!!*/
+
     Column (modifier = Modifier
         .shadow(elevation = 4.dp, shape = RoundedCornerShape(15), spotColor = Color(Black.value))
         .clickable { showDialog = true }
@@ -432,29 +416,6 @@ fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewMode
         }
     }
 }
-
-fun sortedEvents(list: MutableList<EventModel>, idSorting: Int): MutableList<EventModel> {
-    when(idSorting) {
-        0 -> {
-            return list.sortedWith(Comparator.comparing<EventModel, LocalDate> { model ->
-                LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
-            }.reversed()) as MutableList<EventModel>
-        }
-        1 -> {
-            return list.sortedWith(Comparator.comparing { model ->
-                LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
-            }) as MutableList<EventModel>
-        }
-        2 -> {
-
-        }
-        3 -> {
-
-        }
-    }
-    return list
-}
-
 
 @Composable
 fun GradientDivider(

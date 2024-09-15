@@ -33,22 +33,26 @@ class InternshipViewModel @Inject constructor(
     lateinit var context: Context
 
     fun createEvent(navController: NavHostController){
-        viewModelScope.launch {
-            val response = service.createInternshipEvent(
-                CurrentUser.token,
-                state
-            )
-            if(response.event != null){
-                Log.d("event", response.event.toString())
-                navController.navigate(DestinationsBottomBar.HomeScreen.route){
-                    popUpTo(RoutesNavigation.INTERNSHIP) {
-                        inclusive = true
+        if(state.location != "" && state.quantityOfHours != 0 && state.dateOfEvent != "") {
+            viewModelScope.launch {
+                val response = service.createInternshipEvent(
+                    CurrentUser.token,
+                    state
+                )
+                if(response.event != null) {
+                    Log.d("event", response.event.toString())
+                    navController.navigate(DestinationsBottomBar.HomeScreen.route){
+                        popUpTo(RoutesNavigation.INTERNSHIP) {
+                            inclusive = true
+                        }
                     }
                 }
+                if (response.error != null) {
+                    Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
+                }
             }
-            if (response.error != null){
-                Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
-            }
+        } else {
+            Toast.makeText(context, "Не все поля заполнены", Toast.LENGTH_LONG).show()
         }
     }
 

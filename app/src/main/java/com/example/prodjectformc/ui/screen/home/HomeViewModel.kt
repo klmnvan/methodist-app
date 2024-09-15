@@ -20,7 +20,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -36,29 +39,21 @@ class HomeViewModel @Inject constructor(
             _state.value = value
         }
 
-    private val _filteredListEvent = MutableStateFlow(mutableListOf<EventModel>())
-    val filteredListEvent: StateFlow<MutableList<EventModel>> = _filteredListEvent.asStateFlow()
-
     fun filteredListEvents() {
-        val pattern = Regex(state.value.searchText, RegexOption.IGNORE_CASE)
-        val filteredList = state.value.listEvents.filter { if(state.value.selectedCategory != "Всё") it.formOfWork!!.name.contains(state.value.selectedCategory)
-        else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }
-        _filteredListEvent.value = filteredList.toMutableList()
-    }
-
-    /*val filteredListEventValue: MutableList<EventModel>
-        get() {
+        if (stateValue.listEvents.isNotEmpty()){
             val pattern = Regex(state.value.searchText, RegexOption.IGNORE_CASE)
             val filteredList = state.value.listEvents.filter { if(state.value.selectedCategory != "Всё") it.formOfWork!!.name.contains(state.value.selectedCategory)
             else it.formOfWork!!.name.contains("")}.filter { pattern.containsMatchIn(it.specifications.toString()) }
-            return filteredList.toMutableList()
-        }*/
+            _state.value = stateValue.copy(filteredListEvent = sortedEvents(filteredList.toMutableList(), state.value.sortedType))
+        }
+    }
 
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
     suspend fun launch() {
-        withContext(Dispatchers.IO) {
+        viewModelScope.launch {
+            Log.d("accountInfo", CurrentUser.token)
             CurrentUser.accountInfo = service.getAccountInfo(CurrentUser.token)
             Log.d("accountInfo", CurrentUser.accountInfo.toString())
             if(CurrentUser.accountInfo != null){
@@ -89,19 +84,47 @@ class HomeViewModel @Inject constructor(
                     val listNewCategory = state.value.listEvents.map { it.formOfWork!!.name }.distinct().toMutableList()
                     listNewCategory.add(0, "Всё")
                     stateValue = stateValue.copy(listCategory = listNewCategory)
+                    filteredListEvents()
+                    stateValue = state.value.copy(filteredListEvent = sortedEvents(state.value.listEvents, state.value.sortedType))
+                    Log.d("listEvents", stateValue.listEvents.toString())
                 }
-                Log.d("listEvents", stateValue.listEvents.toString())
             }
         }
+    }
+
+    fun sortedEvents(list: MutableList<EventModel>, idSorting: Int): MutableList<EventModel> {
+        if(list.isNotEmpty()){
+            when(idSorting) {
+                0 -> {
+                    return list.sortedWith(Comparator.comparing<EventModel, LocalDate> { model ->
+                        LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
+                    }.reversed()) as MutableList<EventModel>
+                }
+                1 -> {
+                    return list.sortedWith(Comparator.comparing { model ->
+                        LocalDate.parse(model.dateOfEvent, DateTimeFormatter.ISO_LOCAL_DATE)
+                    }) as MutableList<EventModel>
+                }
+                2 -> {
+
+                }
+                3 -> {
+
+                }
+            }
+        }
+        return list
     }
 
     fun deleteEvent(id: String, onDismissRequest: () -> Unit) {
         viewModelScope.launch {
             val response = service.deleteEvent(CurrentUser.token, id)
-            Log.d("response delete event", response)
             if(response == "") {
                 Log.d("", response)
-                _filteredListEvent.value.removeIf { it.id == id }
+                val list = stateValue.listEvents
+                list.removeIf { it.id == id }
+                stateValue = stateValue.copy(listEvents = list)
+                filteredListEvents()
                 onDismissRequest()
             } else {
                 Toast.makeText(context, "$response", Toast.LENGTH_LONG).show()

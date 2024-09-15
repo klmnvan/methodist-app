@@ -370,7 +370,7 @@ fun Participation(navHostController: NavHostController, viewModel: Participation
                         .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
-                        .clickable { viewModel.createParticipationEvent(navHostController) },
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { viewModel.createParticipationEvent(navHostController) },
                     contentDescription = "",
                     tint = Color(
                         White.value)

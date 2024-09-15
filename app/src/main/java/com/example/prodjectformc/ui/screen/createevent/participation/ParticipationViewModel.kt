@@ -81,29 +81,33 @@ class ParticipationViewModel @Inject constructor(
     }
 
     fun createParticipationEvent(navController: NavHostController){
-        viewModelScope.launch {
-            val response = service.createParticipationEvent(CurrentUser.token,
-                CreateParticipationEventRequest(
-                    name = state.name,
-                    result = state.result,
-                    formOfEvent = state.formOfEvent,
-                    status = state.status,
-                    dateOfEvent = state.dateOfEvent,
-                    endDateOfEvent = state.endDateOfEvent,
-                    formOfParticipation = state.formOfParticipation
+        if(state.name != "" && state.result != "" && state.formOfEvent != "" && state.status != "" && state.dateOfEvent != "" && state.formOfParticipation != "" ) {
+            viewModelScope.launch {
+                val response = service.createParticipationEvent(CurrentUser.token,
+                    CreateParticipationEventRequest(
+                        name = state.name,
+                        result = state.result,
+                        formOfEvent = state.formOfEvent,
+                        status = state.status,
+                        dateOfEvent = state.dateOfEvent,
+                        endDateOfEvent = state.endDateOfEvent,
+                        formOfParticipation = state.formOfParticipation
+                    )
                 )
-            )
-            if(response.event != null){
-                Log.d("event", response.event.toString())
-                navController.navigate(DestinationsBottomBar.HomeScreen.route){
-                    popUpTo(RoutesNavigation.PARTICIPATION) {
-                        inclusive = true
+                if(response.event != null){
+                    Log.d("event", response.event.toString())
+                    navController.navigate(DestinationsBottomBar.HomeScreen.route){
+                        popUpTo(RoutesNavigation.PARTICIPATION) {
+                            inclusive = true
+                        }
                     }
                 }
+                if (response.error != null){
+                    Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
+                }
             }
-            if (response.error != null){
-                Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
-            }
+        } else {
+            Toast.makeText(context, "Не все поля заполнены", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -70,29 +70,33 @@ class HoldingViewModel @Inject constructor(
     }
 
     fun createEvent(navController: NavHostController){
-        viewModelScope.launch {
-            val response = service.createHoldingEvent(CurrentUser.token,
-                CreateHoldingEventRequest(
-                    dateOfEvent = state.dateOfEvent,
-                    endDateOfEvent = state.dateOfEvent,
-                    formOfEvent = state.formOfEvent,
-                    location = state.location,
-                    name = state.name,
-                    result = state.result,
-                    status = state.status,
+        if(state.name != "" && state.result != "" && state.formOfEvent != "" && state.status != "" && state.dateOfEvent != "" && state.location != "" ) {
+            viewModelScope.launch {
+                val response = service.createHoldingEvent(CurrentUser.token,
+                    CreateHoldingEventRequest(
+                        dateOfEvent = state.dateOfEvent,
+                        endDateOfEvent = state.dateOfEvent,
+                        formOfEvent = state.formOfEvent,
+                        location = state.location,
+                        name = state.name,
+                        result = state.result,
+                        status = state.status,
+                    )
                 )
-            )
-            if(response.event != null){
-                Log.d("event", response.event.toString())
-                navController.navigate(DestinationsBottomBar.HomeScreen.route){
-                    popUpTo(RoutesNavigation.HOLDING) {
-                        inclusive = true
+                if(response.event != null){
+                    Log.d("event", response.event.toString())
+                    navController.navigate(DestinationsBottomBar.HomeScreen.route){
+                        popUpTo(RoutesNavigation.HOLDING) {
+                            inclusive = true
+                        }
                     }
                 }
+                if (response.error != null){
+                    Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
+                }
             }
-            if (response.error != null){
-                Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
-            }
+        } else {
+            Toast.makeText(context, "Не все поля заполнены", Toast.LENGTH_LONG).show()
         }
     }
 

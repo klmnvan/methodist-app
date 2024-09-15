@@ -35,14 +35,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PrefManager.init(LocalContext.current)
+            CurrentUser.token = PrefManager.token
+            PrefManager.checkToken()
             val currentThemeMode = remember { mutableStateOf(CurrentUser.themes.first { it.title == PrefManager.theme }) }
             val isBottomBarVisible = remember { mutableStateOf(false) }
             val controller = rememberNavController()
             NewsTheme(
                 themeMode = currentThemeMode.value
             ) {
-                CurrentUser.token = PrefManager.token
-                PrefManager.checkToken()
                 Scaffold(
                     modifier = Modifier.fillMaxSize().background(NewsTheme.colors.background),
                     bottomBar = {

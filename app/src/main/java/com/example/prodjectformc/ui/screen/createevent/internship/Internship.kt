@@ -202,7 +202,7 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
                         .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
-                        .clickable { viewModel.createEvent(navHostController) },
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { viewModel.createEvent(navHostController) },
                     contentDescription = "",
                     tint = Color(
                         White.value)

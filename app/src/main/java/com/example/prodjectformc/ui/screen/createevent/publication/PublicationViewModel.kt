@@ -33,28 +33,32 @@ class PublicationViewModel @Inject constructor(
     @SuppressLint("StaticFieldLeak")
     lateinit var context: Context
 
-    fun CreatePublicationEvent(navController: NavHostController){
+    fun createPublicationEvent(navController: NavHostController){
         viewModelScope.launch {
-            val response = service.createPublicationEvent(
-                CurrentUser.token,
-                CreatePublicationEventRequest(
-                    name = state.name,
-                    type = state.type,
-                    place = state.place,
-                    dateOfEvent = state.dateOfEvent,
-                    endDateOfEvent = state.dateOfEvent
+            if(state.place != "" && state.type != "" && state.name != "" && state.dateOfEvent != "") {
+                val response = service.createPublicationEvent(
+                    CurrentUser.token,
+                    CreatePublicationEventRequest(
+                        name = state.name,
+                        type = state.type,
+                        place = state.place,
+                        dateOfEvent = state.dateOfEvent,
+                        endDateOfEvent = state.dateOfEvent
+                    )
                 )
-            )
-            if(response.event != null){
-                Log.d("event", response.event.toString())
-                navController.navigate(DestinationsBottomBar.HomeScreen.route){
-                    popUpTo(RoutesNavigation.PUBLICATION) {
-                        inclusive = true
+                if(response.event != null){
+                    Log.d("event", response.event.toString())
+                    navController.navigate(DestinationsBottomBar.HomeScreen.route){
+                        popUpTo(RoutesNavigation.PUBLICATION) {
+                            inclusive = true
+                        }
                     }
                 }
-            }
-            if (response.error != null){
-                Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
+                if (response.error != null){
+                    Toast.makeText(context, "${response.error}", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toast.makeText(context, "Не все поля заполнены", Toast.LENGTH_LONG).show()
             }
         }
     }

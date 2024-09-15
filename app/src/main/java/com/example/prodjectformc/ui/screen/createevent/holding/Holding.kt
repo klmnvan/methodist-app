@@ -2,6 +2,7 @@ package com.example.prodjectformc.ui.screen.createevent.holding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -275,7 +276,7 @@ fun Holding(navHostController: NavHostController, viewModel: HoldingViewModel = 
                         .background(NewsTheme.colors.primary, shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
-                        .clickable { viewModel.createEvent(navHostController) },
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) { viewModel.createEvent(navHostController) },
                     contentDescription = "",
                     tint = Color(
                         White.value

@@ -2,6 +2,7 @@ package com.example.prodjectformc.ui.screen.createevent.publication
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -125,7 +126,6 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                     Spacer(modifier = Modifier.width(12.dp))
                     Text(text = "Изменить", style = NewsTheme.typography.buttonTextStyle)
                 }
-
                 if (showDialog) {
                     CustomDatePickerDialog("Выбор даты", {chosenYear = it}, {chosenMonth = it}, {chosenDay = it}) {
                         showDialog = false
@@ -164,14 +164,14 @@ fun Publication(navHostController: NavHostController, viewModel: PublicationView
                         .background(Color(Blue.value), shape = RoundedCornerShape(15.dp))
                         .size(45.dp)
                         .padding(12.dp)
-                        .clickable { viewModel.CreatePublicationEvent(navHostController) },
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) {
+                            viewModel.createPublicationEvent(navHostController) },
                     contentDescription = "",
                     tint = Color(
                         White.value)
                 )
             }
             Spacer(modifier = Modifier.height(20.dp))
-
         }
     }
 }

@@ -10,13 +10,13 @@ sealed class DestinationsBottomBar(
     object HomeScreen : DestinationsBottomBar(
         route = "home_screen",
         title = "Мероприятия",
-        resourceId = R.drawable.icon_home
+        resourceId = R.drawable.button_create_event
     )
 
     object CreateEventScreen : DestinationsBottomBar(
         route = "event_screen",
-        title = null,
-        resourceId = R.drawable.button_create_event
+        title = "Мероприятия",
+        resourceId = R.drawable.icon_home
     )
 
     object ProfileScreen : DestinationsBottomBar(

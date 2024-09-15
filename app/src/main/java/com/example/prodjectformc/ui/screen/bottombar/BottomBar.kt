@@ -39,7 +39,7 @@ import com.example.prodjectformc.ui.theme.custom.NewsTheme
 fun BottomBar(
     navController: NavHostController, modifier: Modifier = Modifier
 ) {
-    val screens = listOf(DestinationsBottomBar.HomeScreen, DestinationsBottomBar.CreateEventScreen, DestinationsBottomBar.ProfileScreen)
+    val screens = listOf(DestinationsBottomBar.CreateEventScreen, DestinationsBottomBar.HomeScreen, DestinationsBottomBar.ProfileScreen)
     Box(modifier = Modifier) {
         NavigationBar(
             modifier = modifier,
@@ -49,7 +49,7 @@ fun BottomBar(
             val currentRoute = navBackStackEntry?.destination?.route
 
             screens.forEach { screen ->
-                if(screen.route == "event_screen"){
+                if(screen.route == "home_screen"){
 
                 } else {
                     Column(modifier = Modifier

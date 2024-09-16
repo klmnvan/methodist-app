@@ -36,6 +36,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -72,7 +73,6 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
             Spacer(modifier = Modifier.height(12.dp))
             Column {
                 if(state.listFormOfWork.isNotEmpty()){
-
                     FlowRow(Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp), maxItemsInEachRow = Int.MAX_VALUE){
@@ -113,10 +113,10 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                                     Text(
                                         textAlign = TextAlign.Center,
                                         text = modelView.title.toUpperCase(),
-                                        fontSize = 14.sp,
+                                        fontSize = 3.5.em,
                                         fontFamily = Raleway,
                                         fontWeight = FontWeight.SemiBold,
-                                        style = MaterialTheme.typography.bodyMedium.copy(color = NewsTheme.colors.onPrimary)
+                                        style = NewsTheme.typography.bodyMedium.copy(color = NewsTheme.colors.onPrimary)
                                     )
                                 }
                             }
@@ -135,6 +135,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
                             tint = Color(White.value)
                         )
                     }
+                    Spacer(modifier = Modifier.height(20.dp))
                 }
             }
         }

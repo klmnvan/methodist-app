@@ -67,10 +67,10 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
         modifier = Modifier
             .fillMaxSize()
             .background(NewsTheme.colors.background)
+            .verticalScroll(rememberScrollState())
     ) {
         Column(modifier = Modifier
-            .padding(horizontal = 20.dp)
-            .verticalScroll(rememberScrollState())) {
+            .padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
             Column(modifier = Modifier.fillMaxWidth(),horizontalAlignment = Alignment.CenterHorizontally) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {

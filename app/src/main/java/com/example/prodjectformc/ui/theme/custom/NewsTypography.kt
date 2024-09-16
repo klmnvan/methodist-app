@@ -6,6 +6,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.example.prodjectformc.ui.theme.Poppins
 import com.example.prodjectformc.ui.theme.Raleway
@@ -47,7 +48,7 @@ val newsTypography = NewsTypography(
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         color = Color(Black.value),
-        lineHeight = 20.sp
+        lineHeight = 1.2.em
     ),
     labelMedium = TextStyle(
         fontFamily = Raleway,

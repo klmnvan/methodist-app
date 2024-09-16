@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -77,7 +78,7 @@ fun BottomBar(
                             modifier = Modifier.size(30.dp),
                             contentDescription = "", tint = selectedColor)
                         Spacer(modifier = Modifier.height(4.dp))
-                        Text(text = screen.title!!, color = selectedColor, fontSize = 12.sp,
+                        Text(text = screen.title!!, color = selectedColor, fontSize = 3.em,
                             fontFamily = Raleway, fontWeight = FontWeight.SemiBold
                         )
                     }
@@ -96,9 +97,11 @@ fun BottomBar(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null) {
-                    navController.navigate(screens[1].route) {
-                        popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
-                            inclusive = true
+                    if(navController.currentDestination!!.route != "home_screen"){
+                        navController.navigate(screens[1].route) {
+                            popUpTo(DestinationsBottomBar.CreateEventScreen.route) {
+                                inclusive = true
+                            }
                         }
                     }
                 },contentDescription = "")

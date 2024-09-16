@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -163,17 +164,14 @@ fun Home(navHostController: NavHostController, viewModel: HomeViewModel = hiltVi
             Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
             Spacer(modifier = Modifier.height(8.dp))
             Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                for(event in state.value.listCategory){
+                for(event in state.value.listCategory) {
                     val isSelected = state.value.selectedCategory == event
                     val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
                     val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
                     Text(modifier = Modifier
                         .background(backgroundColor, RoundedCornerShape(15.dp))
                         .padding(vertical = 14.dp, horizontal = 20.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {
+                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) {
                             viewModel.stateValue = state.value.copy(selectedCategory = event)
                         }, text = event, fontSize = 12.sp,
                         fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
@@ -271,6 +269,8 @@ fun EventItem(event: EventModel, viewModel: HomeViewModel) {
 fun ShowFragment(title: String, event: EventModel, primaryColor: Color, viewModel: HomeViewModel, onDismissRequest: () -> Unit){
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
+            modifier = Modifier.padding(vertical = 20.dp)
+                .verticalScroll(rememberScrollState()),
             shape = RoundedCornerShape(15.dp),
             elevation = CardDefaults.cardElevation(10.dp),
             colors = CardDefaults.cardColors(

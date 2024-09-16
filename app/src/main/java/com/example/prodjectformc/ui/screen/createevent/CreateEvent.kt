@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -56,7 +58,7 @@ fun CreateEvent(navHostController: NavHostController, viewModel: CreateEventView
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(NewsTheme.colors.background)
+            .background(NewsTheme.colors.background).verticalScroll(rememberScrollState())
     ) {
         Column(modifier = Modifier.padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))

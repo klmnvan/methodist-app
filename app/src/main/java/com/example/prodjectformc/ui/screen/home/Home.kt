@@ -117,10 +117,9 @@ fun Home(navHostController: NavHostController, viewModel: HomeViewModel = hiltVi
                     verticalAlignment = Alignment.CenterVertically )
                 {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.icon_sorted),
+                        imageVector = ImageVector.vectorResource(R.drawable.button_collapse_text),
                         contentDescription = "",
-                        modifier = Modifier
-                            .size(16.dp),
+                        modifier = Modifier.size(16.dp),
                         tint = NewsTheme.colors.primary
                     )
                     Spacer(modifier = Modifier.width(12.dp))

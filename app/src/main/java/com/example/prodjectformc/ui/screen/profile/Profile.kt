@@ -200,7 +200,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
 
 @Composable
 fun ApplicationThemePickerDialog(chosenTheme: (String) -> Unit, onDismissRequest: () -> Unit){
-    var onThemeChosenValue = "Dark"
+    var onThemeChosenValue = PrefManager.theme
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Card(
             shape = RoundedCornerShape(15.dp),
@@ -223,7 +223,6 @@ fun ApplicationThemePickerDialog(chosenTheme: (String) -> Unit, onDismissRequest
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 ThemeSelectionSection(
-                    chosenTheme = onThemeChosenValue,
                     onThemeChosen = {onThemeChosenValue = it}
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -255,7 +254,6 @@ fun ApplicationThemePickerDialog(chosenTheme: (String) -> Unit, onDismissRequest
 
 @Composable
 fun ThemeSelectionSection(
-    chosenTheme: String,
     onThemeChosen: (String) -> Unit
 ) {
     Row(
@@ -263,10 +261,14 @@ fun ThemeSelectionSection(
             .fillMaxWidth()
             .height(120.dp)
     ) {
+        Log.d("тема текущая", PrefManager.theme)
+        Log.d("тема текущая", themes.toString())
+        Log.d("тема текущая", themes.map { it.title }.indexOf(PrefManager.theme).toString())
+        val firstIndex = themes.map { it.title }.indexOf(PrefManager.theme)
         Box(modifier = Modifier.weight(1f)){
             ThemeInfiniteItemsPicker(
                 items = themes.map { it.title },
-                firstIndex = themes.map { it.title }.indexOf(chosenTheme),
+                firstIndex = Int.MAX_VALUE / 2 + firstIndex - 1,
                 onItemSelected = onThemeChosen
             )
         }
@@ -280,8 +282,8 @@ fun ThemeInfiniteItemsPicker(
     onItemSelected: (String) -> Unit,
 ) {
 
-    val listState = rememberLazyListState(firstIndex-1)
-    var currentValue = ""
+    val listState = rememberLazyListState(firstIndex)
+    var currentValue = PrefManager.theme
 
     LaunchedEffect(key1 = !listState.isScrollInProgress) {
         onItemSelected(currentValue)

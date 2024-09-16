@@ -7,6 +7,7 @@ sealed class DestinationsBottomBar(
     val title: String? = null,
     val resourceId: Int? = null
 ) {
+
     object HomeScreen : DestinationsBottomBar(
         route = "home_screen",
         title = "Мероприятия",
@@ -24,6 +25,5 @@ sealed class DestinationsBottomBar(
         title = "Профиль",
         resourceId = R.drawable.icon_profile
     )
-
 
 }

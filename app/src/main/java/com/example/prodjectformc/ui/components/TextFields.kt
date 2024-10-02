@@ -99,15 +99,6 @@ fun TextFiledSesrch(value: String, input: (String) -> Unit, placeholder: String,
             containerColor = NewsTheme.colors.primaryContainer,
             cursorColor = NewsTheme.colors.primary
         ),
-        leadingIcon = {
-            Icon(
-                imageVector = ImageVector.vectorResource(R.drawable.icon_search),
-                contentDescription = "",
-                modifier = Modifier
-                    .size(24.dp),
-                tint = NewsTheme.colors.onPrimary
-            )
-        },
         trailingIcon = {
             Icon(
                 imageVector = ImageVector.vectorResource(R.drawable.icon_clear),

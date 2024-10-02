@@ -2,6 +2,7 @@ package com.example.prodjectformc.ui.screen.profile
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,8 @@ import com.example.prodjectformc.data.model.general.CurrentUser.themes
 import com.example.prodjectformc.data.repository.PrefManager
 import com.example.prodjectformc.ui.components.TextTittleForm
 import com.example.prodjectformc.ui.components.TextTittle
+import com.example.prodjectformc.ui.screen.profile.items.ApplicationThemePickerDialog
+import com.example.prodjectformc.ui.theme.Poppins
 import com.example.prodjectformc.ui.theme.custom.Blue20
 import com.example.prodjectformc.ui.theme.custom.Blue80
 import com.example.prodjectformc.ui.theme.custom.Gray3
@@ -113,7 +116,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start, verticalAlignment = Alignment.CenterVertically) {
                     TextTittle("Тема приложения")
                 }
                 Spacer(modifier = Modifier.height(12.dp))
@@ -123,7 +126,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                         .height(IntrinsicSize.Min),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(text = currentThemeMode.value.title,
+                   /* Text(text = currentThemeMode.value.title,
                         modifier = Modifier
                             .background(Color(Blue20.value), RoundedCornerShape(15.dp))
                             .weight(1f)
@@ -131,7 +134,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                             .padding(horizontal = 16.dp, vertical = 18.dp),
                         style = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.primary,
                             fontSize = 16.sp)
-                    )
+                    )*/
                     var showDialog by remember { mutableStateOf(false) }
                     Button(
                         modifier = Modifier
@@ -144,24 +147,18 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                         onClick = {
                             showDialog = true
                         }) {
-                        Icon(modifier = Modifier
-                            .padding()
-                            .size(25.dp),
-                            imageVector = ImageVector.vectorResource(R.drawable.icon_brush), contentDescription = "",
-                            tint = Color.Unspecified
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(text = "Сменить", style = NewsTheme.typography.buttonTextStyle.copy(fontSize = 16.sp))
+                        Box(modifier = Modifier.padding(vertical = 8.dp)) {
+                            Text(text = currentThemeMode.value.title, style = NewsTheme.typography.buttonTextStyle.copy(fontSize = 20.sp))  }
                     }
 
                     if (showDialog) {
+                            ApplicationThemePickerDialog({ currentThemeMode.value = themes.find { theme -> theme.title == it }!!
+                                Log.d("currentThemeMode", currentThemeMode.value.toString())}
+                            ) {
+                                PrefManager.theme = currentThemeMode.value.title
+                                showDialog = false
+                            }
 
-                        ApplicationThemePickerDialog({ currentThemeMode.value = themes.find { theme -> theme.title == it }!!
-                            Log.d("currentThemeMode", currentThemeMode.value.toString())}
-                        ) {
-                            PrefManager.theme = currentThemeMode.value.title
-                            showDialog = false
-                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(20.dp))
@@ -187,6 +184,7 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
                     text = "Выйти",
                     modifier = Modifier
                         .padding(vertical = 8.dp),
+                    fontFamily = Poppins,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     color = Color.White
@@ -195,127 +193,4 @@ fun Profile(navHostController: NavHostController, currentThemeMode: MutableState
         }
     }
 
-}
-
-
-@Composable
-fun ApplicationThemePickerDialog(chosenTheme: (String) -> Unit, onDismissRequest: () -> Unit){
-    var onThemeChosenValue = PrefManager.theme
-    Dialog(onDismissRequest = { onDismissRequest() }) {
-        Card(
-            shape = RoundedCornerShape(15.dp),
-            elevation = CardDefaults.cardElevation(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = NewsTheme.colors.primaryContainer,
-            ),
-        ){
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 10.dp, horizontal = 5.dp)
-            ) {
-                Text(
-                    text = "Список тем",
-                    style = NewsTheme.typography.titleLarge.copy(color = NewsTheme.colors.onPrimary),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-                ThemeSelectionSection(
-                    onThemeChosen = {onThemeChosenValue = it}
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 10.dp),
-                    shape = RoundedCornerShape(15.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = NewsTheme.colors.primary
-                    ),
-                    onClick = {
-                        chosenTheme(onThemeChosenValue)
-                        onDismissRequest()
-                    }
-                ) {
-                    Text(
-                        text = "Выбрать",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = Color.White,
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ThemeSelectionSection(
-    onThemeChosen: (String) -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp)
-    ) {
-        Log.d("тема текущая", PrefManager.theme)
-        Log.d("тема текущая", themes.toString())
-        Log.d("тема текущая", themes.map { it.title }.indexOf(PrefManager.theme).toString())
-        val firstIndex = themes.map { it.title }.indexOf(PrefManager.theme)
-        Box(modifier = Modifier.weight(1f)){
-            ThemeInfiniteItemsPicker(
-                items = themes.map { it.title },
-                firstIndex = Int.MAX_VALUE / 2 + firstIndex - 1,
-                onItemSelected = onThemeChosen
-            )
-        }
-    }
-}
-
-@Composable
-fun ThemeInfiniteItemsPicker(
-    items: List<String>,
-    firstIndex: Int,
-    onItemSelected: (String) -> Unit,
-) {
-
-    val listState = rememberLazyListState(firstIndex)
-    var currentValue = PrefManager.theme
-
-    LaunchedEffect(key1 = !listState.isScrollInProgress) {
-        onItemSelected(currentValue)
-        listState.animateScrollToItem(index = listState.firstVisibleItemIndex)
-    }
-
-    Column(modifier = Modifier
-        .height(106.dp)
-        .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            state = listState,
-            content = {
-                items(count = Int.MAX_VALUE, itemContent = {
-                    val index = it % items.size
-                    if (it == listState.firstVisibleItemIndex + 1) {
-                        currentValue = items[index]
-                    }
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        text = items[index],
-                        modifier = Modifier
-                            .alpha(if (it == listState.firstVisibleItemIndex + 1) 1f else 0.3f)
-                            .weight(1f),
-                        style = NewsTheme.typography.headlineMedium.copy(color = NewsTheme.colors.onSecondary),
-                        textAlign = TextAlign.Center
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
-                })
-            }
-        )
-    }
 }

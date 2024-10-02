@@ -7,5 +7,5 @@ data class CreateInternshipEventRequest(
     val dateOfEvent: String = "",
     val endDateOfEvent: String= "",
     val location: String= "",
-    val quantityOfHours: Int= 0,
+    val quantityOfHours: Int? = null,
 )

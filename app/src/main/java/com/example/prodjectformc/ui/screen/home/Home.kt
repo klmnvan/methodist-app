@@ -6,10 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -33,7 +39,6 @@ import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,11 +83,10 @@ import com.example.prodjectformc.ui.theme.custom.Orange
 import com.example.prodjectformc.ui.theme.custom.Purple
 import com.example.prodjectformc.ui.theme.custom.White
 import com.example.prodjectformc.ui.theme.firstCharUp
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.withContext
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Home(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()){
     val state = viewModel.state.collectAsState()
@@ -106,78 +110,96 @@ fun Home(navHostController: NavHostController, viewModel: HomeViewModel = hiltVi
     Box (modifier = Modifier.fillMaxSize().background(NewsTheme.colors.background)) {
         Column (modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp)) {
             Spacer(modifier = Modifier.height(24.dp))
-            TextFiledSesrch(state.value.searchText, { viewModel.stateValue = state.value.copy(searchText = it) }, "Поиск") {
-                viewModel.stateValue = state.value.copy(searchText = "")
-                focusManager.clearFocus()
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            var expanded by remember { mutableStateOf(false) }
-            Column {
-                Row(modifier = Modifier.fillMaxWidth().clickable(interactionSource = remember { MutableInteractionSource() },
-                    indication = null) { expanded = !expanded },
-                    verticalAlignment = Alignment.CenterVertically )
-                {
+            var visible by remember { mutableStateOf(false) }
+            Row (modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
+
+                Column (modifier = Modifier.fillMaxHeight().background(NewsTheme.colors.primary, RoundedCornerShape(15.dp)).aspectRatio(1f)
+                    .clickable { visible = !visible },
+                    verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.button_collapse_text),
-                        contentDescription = "",
-                        modifier = Modifier.size(16.dp),
-                        tint = NewsTheme.colors.primary
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(SpanStyle(color = NewsTheme.colors.onPrimary)) {
-                                append("Сортировка: ")
-                            }
-                            withStyle(SpanStyle(color = NewsTheme.colors.primary, fontWeight = FontWeight.Bold)) {
-                                append(state.value.listSortedType[state.value.sortedType])
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        fontSize = 14.sp,
-                        style = NewsTheme.typography.bodyMedium
+                        imageVector = if(visible) ImageVector.vectorResource(R.drawable.icon_krest)
+                        else ImageVector.vectorResource(R.drawable.icon_sorted),
+                        contentDescription = null,
+                        tint = Color.White
                     )
                 }
-                DropdownMenu(
-                    modifier = Modifier.background(NewsTheme.colors.primaryContainer),
-                    offset = DpOffset(0.dp, 8.dp),
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false },
-                ) {
-                    state.value.listSortedType.forEach { item ->
-                        DropdownMenuItem(
-                            text = { Text(text = item) },
-                            onClick = {
-                                viewModel.stateValue.sortedType = state.value.listSortedType.indexOf(item)
-                                expanded = false
-                            },
-                            colors = MenuDefaults.itemColors(
-                                textColor = NewsTheme.colors.onPrimary,
-                            )
-                        )
-                    }
+                Spacer(modifier = Modifier.width(8.dp))
+                TextFiledSesrch(state.value.searchText, { viewModel.stateValue = state.value.copy(searchText = it) }, "Поиск") {
+                    viewModel.stateValue = state.value.copy(searchText = "")
+                    focusManager.clearFocus()
                 }
+
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Divider(thickness = 0.5.dp, color = NewsTheme.colors.primary)
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
-                for(event in state.value.listCategory) {
-                    val isSelected = state.value.selectedCategory == event
-                    val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
-                    val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
-                    Text(modifier = Modifier
-                        .background(backgroundColor, RoundedCornerShape(15.dp))
-                        .padding(vertical = 14.dp, horizontal = 20.dp)
-                        .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) {
-                            viewModel.stateValue = state.value.copy(selectedCategory = event)
-                        }, text = event, fontSize = 12.sp,
-                        fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
-                        color = textColor)
-                    Spacer(modifier = Modifier.width(8.dp))
-                }
+            if(visible){
+                Spacer(modifier = Modifier.height(16.dp))
+               var expanded by remember { mutableStateOf(false) }
+               Column {
+                   Row(modifier = Modifier.fillMaxWidth().clickable(interactionSource = remember { MutableInteractionSource() },
+                       indication = null) { expanded = !expanded },
+                       verticalAlignment = Alignment.CenterVertically )
+                   {
+                       Icon(
+                           imageVector = ImageVector.vectorResource(R.drawable.button_collapse_text),
+                           contentDescription = "",
+                           modifier = Modifier.size(16.dp),
+                           tint = NewsTheme.colors.primary
+                       )
+                       Spacer(modifier = Modifier.width(12.dp))
+                       Text(
+                           text = buildAnnotatedString {
+                               withStyle(SpanStyle(color = NewsTheme.colors.onPrimary)) {
+                                   append("Сортировка: ")
+                               }
+                               withStyle(SpanStyle(color = NewsTheme.colors.primary, fontWeight = FontWeight.Bold)) {
+                                   append(state.value.listSortedType[state.value.sortedType])
+                               }
+                           },
+                           modifier = Modifier.fillMaxWidth(),
+                           fontSize = 14.sp,
+                           style = NewsTheme.typography.bodyMedium
+                       )
+                   }
+                   DropdownMenu(
+                       modifier = Modifier.background(NewsTheme.colors.primaryContainer),
+                       offset = DpOffset(0.dp, 8.dp),
+                       expanded = expanded,
+                       onDismissRequest = { expanded = false },
+                   ) {
+                       state.value.listSortedType.forEach { item ->
+                           DropdownMenuItem(
+                               text = { Text(text = item) },
+                               onClick = {
+                                   viewModel.stateValue.sortedType = state.value.listSortedType.indexOf(item)
+                                   expanded = false
+                               },
+                               colors = MenuDefaults.itemColors(
+                                   textColor = NewsTheme.colors.onPrimary,
+                               )
+                           )
+                       }
+                   }
+               }
+               Spacer(modifier = Modifier.height(12.dp))
+               Divider(thickness = 0.5.dp, color = NewsTheme.colors.primary)
+               Spacer(modifier = Modifier.height(12.dp))
+               Text(text = "Категории", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))
+               Spacer(modifier = Modifier.height(8.dp))
+               Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                   for(event in state.value.listCategory) {
+                       val isSelected = state.value.selectedCategory == event
+                       val backgroundColor = if (isSelected) Color(Blue.value) else Color(Blue20.value)
+                       val textColor = if (isSelected) Color(White.value) else Color(Blue.value)
+                       Text(modifier = Modifier
+                           .background(backgroundColor, RoundedCornerShape(15.dp))
+                           .padding(vertical = 14.dp, horizontal = 20.dp)
+                           .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) {
+                               viewModel.stateValue = state.value.copy(selectedCategory = event)
+                           }, text = event, fontSize = 12.sp,
+                           fontFamily = Raleway, fontWeight = FontWeight.SemiBold,
+                           color = textColor)
+                       Spacer(modifier = Modifier.width(8.dp))
+                   }
+               }
             }
             Spacer(modifier = Modifier.height(20.dp))
             Text(text = "Пройденные мероприятия", style = NewsTheme.typography.displayLarge.copy(color = NewsTheme.colors.onPrimary))

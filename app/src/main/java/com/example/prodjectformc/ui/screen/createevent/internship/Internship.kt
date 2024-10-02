@@ -1,5 +1,6 @@
 package com.example.prodjectformc.ui.screen.createevent.internship
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -134,13 +135,16 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
             TextTittle("Количество часов")
             Spacer(modifier = Modifier.height(12.dp))
             var colorBorder = NewsTheme.colors.outline
-            if (state.quantityOfHours != 0) colorBorder = Color(Blue.value)
+            if (state.quantityOfHours != 0) colorBorder = NewsTheme.colors.primary
+            val range = 0..1000000
             OutlinedTextField(
-                value = state.quantityOfHours.toString(),
+                value = if(state.quantityOfHours != null) state.quantityOfHours.toString() else "",
                 onValueChange = {
-                    if(it.length < 10){
-                        if(it != "") viewModel.updateState(viewModel.state.copy(quantityOfHours = it.toInt()))
-                        else viewModel.updateState(viewModel.state.copy(quantityOfHours = 0))
+                    if(it.length < 10) {
+                        if(it != "") {
+                            Log.d("ff", it)
+                            if (it.toIntOrNull() != null) viewModel.updateState(viewModel.state.copy(quantityOfHours = it.toInt()))
+                        } else viewModel.updateState(viewModel.state.copy(quantityOfHours = null))
                     }},
                 textStyle = NewsTheme.typography.titleMedium.copy(color = NewsTheme.colors.onPrimary),
                 modifier = Modifier.fillMaxWidth(),
@@ -191,7 +195,7 @@ fun Internship(navHostController: NavHostController, viewModel: InternshipViewMo
                                 fontSize = 16.sp,
                                 color = NewsTheme.colors.onPrimary)
                         ) {
-                            append("место: ${state.location}, дата: ${state.dateOfEvent}, кол-во часов: ${state.quantityOfHours}")
+                            append("место: ${state.location}, дата: ${state.dateOfEvent}, кол-во часов: ${state.quantityOfHours?:""}")
                         }
                     },
                     modifier = Modifier.weight(1f)
